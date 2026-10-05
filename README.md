@@ -109,6 +109,26 @@ Fecha_pago
 Monto 
 Concepto
 
+## 📁 Estructura del repositorio
 
+```
+CARSAL/
+├── README.md
+├── .gitignore
+├── Documentacion/
+│   └── Descripcion_proyecto.md
+├── BaseDeDatos/
+│   ├── 01_crear_base_datos.sql
+│   └── 02_crear_tablas.sql
+└── CarsalApp/            # Solución de Visual Studio
+```
+## 🚀 Instalación y ejecución
 
-
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/angel24rubet-jpg/sis457_Consultorio_dental_Carsal.git
+   ```
+2. Abrir SQL Server Management Studio y ejecutar, en orden, los scripts de la carpeta `BaseDeDatos/`.
+3. Abrir la solución `CarsalApp` en Visual Studio.
+4. Configurar la cadena de conexión a SQL Server (según tu instancia).
+5. Ejecutar el proyecto (`F5`).
