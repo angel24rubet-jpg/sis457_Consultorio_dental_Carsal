@@ -1,0 +1,884 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LabConsultorioDental_CarsalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="IdCita" />
+          </Key>
+          <Property Name="IdCita" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPaciente" Type="int" Nullable="false" />
+          <Property Name="IdDoctor" Type="int" Nullable="false" />
+          <Property Name="FechaHora" Type="datetime" Nullable="false" />
+          <Property Name="Motivo" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="500" />
+          <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="IdUsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="IdDoctor" />
+          </Key>
+          <Property Name="IdDoctor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ci" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Celular" Type="varchar" MaxLength="20" />
+          <Property Name="Especialidad" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="200" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="IdUsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="HistorialClinico">
+          <Key>
+            <PropertyRef Name="IdHistorial" />
+          </Key>
+          <Property Name="IdHistorial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPaciente" Type="int" Nullable="false" />
+          <Property Name="IdCita" Type="int" />
+          <Property Name="FechaAtencion" Type="datetime" Nullable="false" />
+          <Property Name="Diagnostico" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Tratamiento" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Observaciones" Type="varchar" MaxLength="1000" />
+          <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="IdUsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="IdPaciente" />
+          </Key>
+          <Property Name="IdPaciente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ci" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PrimerApellido" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SegundoApellido" Type="varchar" MaxLength="100" />
+          <Property Name="FechaNacimiento" Type="date" />
+          <Property Name="Sexo" Type="varchar" MaxLength="20" />
+          <Property Name="Celular" Type="varchar" MaxLength="20" />
+          <Property Name="Direccion" Type="varchar" MaxLength="200" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="IdUsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="IdPago" />
+          </Key>
+          <Property Name="IdPago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdCita" Type="int" Nullable="false" />
+          <Property Name="FechaPago" Type="datetime" Nullable="false" />
+          <Property Name="Monto" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="MetodoPago" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Concepto" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="IdUsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreUsuario" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ClaveHash" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Rol" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IdDoctor" Type="int" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Cita_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="IdDoctor" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdDoctor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Paciente">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="IdPaciente" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Historial_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Historial_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialClinico_Cita">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="0..1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="IdCita" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdCita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialClinico_Paciente">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="IdPaciente" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paciente_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paciente_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_Cita">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="IdCita" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="IdCita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="IdDoctor" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdDoctor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LabConsultorioDental_CarsalModelStoreContainer">
+          <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistorialClinico" EntityType="Self.HistorialClinico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cita_Doctor" Association="Self.FK_Cita_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Paciente" Association="Self.FK_Cita_Paciente">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_UsuarioModificacion" Association="Self.FK_Cita_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_UsuarioRegistro" Association="Self.FK_Cita_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_UsuarioModificacion" Association="Self.FK_Doctor_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_UsuarioRegistro" Association="Self.FK_Doctor_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Historial_UsuarioModificacion" Association="Self.FK_Historial_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Historial_UsuarioRegistro" Association="Self.FK_Historial_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialClinico_Cita" Association="Self.FK_HistorialClinico_Cita">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialClinico_Paciente" Association="Self.FK_HistorialClinico_Paciente">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paciente_UsuarioModificacion" Association="Self.FK_Paciente_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paciente_UsuarioRegistro" Association="Self.FK_Paciente_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_Cita" Association="Self.FK_Pago_Cita">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_UsuarioModificacion" Association="Self.FK_Pago_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_UsuarioRegistro" Association="Self.FK_Pago_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_Doctor" Association="Self.FK_Usuario_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LabConsultorioDental_CarsalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cita">
+          <Key>
+            <PropertyRef Name="IdCita" />
+          </Key>
+          <Property Name="IdCita" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPaciente" Type="Int32" Nullable="false" />
+          <Property Name="IdDoctor" Type="Int32" Nullable="false" />
+          <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Motivo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Observaciones" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IdUsuarioRegistro" Type="Int32" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Cita_Doctor" FromRole="Cita" ToRole="Doctor" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK_Cita_Paciente" FromRole="Cita" ToRole="Paciente" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Cita_UsuarioModificacion" FromRole="Cita" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Cita_UsuarioRegistro" FromRole="Cita" ToRole="Usuario" />
+          <NavigationProperty Name="HistorialClinico" Relationship="Self.FK_HistorialClinico_Cita" FromRole="Cita" ToRole="HistorialClinico" />
+          <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_Cita" FromRole="Cita" ToRole="Pago" />
+        </EntityType>
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="IdDoctor" />
+          </Key>
+          <Property Name="IdDoctor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ci" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Celular" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Especialidad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="Int32" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_Cita_Doctor" FromRole="Doctor" ToRole="Cita" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Doctor_UsuarioModificacion" FromRole="Doctor" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Doctor_UsuarioRegistro" FromRole="Doctor" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario2" Relationship="Self.FK_Usuario_Doctor" FromRole="Doctor" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="HistorialClinico">
+          <Key>
+            <PropertyRef Name="IdHistorial" />
+          </Key>
+          <Property Name="IdHistorial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPaciente" Type="Int32" Nullable="false" />
+          <Property Name="IdCita" Type="Int32" />
+          <Property Name="FechaAtencion" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Diagnostico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tratamiento" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Observaciones" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IdUsuarioRegistro" Type="Int32" />
+          <Property Name="IdUsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_HistorialClinico_Cita" FromRole="HistorialClinico" ToRole="Cita" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Historial_UsuarioModificacion" FromRole="HistorialClinico" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Historial_UsuarioRegistro" FromRole="HistorialClinico" ToRole="Usuario" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK_HistorialClinico_Paciente" FromRole="HistorialClinico" ToRole="Paciente" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="IdPaciente" />
+          </Key>
+          <Property Name="IdPaciente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ci" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PrimerApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SegundoApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="0" />
+          <Property Name="Sexo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUsuarioRegistro" Type="Int32" />
+          <Property Name="IdUsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_Cita_Paciente" FromRole="Paciente" ToRole="Cita" />
+          <NavigationProperty Name="HistorialClinico" Relationship="Self.FK_HistorialClinico_Paciente" FromRole="Paciente" ToRole="HistorialClinico" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Paciente_UsuarioModificacion" FromRole="Paciente" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Paciente_UsuarioRegistro" FromRole="Paciente" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Pago">
+          <Key>
+            <PropertyRef Name="IdPago" />
+          </Key>
+          <Property Name="IdPago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdCita" Type="Int32" Nullable="false" />
+          <Property Name="FechaPago" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Monto" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="MetodoPago" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Concepto" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="Int32" />
+          <Property Name="IdUsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_Pago_Cita" FromRole="Pago" ToRole="Cita" />
+          <NavigationProperty Name="Usuario" Relationship="Self.FK_Pago_UsuarioModificacion" FromRole="Pago" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="Self.FK_Pago_UsuarioRegistro" FromRole="Pago" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ClaveHash" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Rol" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdDoctor" Type="Int32" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Cita" Relationship="Self.FK_Cita_UsuarioModificacion" FromRole="Usuario" ToRole="Cita" />
+          <NavigationProperty Name="Cita1" Relationship="Self.FK_Cita_UsuarioRegistro" FromRole="Usuario" ToRole="Cita" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Doctor_UsuarioModificacion" FromRole="Usuario" ToRole="Doctor" />
+          <NavigationProperty Name="Doctor1" Relationship="Self.FK_Doctor_UsuarioRegistro" FromRole="Usuario" ToRole="Doctor" />
+          <NavigationProperty Name="Doctor2" Relationship="Self.FK_Usuario_Doctor" FromRole="Usuario" ToRole="Doctor" />
+          <NavigationProperty Name="HistorialClinico" Relationship="Self.FK_Historial_UsuarioModificacion" FromRole="Usuario" ToRole="HistorialClinico" />
+          <NavigationProperty Name="HistorialClinico1" Relationship="Self.FK_Historial_UsuarioRegistro" FromRole="Usuario" ToRole="HistorialClinico" />
+          <NavigationProperty Name="Paciente" Relationship="Self.FK_Paciente_UsuarioModificacion" FromRole="Usuario" ToRole="Paciente" />
+          <NavigationProperty Name="Paciente1" Relationship="Self.FK_Paciente_UsuarioRegistro" FromRole="Usuario" ToRole="Paciente" />
+          <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_UsuarioModificacion" FromRole="Usuario" ToRole="Pago" />
+          <NavigationProperty Name="Pago1" Relationship="Self.FK_Pago_UsuarioRegistro" FromRole="Usuario" ToRole="Pago" />
+        </EntityType>
+        <Association Name="FK_Cita_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="IdDoctor" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdDoctor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_Paciente">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="IdPaciente" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cita_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Cita" Type="Self.Cita" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Cita">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialClinico_Cita">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="0..1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="IdCita" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdCita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_Cita">
+          <End Role="Cita" Type="Self.Cita" Multiplicity="1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cita">
+              <PropertyRef Name="IdCita" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="IdCita" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Usuario_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="IdDoctor" />
+            </Principal>
+            <Dependent Role="Usuario">
+              <PropertyRef Name="IdDoctor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Historial_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Historial_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HistorialClinico_Paciente">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="HistorialClinico" Type="Self.HistorialClinico" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="IdPaciente" />
+            </Principal>
+            <Dependent Role="HistorialClinico">
+              <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paciente_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paciente_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pago_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Pago" Type="Self.Pago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Pago">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LabConsultorioDental_CarsalEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cita" EntityType="Self.Cita" />
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" />
+          <EntitySet Name="HistorialClinico" EntityType="Self.HistorialClinico" />
+          <EntitySet Name="Paciente" EntityType="Self.Paciente" />
+          <EntitySet Name="Pago" EntityType="Self.Pago" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_Cita_Doctor" Association="Self.FK_Cita_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_Paciente" Association="Self.FK_Cita_Paciente">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_UsuarioModificacion" Association="Self.FK_Cita_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cita_UsuarioRegistro" Association="Self.FK_Cita_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Cita" EntitySet="Cita" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialClinico_Cita" Association="Self.FK_HistorialClinico_Cita">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_Cita" Association="Self.FK_Pago_Cita">
+            <End Role="Cita" EntitySet="Cita" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_UsuarioModificacion" Association="Self.FK_Doctor_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_UsuarioRegistro" Association="Self.FK_Doctor_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Usuario_Doctor" Association="Self.FK_Usuario_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Usuario" EntitySet="Usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Historial_UsuarioModificacion" Association="Self.FK_Historial_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Historial_UsuarioRegistro" Association="Self.FK_Historial_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HistorialClinico_Paciente" Association="Self.FK_HistorialClinico_Paciente">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="HistorialClinico" EntitySet="HistorialClinico" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paciente_UsuarioModificacion" Association="Self.FK_Paciente_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paciente_UsuarioRegistro" Association="Self.FK_Paciente_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_UsuarioModificacion" Association="Self.FK_Pago_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pago_UsuarioRegistro" Association="Self.FK_Pago_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LabConsultorioDental_CarsalModelStoreContainer" CdmEntityContainer="LabConsultorioDental_CarsalEntities">
+          <EntitySetMapping Name="Cita">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Cita">
+              <MappingFragment StoreEntitySet="Cita">
+                <ScalarProperty Name="IdCita" ColumnName="IdCita" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Doctor">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistorialClinico">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.HistorialClinico">
+              <MappingFragment StoreEntitySet="HistorialClinico">
+                <ScalarProperty Name="IdHistorial" ColumnName="IdHistorial" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="IdCita" ColumnName="IdCita" />
+                <ScalarProperty Name="FechaAtencion" ColumnName="FechaAtencion" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Tratamiento" ColumnName="Tratamiento" />
+                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paciente">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Paciente">
+              <MappingFragment StoreEntitySet="Paciente">
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pago">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Pago">
+              <MappingFragment StoreEntitySet="Pago">
+                <ScalarProperty Name="IdPago" ColumnName="IdPago" />
+                <ScalarProperty Name="IdCita" ColumnName="IdCita" />
+                <ScalarProperty Name="FechaPago" ColumnName="FechaPago" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="MetodoPago" ColumnName="MetodoPago" />
+                <ScalarProperty Name="Concepto" ColumnName="Concepto" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="NombreUsuario" ColumnName="NombreUsuario" />
+                <ScalarProperty Name="ClaveHash" ColumnName="ClaveHash" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
