@@ -12,6 +12,8 @@ namespace CadCarsal
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class LabConsultorioDental_CarsalEntities : DbContext
     {
@@ -31,5 +33,173 @@ namespace CadCarsal
         public virtual DbSet<Paciente> Paciente { get; set; }
         public virtual DbSet<Pago> Pago { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
+    
+        public virtual ObjectResult<paPacienteListar_Result> paPacienteListar()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paPacienteListar_Result>("paPacienteListar");
+        }
+    
+        public virtual ObjectResult<paPacienteListar_Result> paPacienteListar_Consultar()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paPacienteListar_Result>("paPacienteListar_Consultar");
+        }
+    
+        public virtual ObjectResult<paPacienteBuscarPorCi_Result> paPacienteBuscarPorCi(string ci)
+        {
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paPacienteBuscarPorCi_Result>("paPacienteBuscarPorCi", ciParameter);
+        }
+    
+        public virtual ObjectResult<paPacienteBuscarPorCi_Result> paPacienteBuscarPorCi_Consultar(string ci)
+        {
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paPacienteBuscarPorCi_Result>("paPacienteBuscarPorCi_Consultar", ciParameter);
+        }
+    
+        public virtual int paPacienteInsertar(string ci, string nombres, string primerApellido, string segundoApellido, Nullable<System.DateTime> fechaNacimiento, string sexo, string celular, string direccion, Nullable<int> idUsuarioRegistro)
+        {
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            var nombresParameter = nombres != null ?
+                new ObjectParameter("Nombres", nombres) :
+                new ObjectParameter("Nombres", typeof(string));
+    
+            var primerApellidoParameter = primerApellido != null ?
+                new ObjectParameter("PrimerApellido", primerApellido) :
+                new ObjectParameter("PrimerApellido", typeof(string));
+    
+            var segundoApellidoParameter = segundoApellido != null ?
+                new ObjectParameter("SegundoApellido", segundoApellido) :
+                new ObjectParameter("SegundoApellido", typeof(string));
+    
+            var fechaNacimientoParameter = fechaNacimiento.HasValue ?
+                new ObjectParameter("FechaNacimiento", fechaNacimiento) :
+                new ObjectParameter("FechaNacimiento", typeof(System.DateTime));
+    
+            var sexoParameter = sexo != null ?
+                new ObjectParameter("Sexo", sexo) :
+                new ObjectParameter("Sexo", typeof(string));
+    
+            var celularParameter = celular != null ?
+                new ObjectParameter("Celular", celular) :
+                new ObjectParameter("Celular", typeof(string));
+    
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("Direccion", direccion) :
+                new ObjectParameter("Direccion", typeof(string));
+    
+            var idUsuarioRegistroParameter = idUsuarioRegistro.HasValue ?
+                new ObjectParameter("IdUsuarioRegistro", idUsuarioRegistro) :
+                new ObjectParameter("IdUsuarioRegistro", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paPacienteInsertar", ciParameter, nombresParameter, primerApellidoParameter, segundoApellidoParameter, fechaNacimientoParameter, sexoParameter, celularParameter, direccionParameter, idUsuarioRegistroParameter);
+        }
+    
+        public virtual int paPacienteInsertar_Registrar(string ci, string nombres, string primerApellido, string segundoApellido, Nullable<System.DateTime> fechaNacimiento, string sexo, string celular, string direccion, Nullable<int> idUsuarioRegistro)
+        {
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            var nombresParameter = nombres != null ?
+                new ObjectParameter("Nombres", nombres) :
+                new ObjectParameter("Nombres", typeof(string));
+    
+            var primerApellidoParameter = primerApellido != null ?
+                new ObjectParameter("PrimerApellido", primerApellido) :
+                new ObjectParameter("PrimerApellido", typeof(string));
+    
+            var segundoApellidoParameter = segundoApellido != null ?
+                new ObjectParameter("SegundoApellido", segundoApellido) :
+                new ObjectParameter("SegundoApellido", typeof(string));
+    
+            var fechaNacimientoParameter = fechaNacimiento.HasValue ?
+                new ObjectParameter("FechaNacimiento", fechaNacimiento) :
+                new ObjectParameter("FechaNacimiento", typeof(System.DateTime));
+    
+            var sexoParameter = sexo != null ?
+                new ObjectParameter("Sexo", sexo) :
+                new ObjectParameter("Sexo", typeof(string));
+    
+            var celularParameter = celular != null ?
+                new ObjectParameter("Celular", celular) :
+                new ObjectParameter("Celular", typeof(string));
+    
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("Direccion", direccion) :
+                new ObjectParameter("Direccion", typeof(string));
+    
+            var idUsuarioRegistroParameter = idUsuarioRegistro.HasValue ?
+                new ObjectParameter("IdUsuarioRegistro", idUsuarioRegistro) :
+                new ObjectParameter("IdUsuarioRegistro", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paPacienteInsertar_Registrar", ciParameter, nombresParameter, primerApellidoParameter, segundoApellidoParameter, fechaNacimientoParameter, sexoParameter, celularParameter, direccionParameter, idUsuarioRegistroParameter);
+        }
+    
+        public virtual int paPacienteModificar(Nullable<int> idPaciente, string ci, string nombres, string primerApellido, string segundoApellido, Nullable<System.DateTime> fechaNacimiento, string sexo, string celular, string direccion, Nullable<int> idUsuarioModificacion)
+        {
+            var idPacienteParameter = idPaciente.HasValue ?
+                new ObjectParameter("IdPaciente", idPaciente) :
+                new ObjectParameter("IdPaciente", typeof(int));
+    
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            var nombresParameter = nombres != null ?
+                new ObjectParameter("Nombres", nombres) :
+                new ObjectParameter("Nombres", typeof(string));
+    
+            var primerApellidoParameter = primerApellido != null ?
+                new ObjectParameter("PrimerApellido", primerApellido) :
+                new ObjectParameter("PrimerApellido", typeof(string));
+    
+            var segundoApellidoParameter = segundoApellido != null ?
+                new ObjectParameter("SegundoApellido", segundoApellido) :
+                new ObjectParameter("SegundoApellido", typeof(string));
+    
+            var fechaNacimientoParameter = fechaNacimiento.HasValue ?
+                new ObjectParameter("FechaNacimiento", fechaNacimiento) :
+                new ObjectParameter("FechaNacimiento", typeof(System.DateTime));
+    
+            var sexoParameter = sexo != null ?
+                new ObjectParameter("Sexo", sexo) :
+                new ObjectParameter("Sexo", typeof(string));
+    
+            var celularParameter = celular != null ?
+                new ObjectParameter("Celular", celular) :
+                new ObjectParameter("Celular", typeof(string));
+    
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("Direccion", direccion) :
+                new ObjectParameter("Direccion", typeof(string));
+    
+            var idUsuarioModificacionParameter = idUsuarioModificacion.HasValue ?
+                new ObjectParameter("IdUsuarioModificacion", idUsuarioModificacion) :
+                new ObjectParameter("IdUsuarioModificacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paPacienteModificar", idPacienteParameter, ciParameter, nombresParameter, primerApellidoParameter, segundoApellidoParameter, fechaNacimientoParameter, sexoParameter, celularParameter, direccionParameter, idUsuarioModificacionParameter);
+        }
+    
+        public virtual int paPacienteEliminar(Nullable<int> idPaciente, Nullable<int> idUsuarioModificacion)
+        {
+            var idPacienteParameter = idPaciente.HasValue ?
+                new ObjectParameter("IdPaciente", idPaciente) :
+                new ObjectParameter("IdPaciente", typeof(int));
+    
+            var idUsuarioModificacionParameter = idUsuarioModificacion.HasValue ?
+                new ObjectParameter("IdUsuarioModificacion", idUsuarioModificacion) :
+                new ObjectParameter("IdUsuarioModificacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paPacienteEliminar", idPacienteParameter, idUsuarioModificacionParameter);
+        }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LabConsultorioDental_CarsalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LabConsultorioDental_CarsalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cita">
           <Key>
             <PropertyRef Name="IdCita" />
@@ -70,6 +70,7 @@
           <Property Name="IdUsuarioRegistro" Type="int" />
           <Property Name="IdUsuarioModificacion" Type="int" />
           <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Pago">
           <Key>
@@ -289,6 +290,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="paPacienteBuscarPorCi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Ci" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="paPacienteEliminar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPaciente" Type="int" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paPacienteInsertar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Ci" Type="varchar" Mode="In" />
+          <Parameter Name="Nombres" Type="varchar" Mode="In" />
+          <Parameter Name="PrimerApellido" Type="varchar" Mode="In" />
+          <Parameter Name="SegundoApellido" Type="varchar" Mode="In" />
+          <Parameter Name="FechaNacimiento" Type="date" Mode="In" />
+          <Parameter Name="Sexo" Type="varchar" Mode="In" />
+          <Parameter Name="Celular" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioRegistro" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paPacienteListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="paPacienteModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPaciente" Type="int" Mode="In" />
+          <Parameter Name="Ci" Type="varchar" Mode="In" />
+          <Parameter Name="Nombres" Type="varchar" Mode="In" />
+          <Parameter Name="PrimerApellido" Type="varchar" Mode="In" />
+          <Parameter Name="SegundoApellido" Type="varchar" Mode="In" />
+          <Parameter Name="FechaNacimiento" Type="date" Mode="In" />
+          <Parameter Name="Sexo" Type="varchar" Mode="In" />
+          <Parameter Name="Celular" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="LabConsultorioDental_CarsalModelStoreContainer">
           <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
@@ -361,8 +393,7 @@
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LabConsultorioDental_CarsalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -449,6 +480,7 @@
           <NavigationProperty Name="HistorialClinico" Relationship="Self.FK_HistorialClinico_Paciente" FromRole="Paciente" ToRole="HistorialClinico" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Paciente_UsuarioModificacion" FromRole="Paciente" ToRole="Usuario" />
           <NavigationProperty Name="Usuario1" Relationship="Self.FK_Paciente_UsuarioRegistro" FromRole="Paciente" ToRole="Usuario" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Pago">
           <Key>
@@ -753,7 +785,85 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Pago" EntitySet="Pago" />
           </AssociationSet>
+          <FunctionImport Name="paPacienteListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPacienteListar_Result)" />
+          <FunctionImport Name="paPacienteListar_Consultar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPacienteListar_Result)" />
+          <FunctionImport Name="paPacienteBuscarPorCi" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPacienteBuscarPorCi_Result)">
+          <Parameter Name="Ci" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="paPacienteBuscarPorCi_Consultar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPacienteBuscarPorCi_Result)">
+          <Parameter Name="Ci" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="paPacienteInsertar">
+            <Parameter Name="Ci" Mode="In" Type="String" />
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="PrimerApellido" Mode="In" Type="String" />
+            <Parameter Name="SegundoApellido" Mode="In" Type="String" />
+            <Parameter Name="FechaNacimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="Sexo" Mode="In" Type="String" />
+            <Parameter Name="Celular" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paPacienteInsertar_Registrar">
+            <Parameter Name="Ci" Mode="In" Type="String" />
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="PrimerApellido" Mode="In" Type="String" />
+            <Parameter Name="SegundoApellido" Mode="In" Type="String" />
+            <Parameter Name="FechaNacimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="Sexo" Mode="In" Type="String" />
+            <Parameter Name="Celular" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paPacienteModificar">
+            <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
+            <Parameter Name="Ci" Mode="In" Type="String" />
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="PrimerApellido" Mode="In" Type="String" />
+            <Parameter Name="SegundoApellido" Mode="In" Type="String" />
+            <Parameter Name="FechaNacimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="Sexo" Mode="In" Type="String" />
+            <Parameter Name="Celular" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paPacienteEliminar">
+            <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="paPacienteListar_Result">
+          <Property Type="Int32" Name="IdPaciente" Nullable="false" />
+          <Property Type="String" Name="Ci" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombres" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PrimerApellido" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="SegundoApellido" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaNacimiento" Nullable="true" />
+          <Property Type="String" Name="Sexo" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Celular" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="Estado" Nullable="false" />
+          <Property Type="Int32" Name="IdUsuarioRegistro" Nullable="true" />
+          <Property Type="Int32" Name="IdUsuarioModificacion" Nullable="true" />
+          <Property Type="DateTime" Name="FechaModificacion" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="paPacienteBuscarPorCi_Result">
+          <Property Type="Int32" Name="IdPaciente" Nullable="false" />
+          <Property Type="String" Name="Ci" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombres" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PrimerApellido" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="SegundoApellido" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaNacimiento" Nullable="true" />
+          <Property Type="String" Name="Sexo" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Celular" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="Estado" Nullable="false" />
+          <Property Type="Int32" Name="IdUsuarioRegistro" Nullable="true" />
+          <Property Type="Int32" Name="IdUsuarioModificacion" Nullable="true" />
+          <Property Type="DateTime" Name="FechaModificacion" Nullable="true" Precision="23" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -814,6 +924,7 @@
           <EntitySetMapping Name="Paciente">
             <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Paciente">
               <MappingFragment StoreEntitySet="Paciente">
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
                 <ScalarProperty Name="Ci" ColumnName="Ci" />
                 <ScalarProperty Name="Nombres" ColumnName="Nombres" />
@@ -858,6 +969,90 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="paPacienteListar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paPacienteListar_Result">
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paPacienteListar_Consultar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paPacienteListar_Result">
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paPacienteBuscarPorCi" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteBuscarPorCi">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paPacienteBuscarPorCi_Result">
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paPacienteBuscarPorCi_Consultar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteBuscarPorCi">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paPacienteBuscarPorCi_Result">
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paPacienteInsertar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteInsertar" />
+          <FunctionImportMapping FunctionImportName="paPacienteInsertar_Registrar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteInsertar" />
+          <FunctionImportMapping FunctionImportName="paPacienteModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteModificar" />
+          <FunctionImportMapping FunctionImportName="paPacienteEliminar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteEliminar" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

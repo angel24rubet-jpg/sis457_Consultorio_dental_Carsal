@@ -274,3 +274,83 @@ INNER JOIN sys.foreign_key_columns AS fkc
 ORDER BY TablaOrigen, NombreRelacion;
 GO
 
+-- =============================================
+-- PROCEDIMIENTOS ALMACENADOS: PACIENTES
+-- =============================================
+
+-- =============================================
+-- 1. LISTAR PACIENTES ACTIVOS
+-- =============================================
+CREATE PROCEDURE paPacienteListar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        IdPaciente, Ci, Nombres, PrimerApellido,
+        SegundoApellido, FechaNacimiento, Sexo,
+        Celular, Direccion, FechaRegistro, Estado,
+        IdUsuarioRegistro, IdUsuarioModificacion,
+        FechaModificacion
+    FROM Paciente
+    WHERE Estado = 1
+    ORDER BY PrimerApellido, Nombres;
+END;
+GO
+
+-- =============================================
+-- 2. BUSCAR PACIENTE POR CI
+-- =============================================
+CREATE PROCEDURE paPacienteBuscarPorCi
+    @Ci VARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        IdPaciente, Ci, Nombres, PrimerApellido,
+        SegundoApellido, FechaNacimiento, Sexo,
+        Celular, Direccion, FechaRegistro, Estado,
+        IdUsuarioRegistro, IdUsuarioModificacion,
+        FechaModificacion
+    FROM Paciente
+    WHERE Ci = @Ci AND Estado = 1;
+END;
+GO
+
+-- =============================================
+-- 3. REGISTRAR PACIENTE
+-- =============================================
+CREATE PROCEDURE paPacienteInsertar
+    @Ci VARCHAR(20),
+    @Nombres VARCHAR(100),
+    @PrimerApellido VARCHAR(100),
+    @SegundoApellido VARCHAR(100) = NULL,
+    @FechaNacimiento DATE = NULL,
+    @Sexo VARCHAR(20) = NULL,
+    @Celular VARCHAR(20) = NULL,
+    @Direccion VARCHAR(200) = NULL,
+    @IdUsuarioRegistro INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM Paciente WHERE Ci = @Ci)
+    BEGIN
+        RAISERROR('Ya existe un paciente registrado con ese CI.', 16, 1);
+        RETURN;
+    END;
+
+    INSERT INTO Paciente (
+        Ci, Nombres, PrimerApellido, SegundoApellido,
+        FechaNacimiento, Sexo, Celular, Direccion,
+        IdUsuarioRegistro, Estado
+    )
+    VALUES (
+        @Ci, @Nombres, @PrimerApellido, @SegundoApellido,
+        @FechaNacimiento, @Sexo, @Celular, @Direccion,
+        @IdUsuarioRegistro, 1
+    );
+END;
+GO
+

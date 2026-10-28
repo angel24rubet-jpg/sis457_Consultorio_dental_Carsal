@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+**/.vs/
+
+# Carpetas de compilación
+[Bb]in/
+[Oo]bj/
+
+# Archivos de usuario y configuración local
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Archivos temporales
+*.tmp
+*.cache
