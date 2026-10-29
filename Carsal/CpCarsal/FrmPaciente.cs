@@ -36,7 +36,7 @@ namespace CpCarsal
                     cboSexo.Text,
                     txtCelular.Text.Trim(),
                     txtDireccion.Text.Trim(),
-                    1
+                    ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
                 );
 
                 MessageBox.Show("Paciente registrado correctamente.");

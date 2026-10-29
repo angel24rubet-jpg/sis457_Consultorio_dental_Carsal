@@ -253,7 +253,7 @@ GO
 
 
 
-USE ConsultorioDental_Carsal;
+USE LabConsultorioDental_Carsal;
 GO
 
 SELECT
@@ -351,6 +351,73 @@ BEGIN
         @FechaNacimiento, @Sexo, @Celular, @Direccion,
         @IdUsuarioRegistro, 1
     );
+END;
+GO
+
+
+USE LabConsultorioDental_Carsal;
+GO
+
+CREATE PROCEDURE dbo.paPacienteModificar
+    @IdPaciente INT,
+    @Ci VARCHAR(20),
+    @Nombres VARCHAR(100),
+    @PrimerApellido VARCHAR(100),
+    @SegundoApellido VARCHAR(100) = NULL,
+    @FechaNacimiento DATE = NULL,
+    @Sexo VARCHAR(20) = NULL,
+    @Celular VARCHAR(20) = NULL,
+    @Direccion VARCHAR(200) = NULL,
+    @IdUsuarioModificacion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM Paciente
+        WHERE Ci = @Ci
+          AND IdPaciente <> @IdPaciente
+          AND Estado = 1
+    )
+    BEGIN
+        RAISERROR('Ya existe otro paciente registrado con ese CI.', 16, 1);
+        RETURN;
+    END;
+
+    UPDATE Paciente
+    SET Ci = @Ci,
+        Nombres = @Nombres,
+        PrimerApellido = @PrimerApellido,
+        SegundoApellido = @SegundoApellido,
+        FechaNacimiento = @FechaNacimiento,
+        Sexo = @Sexo,
+        Celular = @Celular,
+        Direccion = @Direccion,
+        IdUsuarioModificacion = @IdUsuarioModificacion,
+        FechaModificacion = GETDATE()
+    WHERE IdPaciente = @IdPaciente
+      AND Estado = 1;
+END;
+GO
+
+
+USE LabConsultorioDental_Carsal;
+GO
+
+CREATE PROCEDURE dbo.paPacienteEliminar
+    @IdPaciente INT,
+    @IdUsuarioModificacion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE Paciente
+    SET Estado = 0,
+        IdUsuarioModificacion = @IdUsuarioModificacion,
+        FechaModificacion = GETDATE()
+    WHERE IdPaciente = @IdPaciente
+      AND Estado = 1;
 END;
 GO
 
