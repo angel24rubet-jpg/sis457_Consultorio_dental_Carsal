@@ -421,3 +421,158 @@ BEGIN
 END;
 GO
 
+
+-- procedimientos almacenados DOCTOR --
+
+USE LabConsultorioDental_Carsal;
+GO
+
+CREATE PROCEDURE dbo.paDoctorInsertar
+    @Ci VARCHAR(20),
+    @Nombres VARCHAR(100),
+    @Apellidos VARCHAR(200),
+    @Celular VARCHAR(20) = NULL,
+    @Especialidad VARCHAR(100) = NULL,
+    @Direccion VARCHAR(200) = NULL,
+    @IdUsuarioRegistro INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM dbo.Doctor
+        WHERE Ci = @Ci
+    )
+    BEGIN
+        RAISERROR('Ya existe un doctor con ese CI.', 16, 1);
+        RETURN;
+    END
+
+    INSERT INTO dbo.Doctor
+    (
+        Ci,
+        Nombres,
+        Apellidos,
+        Celular,
+        Especialidad,
+        Direccion,
+        Estado,
+        IdUsuarioRegistro,
+        FechaRegistro
+    )
+    VALUES
+    (
+        @Ci,
+        @Nombres,
+        @Apellidos,
+        @Celular,
+        @Especialidad,
+        @Direccion,
+        1,
+        @IdUsuarioRegistro,
+        GETDATE()
+    );
+END;
+GO
+
+-- procedimiento para modificar un DOCTOR --
+
+USE LabConsultorioDental_Carsal;
+GO
+
+CREATE PROCEDURE dbo.paDoctorModificar
+    @IdDoctor INT,
+    @Ci VARCHAR(20),
+    @Nombres VARCHAR(100),
+    @Apellidos VARCHAR(200),
+    @Celular VARCHAR(20) = NULL,
+    @Especialidad VARCHAR(100) = NULL,
+    @Direccion VARCHAR(200) = NULL,
+    @IdUsuarioModificacion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (
+        SELECT 1
+        FROM dbo.Doctor
+        WHERE Ci = @Ci
+          AND IdDoctor <> @IdDoctor
+    )
+    BEGIN
+        RAISERROR('Ya existe otro doctor con ese CI.', 16, 1);
+        RETURN;
+    END
+
+    UPDATE dbo.Doctor
+    SET
+        Ci = @Ci,
+        Nombres = @Nombres,
+        Apellidos = @Apellidos,
+        Celular = @Celular,
+        Especialidad = @Especialidad,
+        Direccion = @Direccion,
+        IdUsuarioModificacion = @IdUsuarioModificacion
+    WHERE IdDoctor = @IdDoctor
+      AND Estado = 1;
+
+    IF @@ROWCOUNT = 0
+    BEGIN
+        RAISERROR('No se encontró un doctor activo para modificar.', 16, 1);
+        RETURN;
+    END
+END;
+GO
+
+-- procedimiento para eliminar un DOCTOR --
+
+USE LabConsultorioDental_Carsal;
+GO
+
+CREATE PROCEDURE dbo.paDoctorEliminar
+    @IdDoctor INT,
+    @IdUsuarioModificacion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE dbo.Doctor
+    SET
+        Estado = 0,
+        IdUsuarioModificacion = @IdUsuarioModificacion
+    WHERE IdDoctor = @IdDoctor
+      AND Estado = 1;
+
+    IF @@ROWCOUNT = 0
+    BEGIN
+        RAISERROR('No se encontró un doctor activo para desactivar.', 16, 1);
+        RETURN;
+    END
+END;
+GO
+
+-- procedimiento para Buscar un DOCTOR --
+
+USE LabConsultorioDental_Carsal;
+GO
+
+CREATE PROCEDURE dbo.paDoctorBuscarPorCi
+    @Ci VARCHAR(20)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        IdDoctor,
+        Ci,
+        Nombres,
+        Apellidos,
+        Celular,
+        Especialidad,
+        Direccion
+    FROM dbo.Doctor
+    WHERE Ci = @Ci
+      AND Estado = 1;
+END;
+GO

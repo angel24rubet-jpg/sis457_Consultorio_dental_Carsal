@@ -201,5 +201,97 @@ namespace CadCarsal
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paPacienteEliminar", idPacienteParameter, idUsuarioModificacionParameter);
         }
+    
+        public virtual int paDoctorInsertar(string ci, string nombres, string apellidos, string celular, string especialidad, string direccion, Nullable<int> idUsuarioRegistro)
+        {
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            var nombresParameter = nombres != null ?
+                new ObjectParameter("Nombres", nombres) :
+                new ObjectParameter("Nombres", typeof(string));
+    
+            var apellidosParameter = apellidos != null ?
+                new ObjectParameter("Apellidos", apellidos) :
+                new ObjectParameter("Apellidos", typeof(string));
+    
+            var celularParameter = celular != null ?
+                new ObjectParameter("Celular", celular) :
+                new ObjectParameter("Celular", typeof(string));
+    
+            var especialidadParameter = especialidad != null ?
+                new ObjectParameter("Especialidad", especialidad) :
+                new ObjectParameter("Especialidad", typeof(string));
+    
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("Direccion", direccion) :
+                new ObjectParameter("Direccion", typeof(string));
+    
+            var idUsuarioRegistroParameter = idUsuarioRegistro.HasValue ?
+                new ObjectParameter("IdUsuarioRegistro", idUsuarioRegistro) :
+                new ObjectParameter("IdUsuarioRegistro", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paDoctorInsertar", ciParameter, nombresParameter, apellidosParameter, celularParameter, especialidadParameter, direccionParameter, idUsuarioRegistroParameter);
+        }
+    
+        public virtual int paDoctorModificar(Nullable<int> idDoctor, string ci, string nombres, string apellidos, string celular, string especialidad, string direccion, Nullable<int> idUsuarioModificacion)
+        {
+            var idDoctorParameter = idDoctor.HasValue ?
+                new ObjectParameter("IdDoctor", idDoctor) :
+                new ObjectParameter("IdDoctor", typeof(int));
+    
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            var nombresParameter = nombres != null ?
+                new ObjectParameter("Nombres", nombres) :
+                new ObjectParameter("Nombres", typeof(string));
+    
+            var apellidosParameter = apellidos != null ?
+                new ObjectParameter("Apellidos", apellidos) :
+                new ObjectParameter("Apellidos", typeof(string));
+    
+            var celularParameter = celular != null ?
+                new ObjectParameter("Celular", celular) :
+                new ObjectParameter("Celular", typeof(string));
+    
+            var especialidadParameter = especialidad != null ?
+                new ObjectParameter("Especialidad", especialidad) :
+                new ObjectParameter("Especialidad", typeof(string));
+    
+            var direccionParameter = direccion != null ?
+                new ObjectParameter("Direccion", direccion) :
+                new ObjectParameter("Direccion", typeof(string));
+    
+            var idUsuarioModificacionParameter = idUsuarioModificacion.HasValue ?
+                new ObjectParameter("IdUsuarioModificacion", idUsuarioModificacion) :
+                new ObjectParameter("IdUsuarioModificacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paDoctorModificar", idDoctorParameter, ciParameter, nombresParameter, apellidosParameter, celularParameter, especialidadParameter, direccionParameter, idUsuarioModificacionParameter);
+        }
+    
+        public virtual int paDoctorEliminar(Nullable<int> idDoctor, Nullable<int> idUsuarioModificacion)
+        {
+            var idDoctorParameter = idDoctor.HasValue ?
+                new ObjectParameter("IdDoctor", idDoctor) :
+                new ObjectParameter("IdDoctor", typeof(int));
+    
+            var idUsuarioModificacionParameter = idUsuarioModificacion.HasValue ?
+                new ObjectParameter("IdUsuarioModificacion", idUsuarioModificacion) :
+                new ObjectParameter("IdUsuarioModificacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paDoctorEliminar", idDoctorParameter, idUsuarioModificacionParameter);
+        }
+    
+        public virtual ObjectResult<paDoctorBuscarPorCi_Result> paDoctorBuscarPorCi(string ci)
+        {
+            var ciParameter = ci != null ?
+                new ObjectParameter("Ci", ci) :
+                new ObjectParameter("Ci", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paDoctorBuscarPorCi_Result>("paDoctorBuscarPorCi", ciParameter);
+        }
     }
 }

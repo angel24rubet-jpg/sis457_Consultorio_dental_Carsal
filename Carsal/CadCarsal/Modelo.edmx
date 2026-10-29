@@ -290,6 +290,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="paDoctorBuscarPorCi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Ci" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="paDoctorEliminar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdDoctor" Type="int" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paDoctorInsertar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Ci" Type="varchar" Mode="In" />
+          <Parameter Name="Nombres" Type="varchar" Mode="In" />
+          <Parameter Name="Apellidos" Type="varchar" Mode="In" />
+          <Parameter Name="Celular" Type="varchar" Mode="In" />
+          <Parameter Name="Especialidad" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioRegistro" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paDoctorModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdDoctor" Type="int" Mode="In" />
+          <Parameter Name="Ci" Type="varchar" Mode="In" />
+          <Parameter Name="Nombres" Type="varchar" Mode="In" />
+          <Parameter Name="Apellidos" Type="varchar" Mode="In" />
+          <Parameter Name="Celular" Type="varchar" Mode="In" />
+          <Parameter Name="Especialidad" Type="varchar" Mode="In" />
+          <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
         <Function Name="paPacienteBuscarPorCi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Ci" Type="varchar" Mode="In" />
         </Function>
@@ -831,6 +857,32 @@
             <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
             <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="paDoctorInsertar">
+            <Parameter Name="Ci" Mode="In" Type="String" />
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="Celular" Mode="In" Type="String" />
+            <Parameter Name="Especialidad" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paDoctorModificar">
+            <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
+            <Parameter Name="Ci" Mode="In" Type="String" />
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="Celular" Mode="In" Type="String" />
+            <Parameter Name="Especialidad" Mode="In" Type="String" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paDoctorEliminar">
+            <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paDoctorBuscarPorCi" ReturnType="Collection(LabConsultorioDental_CarsalModel.paDoctorBuscarPorCi_Result)">
+            <Parameter Name="Ci" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="paPacienteListar_Result">
           <Property Type="Int32" Name="IdPaciente" Nullable="false" />
@@ -863,6 +915,15 @@
           <Property Type="Int32" Name="IdUsuarioRegistro" Nullable="true" />
           <Property Type="Int32" Name="IdUsuarioModificacion" Nullable="true" />
           <Property Type="DateTime" Name="FechaModificacion" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="paDoctorBuscarPorCi_Result">
+          <Property Type="Int32" Name="IdDoctor" Nullable="false" />
+          <Property Type="String" Name="Ci" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Nombres" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Apellidos" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Celular" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Especialidad" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1053,6 +1114,22 @@
           <FunctionImportMapping FunctionImportName="paPacienteInsertar_Registrar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteInsertar" />
           <FunctionImportMapping FunctionImportName="paPacienteModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteModificar" />
           <FunctionImportMapping FunctionImportName="paPacienteEliminar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteEliminar" />
+          <FunctionImportMapping FunctionImportName="paDoctorInsertar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorInsertar" />
+          <FunctionImportMapping FunctionImportName="paDoctorModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorModificar" />
+          <FunctionImportMapping FunctionImportName="paDoctorEliminar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorEliminar" />
+          <FunctionImportMapping FunctionImportName="paDoctorBuscarPorCi" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorBuscarPorCi">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paDoctorBuscarPorCi_Result">
+                <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
