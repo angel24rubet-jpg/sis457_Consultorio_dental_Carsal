@@ -21,6 +21,8 @@ namespace CpCarsal
         {
             dgvLista.DataSource = ClnCarsal.PacienteCln.Listar();
         }
+        private int idPacienteSeleccionado = 0;
+        private bool modoEdicion = false;
 
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
@@ -55,19 +57,50 @@ namespace CpCarsal
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            try
+            // PRIMERA ETAPA: recuperar los datos del paciente
+            if (!modoEdicion)
             {
-                if (dgvLista.CurrentRow == null)
+                if (idPacienteSeleccionado == 0)
                 {
                     MessageBox.Show("Seleccione un paciente de la lista.");
                     return;
                 }
 
-                int idPaciente = Convert.ToInt32(
-                    dgvLista.CurrentRow.Cells["IdPaciente"].Value);
+                DataGridViewRow fila = dgvLista.Rows
+                    .Cast<DataGridViewRow>()
+                    .FirstOrDefault(r =>
+                        Convert.ToInt32(r.Cells["IdPaciente"].Value)
+                        == idPacienteSeleccionado);
 
+                if (fila == null)
+                    return;
+
+                txtCi.Text = Convert.ToString(fila.Cells["Ci"].Value);
+                txtNombres.Text = Convert.ToString(fila.Cells["Nombres"].Value);
+                txtPrimerApellido.Text = Convert.ToString(fila.Cells["PrimerApellido"].Value);
+                txtSegundoApellido.Text = Convert.ToString(fila.Cells["SegundoApellido"].Value);
+                txtCelular.Text = Convert.ToString(fila.Cells["Celular"].Value);
+                txtDireccion.Text = Convert.ToString(fila.Cells["Direccion"].Value);
+                cboSexo.Text = Convert.ToString(fila.Cells["Sexo"].Value);
+
+                if (fila.Cells["FechaNacimiento"].Value != DBNull.Value)
+                {
+                    dtpFechaNacimiento.Value =
+                        Convert.ToDateTime(fila.Cells["FechaNacimiento"].Value);
+                }
+
+                modoEdicion = true;
+                btnModificar.Text = "Guardar cambios";
+
+                MessageBox.Show("Datos recuperados. Ahora puede modificar el paciente.");
+                return;
+            }
+
+            // SEGUNDA ETAPA: guardar las modificaciones
+            try
+            {
                 ClnCarsal.PacienteCln.Modificar(
-                    idPaciente,
+                    idPacienteSeleccionado,
                     txtCi.Text.Trim(),
                     txtNombres.Text.Trim(),
                     txtPrimerApellido.Text.Trim(),
@@ -81,7 +114,22 @@ namespace CpCarsal
                 );
 
                 MessageBox.Show("Paciente modificado correctamente.");
+
                 dgvLista.DataSource = ClnCarsal.PacienteCln.Listar();
+
+                modoEdicion = false;
+                idPacienteSeleccionado = 0;
+                btnModificar.Text = "Modificar";
+
+                // Limpiar campos
+                txtCi.Clear();
+                txtNombres.Clear();
+                txtPrimerApellido.Clear();
+                txtSegundoApellido.Clear();
+                txtCelular.Clear();
+                txtDireccion.Clear();
+                cboSexo.SelectedIndex = -1;
+
             }
             catch (Exception ex)
             {
@@ -124,23 +172,12 @@ namespace CpCarsal
 
         private void dgvLista_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0)
+                return;
 
-            DataGridViewRow fila = dgvLista.Rows[e.RowIndex];
-
-            txtCi.Text = Convert.ToString(fila.Cells["Ci"].Value);
-            txtNombres.Text = Convert.ToString(fila.Cells["Nombres"].Value);
-            txtPrimerApellido.Text = Convert.ToString(fila.Cells["PrimerApellido"].Value);
-            txtSegundoApellido.Text = Convert.ToString(fila.Cells["SegundoApellido"].Value);
-            txtCelular.Text = Convert.ToString(fila.Cells["Celular"].Value);
-            txtDireccion.Text = Convert.ToString(fila.Cells["Direccion"].Value);
-            cboSexo.Text = Convert.ToString(fila.Cells["Sexo"].Value);
-
-            if (fila.Cells["FechaNacimiento"].Value != DBNull.Value)
-            {
-                dtpFechaNacimiento.Value =
-                    Convert.ToDateTime(fila.Cells["FechaNacimiento"].Value);
-            }
+            idPacienteSeleccionado = Convert.ToInt32(
+                dgvLista.Rows[e.RowIndex].Cells["IdPaciente"].Value
+            );
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
