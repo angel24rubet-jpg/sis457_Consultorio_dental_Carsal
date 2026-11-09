@@ -13,9 +13,7 @@
           <Property Name="IdPaciente" Type="int" Nullable="false" />
           <Property Name="IdDoctor" Type="int" Nullable="false" />
           <Property Name="FechaHora" Type="datetime" Nullable="false" />
-          <Property Name="Motivo" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Observaciones" Type="varchar" MaxLength="500" />
           <Property Name="IdUsuarioRegistro" Type="int" />
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
           <Property Name="IdUsuarioModificacion" Type="int" />
@@ -290,6 +288,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="paCitaBuscarPorId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCita" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paCitaCancelar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCita" Type="int" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paCitaHorariosOcupados" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdDoctor" Type="int" Mode="In" />
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+        </Function>
+        <Function Name="paCitaInsertar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPaciente" Type="int" Mode="In" />
+          <Parameter Name="IdDoctor" Type="int" Mode="In" />
+          <Parameter Name="FechaHora" Type="datetime" Mode="In" />
+          <Parameter Name="IdUsuarioRegistro" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paCitaListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="paCitaListarPorFecha" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Fecha" Type="date" Mode="In" />
+        </Function>
+        <Function Name="paCitaModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdCita" Type="int" Mode="In" />
+          <Parameter Name="IdDoctor" Type="int" Mode="In" />
+          <Parameter Name="FechaHora" Type="datetime" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
         <Function Name="paDoctorBuscarPorCi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Ci" Type="varchar" Mode="In" />
         </Function>
@@ -431,9 +456,7 @@
           <Property Name="IdPaciente" Type="Int32" Nullable="false" />
           <Property Name="IdDoctor" Type="Int32" Nullable="false" />
           <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Motivo" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Estado" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Observaciones" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="IdUsuarioRegistro" Type="Int32" />
           <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IdUsuarioModificacion" Type="Int32" />
@@ -881,7 +904,34 @@
             <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paDoctorBuscarPorCi" ReturnType="Collection(LabConsultorioDental_CarsalModel.paDoctorBuscarPorCi_Result)">
-            <Parameter Name="Ci" Mode="In" Type="String" />
+          <Parameter Name="Ci" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="paCitaBuscarPorId" ReturnType="Collection(LabConsultorioDental_CarsalModel.paCitaBuscarPorId_Result)">
+            <Parameter Name="IdCita" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paCitaCancelar">
+            <Parameter Name="IdCita" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paCitaHorariosOcupados" ReturnType="Collection(Time)">
+            <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="paCitaInsertar" ReturnType="Collection(Decimal)">
+            <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
+            <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
+            <Parameter Name="FechaHora" Mode="In" Type="DateTime" />
+            <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paCitaListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paCitaListar_Result)" />
+          <FunctionImport Name="paCitaListarPorFecha" ReturnType="Collection(LabConsultorioDental_CarsalModel.paCitaListarPorFecha_Result)">
+            <Parameter Name="Fecha" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="paCitaModificar">
+            <Parameter Name="IdCita" Mode="In" Type="Int32" />
+            <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
+            <Parameter Name="FechaHora" Mode="In" Type="DateTime" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="paPacienteListar_Result">
@@ -925,6 +975,48 @@
           <Property Type="String" Name="Especialidad" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Direccion" Nullable="true" MaxLength="200" />
         </ComplexType>
+        <ComplexType Name="paCitaBuscarPorId_Result">
+          <Property Type="Int32" Name="IdCita" Nullable="false" />
+          <Property Type="Int32" Name="IdPaciente" Nullable="false" />
+          <Property Type="String" Name="Ci" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="NombrePaciente" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PrimerApellido" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="SegundoApellido" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="IdDoctor" Nullable="false" />
+          <Property Type="String" Name="NombreDoctor" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ApellidosDoctor" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Especialidad" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaHora" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="paCitaListar_Result">
+          <Property Type="Int32" Name="IdCita" Nullable="false" />
+          <Property Type="Int32" Name="IdPaciente" Nullable="false" />
+          <Property Type="String" Name="Ci" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="NombrePaciente" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PrimerApellido" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="SegundoApellido" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="IdDoctor" Nullable="false" />
+          <Property Type="String" Name="NombreDoctor" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ApellidosDoctor" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Especialidad" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaHora" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="paCitaListarPorFecha_Result">
+          <Property Type="Int32" Name="IdCita" Nullable="false" />
+          <Property Type="Int32" Name="IdPaciente" Nullable="false" />
+          <Property Type="String" Name="Ci" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="NombrePaciente" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PrimerApellido" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="SegundoApellido" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="IdDoctor" Nullable="false" />
+          <Property Type="String" Name="NombreDoctor" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ApellidosDoctor" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Especialidad" Nullable="false" MaxLength="100" />
+          <Property Type="DateTime" Name="FechaHora" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="20" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -938,9 +1030,7 @@
                 <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
                 <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
                 <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
-                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
-                <ScalarProperty Name="Observaciones" ColumnName="Observaciones" />
                 <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
                 <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
                 <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
@@ -1130,6 +1220,64 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paCitaBuscarPorId" FunctionName="LabConsultorioDental_CarsalModel.Store.paCitaBuscarPorId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paCitaBuscarPorId_Result">
+                <ScalarProperty Name="IdCita" ColumnName="IdCita" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="NombrePaciente" ColumnName="NombrePaciente" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
+                <ScalarProperty Name="NombreDoctor" ColumnName="NombreDoctor" />
+                <ScalarProperty Name="ApellidosDoctor" ColumnName="ApellidosDoctor" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paCitaCancelar" FunctionName="LabConsultorioDental_CarsalModel.Store.paCitaCancelar" />
+          <FunctionImportMapping FunctionImportName="paCitaHorariosOcupados" FunctionName="LabConsultorioDental_CarsalModel.Store.paCitaHorariosOcupados" />
+          <FunctionImportMapping FunctionImportName="paCitaInsertar" FunctionName="LabConsultorioDental_CarsalModel.Store.paCitaInsertar" />
+          <FunctionImportMapping FunctionImportName="paCitaListar" FunctionName="LabConsultorioDental_CarsalModel.Store.paCitaListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paCitaListar_Result">
+                <ScalarProperty Name="IdCita" ColumnName="IdCita" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="NombrePaciente" ColumnName="NombrePaciente" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
+                <ScalarProperty Name="NombreDoctor" ColumnName="NombreDoctor" />
+                <ScalarProperty Name="ApellidosDoctor" ColumnName="ApellidosDoctor" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paCitaListarPorFecha" FunctionName="LabConsultorioDental_CarsalModel.Store.paCitaListarPorFecha">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paCitaListarPorFecha_Result">
+                <ScalarProperty Name="IdCita" ColumnName="IdCita" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="NombrePaciente" ColumnName="NombrePaciente" />
+                <ScalarProperty Name="PrimerApellido" ColumnName="PrimerApellido" />
+                <ScalarProperty Name="SegundoApellido" ColumnName="SegundoApellido" />
+                <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
+                <ScalarProperty Name="NombreDoctor" ColumnName="NombreDoctor" />
+                <ScalarProperty Name="ApellidosDoctor" ColumnName="ApellidosDoctor" />
+                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paCitaModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paCitaModificar" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

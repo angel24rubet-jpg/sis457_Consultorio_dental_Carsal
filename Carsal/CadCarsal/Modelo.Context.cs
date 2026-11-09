@@ -293,5 +293,96 @@ namespace CadCarsal
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paDoctorBuscarPorCi_Result>("paDoctorBuscarPorCi", ciParameter);
         }
+    
+        public virtual ObjectResult<paCitaBuscarPorId_Result> paCitaBuscarPorId(Nullable<int> idCita)
+        {
+            var idCitaParameter = idCita.HasValue ?
+                new ObjectParameter("IdCita", idCita) :
+                new ObjectParameter("IdCita", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paCitaBuscarPorId_Result>("paCitaBuscarPorId", idCitaParameter);
+        }
+    
+        public virtual int paCitaCancelar(Nullable<int> idCita, Nullable<int> idUsuarioModificacion)
+        {
+            var idCitaParameter = idCita.HasValue ?
+                new ObjectParameter("IdCita", idCita) :
+                new ObjectParameter("IdCita", typeof(int));
+    
+            var idUsuarioModificacionParameter = idUsuarioModificacion.HasValue ?
+                new ObjectParameter("IdUsuarioModificacion", idUsuarioModificacion) :
+                new ObjectParameter("IdUsuarioModificacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paCitaCancelar", idCitaParameter, idUsuarioModificacionParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<System.TimeSpan>> paCitaHorariosOcupados(Nullable<int> idDoctor, Nullable<System.DateTime> fecha)
+        {
+            var idDoctorParameter = idDoctor.HasValue ?
+                new ObjectParameter("IdDoctor", idDoctor) :
+                new ObjectParameter("IdDoctor", typeof(int));
+    
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("Fecha", fecha) :
+                new ObjectParameter("Fecha", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.TimeSpan>>("paCitaHorariosOcupados", idDoctorParameter, fechaParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> paCitaInsertar(Nullable<int> idPaciente, Nullable<int> idDoctor, Nullable<System.DateTime> fechaHora, Nullable<int> idUsuarioRegistro)
+        {
+            var idPacienteParameter = idPaciente.HasValue ?
+                new ObjectParameter("IdPaciente", idPaciente) :
+                new ObjectParameter("IdPaciente", typeof(int));
+    
+            var idDoctorParameter = idDoctor.HasValue ?
+                new ObjectParameter("IdDoctor", idDoctor) :
+                new ObjectParameter("IdDoctor", typeof(int));
+    
+            var fechaHoraParameter = fechaHora.HasValue ?
+                new ObjectParameter("FechaHora", fechaHora) :
+                new ObjectParameter("FechaHora", typeof(System.DateTime));
+    
+            var idUsuarioRegistroParameter = idUsuarioRegistro.HasValue ?
+                new ObjectParameter("IdUsuarioRegistro", idUsuarioRegistro) :
+                new ObjectParameter("IdUsuarioRegistro", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("paCitaInsertar", idPacienteParameter, idDoctorParameter, fechaHoraParameter, idUsuarioRegistroParameter);
+        }
+    
+        public virtual ObjectResult<paCitaListar_Result> paCitaListar()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paCitaListar_Result>("paCitaListar");
+        }
+    
+        public virtual ObjectResult<paCitaListarPorFecha_Result> paCitaListarPorFecha(Nullable<System.DateTime> fecha)
+        {
+            var fechaParameter = fecha.HasValue ?
+                new ObjectParameter("Fecha", fecha) :
+                new ObjectParameter("Fecha", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paCitaListarPorFecha_Result>("paCitaListarPorFecha", fechaParameter);
+        }
+    
+        public virtual int paCitaModificar(Nullable<int> idCita, Nullable<int> idDoctor, Nullable<System.DateTime> fechaHora, Nullable<int> idUsuarioModificacion)
+        {
+            var idCitaParameter = idCita.HasValue ?
+                new ObjectParameter("IdCita", idCita) :
+                new ObjectParameter("IdCita", typeof(int));
+    
+            var idDoctorParameter = idDoctor.HasValue ?
+                new ObjectParameter("IdDoctor", idDoctor) :
+                new ObjectParameter("IdDoctor", typeof(int));
+    
+            var fechaHoraParameter = fechaHora.HasValue ?
+                new ObjectParameter("FechaHora", fechaHora) :
+                new ObjectParameter("FechaHora", typeof(System.DateTime));
+    
+            var idUsuarioModificacionParameter = idUsuarioModificacion.HasValue ?
+                new ObjectParameter("IdUsuarioModificacion", idUsuarioModificacion) :
+                new ObjectParameter("IdUsuarioModificacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paCitaModificar", idCitaParameter, idDoctorParameter, fechaHoraParameter, idUsuarioModificacionParameter);
+        }
     }
 }

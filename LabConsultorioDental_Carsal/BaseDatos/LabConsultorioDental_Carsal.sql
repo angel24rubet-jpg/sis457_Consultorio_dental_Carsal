@@ -576,3 +576,327 @@ BEGIN
       AND Estado = 1;
 END;
 GO
+
+-- procedimientos almacenados citas --
+
+CREATE PROCEDURE dbo.paCitaListar
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        C.IdCita,
+        C.IdPaciente,
+        P.Ci,
+        P.Nombres AS NombrePaciente,
+        P.PrimerApellido,
+        P.SegundoApellido,
+        C.IdDoctor,
+        D.Nombres AS NombreDoctor,
+        D.Apellidos AS ApellidosDoctor,
+        D.Especialidad,
+        C.FechaHora,
+        C.Estado
+    FROM dbo.Cita C
+    INNER JOIN dbo.Paciente P ON C.IdPaciente = P.IdPaciente
+    INNER JOIN dbo.Doctor D ON C.IdDoctor = D.IdDoctor
+    ORDER BY
+        CASE WHEN C.FechaHora >= GETDATE() AND C.Estado = 'Pendiente'
+             THEN 0 ELSE 1 END,
+        CASE WHEN C.FechaHora >= GETDATE() AND C.Estado = 'Pendiente'
+             THEN C.FechaHora END ASC,
+        C.FechaHora DESC;
+END;
+GO
+
+-- procedimieto para buscar y recuperar los datos --
+
+CREATE PROCEDURE dbo.paCitaBuscarPorId
+    @IdCita INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        C.IdCita,
+        C.IdPaciente,
+        P.Ci,
+        P.Nombres AS NombrePaciente,
+        P.PrimerApellido,
+        P.SegundoApellido,
+        C.IdDoctor,
+        D.Nombres AS NombreDoctor,
+        D.Apellidos AS ApellidosDoctor,
+        D.Especialidad,
+        C.FechaHora,
+        C.Estado
+    FROM dbo.Cita C
+    INNER JOIN dbo.Paciente P
+        ON C.IdPaciente = P.IdPaciente
+    INNER JOIN dbo.Doctor D
+        ON C.IdDoctor = D.IdDoctor
+    WHERE C.IdCita = @IdCita;
+END;
+GO
+
+-- =============================================
+-- PROCEDIMIENTO: paCitaInsertar
+-- DESCRIPCIÓN: Registrar una nueva cita médica
+-- =============================================
+
+CREATE PROCEDURE dbo.paCitaInsertar
+    @IdPaciente INT,
+    @IdDoctor INT,
+    @FechaHora DATETIME,
+    @IdUsuarioRegistro INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+
+        -- Validar que el paciente esté activo
+        IF NOT EXISTS (
+            SELECT 1
+            FROM dbo.Paciente
+            WHERE IdPaciente = @IdPaciente
+              AND Estado = 1
+        )
+        BEGIN
+            RAISERROR('El paciente no existe o está inactivo.', 16, 1);
+            RETURN;
+        END;
+
+        -- Validar que el doctor esté activo
+        IF NOT EXISTS (
+            SELECT 1
+            FROM dbo.Doctor
+            WHERE IdDoctor = @IdDoctor
+              AND Estado = 1
+        )
+        BEGIN
+            RAISERROR('El doctor no existe o está inactivo.', 16, 1);
+            RETURN;
+        END;
+
+        -- Validar horario de atención: 08:00 a 20:00
+        IF CAST(@FechaHora AS TIME) < '08:00'
+           OR CAST(@FechaHora AS TIME) >= '20:00'
+           OR DATEPART(MINUTE, @FechaHora) NOT IN (0, 30)
+           OR DATEPART(SECOND, @FechaHora) <> 0
+        BEGIN
+            RAISERROR('El horario seleccionado no es válido.', 16, 1);
+            RETURN;
+        END;
+
+        -- Validar que no exista otra cita pendiente en ese horario
+        IF EXISTS (
+            SELECT 1
+            FROM dbo.Cita
+            WHERE IdDoctor = @IdDoctor
+              AND FechaHora = @FechaHora
+              AND Estado = 'Pendiente'
+        )
+        BEGIN
+            RAISERROR('El doctor ya tiene una cita pendiente en ese horario.', 16, 1);
+            RETURN;
+        END;
+
+        -- Registrar la cita
+        INSERT INTO dbo.Cita (
+            IdPaciente,
+            IdDoctor,
+            FechaHora,
+            Estado,
+            IdUsuarioRegistro
+        )
+        VALUES (
+            @IdPaciente,
+            @IdDoctor,
+            @FechaHora,
+            'Pendiente',
+            @IdUsuarioRegistro
+        );
+
+        SELECT SCOPE_IDENTITY() AS IdCita;
+
+    END TRY
+    BEGIN CATCH
+        DECLARE @Error NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@Error, 16, 1);
+    END CATCH;
+END;
+GO
+
+-- =============================================
+-- PROCEDIMIENTO: paCitaModificar
+-- DESCRIPCIÓN: Modificar una cita pendiente
+-- =============================================
+
+CREATE PROCEDURE dbo.paCitaModificar
+    @IdCita INT,
+    @IdDoctor INT,
+    @FechaHora DATETIME,
+    @IdUsuarioModificacion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+
+        -- Verificar que la cita exista y esté pendiente
+        IF NOT EXISTS (
+            SELECT 1
+            FROM dbo.Cita
+            WHERE IdCita = @IdCita
+              AND Estado = 'Pendiente'
+        )
+        BEGIN
+            RAISERROR('La cita no existe o no está pendiente.', 16, 1);
+            RETURN;
+        END;
+
+        -- Verificar que el doctor esté activo
+        IF NOT EXISTS (
+            SELECT 1
+            FROM dbo.Doctor
+            WHERE IdDoctor = @IdDoctor
+              AND Estado = 1
+        )
+        BEGIN
+            RAISERROR('El doctor no existe o está inactivo.', 16, 1);
+            RETURN;
+        END;
+
+        -- Validar horario de atención
+        IF CAST(@FechaHora AS TIME) < '08:00'
+           OR CAST(@FechaHora AS TIME) >= '20:00'
+           OR DATEPART(MINUTE, @FechaHora) NOT IN (0, 30)
+           OR DATEPART(SECOND, @FechaHora) <> 0
+        BEGIN
+            RAISERROR('El horario seleccionado no es válido.', 16, 1);
+            RETURN;
+        END;
+
+        -- Verificar que el horario no esté ocupado por otra cita pendiente
+        IF EXISTS (
+            SELECT 1
+            FROM dbo.Cita
+            WHERE IdDoctor = @IdDoctor
+              AND FechaHora = @FechaHora
+              AND Estado = 'Pendiente'
+              AND IdCita <> @IdCita
+        )
+        BEGIN
+            RAISERROR('El doctor ya tiene otra cita en ese horario.', 16, 1);
+            RETURN;
+        END;
+
+        -- Actualizar la cita
+        UPDATE dbo.Cita
+        SET
+            IdDoctor = @IdDoctor,
+            FechaHora = @FechaHora,
+            IdUsuarioModificacion = @IdUsuarioModificacion,
+            FechaModificacion = GETDATE()
+        WHERE IdCita = @IdCita;
+
+    END TRY
+    BEGIN CATCH
+        DECLARE @Error NVARCHAR(4000) = ERROR_MESSAGE();
+        RAISERROR(@Error, 16, 1);
+    END CATCH;
+END;
+GO
+
+-- =============================================
+-- PROCEDIMIENTO: paCitaCancelar
+-- DESCRIPCIÓN: Anular lógicamente una cita
+-- =============================================
+
+CREATE PROCEDURE dbo.paCitaCancelar
+    @IdCita INT,
+    @IdUsuarioModificacion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Verificar que la cita exista y esté pendiente
+    IF NOT EXISTS (
+        SELECT 1
+        FROM dbo.Cita
+        WHERE IdCita = @IdCita
+          AND Estado = 'Pendiente'
+    )
+    BEGIN
+        RAISERROR('La cita no existe o no está pendiente.', 16, 1);
+        RETURN;
+    END;
+
+    -- Anular lógicamente la cita
+    UPDATE dbo.Cita
+    SET
+        Estado = 'Cancelada',
+        IdUsuarioModificacion = @IdUsuarioModificacion,
+        FechaModificacion = GETDATE()
+    WHERE IdCita = @IdCita
+      AND Estado = 'Pendiente';
+END;
+GO
+
+-- =============================================
+-- PROCEDIMIENTO: paCitaHorariosOcupados
+-- DESCRIPCIÓN: Consultar horarios ocupados de un doctor
+-- en una fecha determinada
+-- =============================================
+
+CREATE PROCEDURE dbo.paCitaHorariosOcupados
+    @IdDoctor INT,
+    @Fecha DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        CAST(FechaHora AS TIME) AS HoraOcupada
+    FROM dbo.Cita
+    WHERE IdDoctor = @IdDoctor
+      AND CAST(FechaHora AS DATE) = @Fecha
+      AND Estado = 'Pendiente'
+    ORDER BY FechaHora ASC;
+END;
+GO
+
+-- =============================================
+-- PROCEDIMIENTO: paCitaListarPorFecha
+-- DESCRIPCIÓN: Listar todas las citas de una fecha
+-- =============================================
+
+CREATE PROCEDURE dbo.paCitaListarPorFecha
+    @Fecha DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        C.IdCita,
+        C.IdPaciente,
+        P.Ci,
+        P.Nombres AS NombrePaciente,
+        P.PrimerApellido,
+        P.SegundoApellido,
+        C.IdDoctor,
+        D.Nombres AS NombreDoctor,
+        D.Apellidos AS ApellidosDoctor,
+        D.Especialidad,
+        C.FechaHora,
+        C.Estado
+    FROM dbo.Cita C
+    INNER JOIN dbo.Paciente P
+        ON C.IdPaciente = P.IdPaciente
+    INNER JOIN dbo.Doctor D
+        ON C.IdDoctor = D.IdDoctor
+    WHERE CAST(C.FechaHora AS DATE) = @Fecha
+    ORDER BY C.FechaHora ASC;
+END;
+GO

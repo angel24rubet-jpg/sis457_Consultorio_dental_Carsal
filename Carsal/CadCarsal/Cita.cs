@@ -25,9 +25,7 @@ namespace CadCarsal
         public int IdPaciente { get; set; }
         public int IdDoctor { get; set; }
         public System.DateTime FechaHora { get; set; }
-        public string Motivo { get; set; }
         public string Estado { get; set; }
-        public string Observaciones { get; set; }
         public Nullable<int> IdUsuarioRegistro { get; set; }
         public System.DateTime FechaRegistro { get; set; }
         public Nullable<int> IdUsuarioModificacion { get; set; }
