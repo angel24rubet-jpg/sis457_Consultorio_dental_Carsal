@@ -1,287 +1,197 @@
-USE ConsultorioDental_Carsal;
+-- =====================================================================
+-- LabConsultorioDental_Carsal  |  SCRIPT COMPLETO CORREGIDO
+-- Ejecutar TODO el archivo de una vez, conectado a MASTER.
+-- (Detener la aplicacion antes de ejecutar)
+-- Se puede ejecutar varias veces: recrea la base desde cero.
+-- =====================================================================
+USE master;
+GO
+
+IF DB_ID('LabConsultorioDental_Carsal') IS NOT NULL
+BEGIN
+    ALTER DATABASE LabConsultorioDental_Carsal SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE LabConsultorioDental_Carsal;
+END
+GO
+
+CREATE DATABASE LabConsultorioDental_Carsal;
+GO
+
+USE LabConsultorioDental_Carsal;
 GO
 
 SELECT DB_NAME() AS BaseDeDatosActual;
 GO
 
-
-USE ConsultorioDental_Carsal;
-GO
+-- =====================================================================
+-- 1. TABLAS (con todas sus columnas desde el inicio)
+-- =====================================================================
 
 CREATE TABLE Doctor (
-    IdDoctor INT IDENTITY(1,1) PRIMARY KEY,
-    Ci VARCHAR(20) NOT NULL UNIQUE,
-    Nombres VARCHAR(100) NOT NULL,
-    Apellidos VARCHAR(100) NOT NULL,
-    Celular VARCHAR(20),
-    Especialidad VARCHAR(100) NOT NULL,
-    Direccion VARCHAR(200),
-    Estado BIT NOT NULL DEFAULT 1
+    IdDoctor              INT IDENTITY(1,1) PRIMARY KEY,
+    Ci                    VARCHAR(20)  NOT NULL UNIQUE,
+    Nombres               VARCHAR(100) NOT NULL,
+    Apellidos             VARCHAR(200) NOT NULL,
+    Celular               VARCHAR(20),
+    Especialidad          VARCHAR(100) NOT NULL,
+    Direccion             VARCHAR(200),
+    Estado                BIT          NOT NULL DEFAULT 1,
+    IdUsuarioRegistro     INT NULL,
+    FechaRegistro         DATETIME     NOT NULL DEFAULT GETDATE(),
+    IdUsuarioModificacion INT NULL,
+    FechaModificacion     DATETIME NULL
 );
-GO
-ALTER TABLE Doctor
-ADD CONSTRAINT FK_Doctor_UsuarioRegistro
-    FOREIGN KEY (IdUsuarioRegistro)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-ALTER TABLE Doctor
-ADD CONSTRAINT FK_Doctor_UsuarioModificacion
-    FOREIGN KEY (IdUsuarioModificacion)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-CREATE TABLE Paciente (
-    IdPaciente INT IDENTITY(1,1) PRIMARY KEY,
-    Ci VARCHAR(20) NOT NULL UNIQUE,
-    Nombres VARCHAR(100) NOT NULL,
-    PrimerApellido VARCHAR(100) NOT NULL,
-    SegundoApellido VARCHAR(100),
-    FechaNacimiento DATE,
-    Sexo VARCHAR(20),
-    Celular VARCHAR(20),
-    Direccion VARCHAR(200),
-    FechaRegistro DATETIME NOT NULL DEFAULT GETDATE()
-);
-GO
-ALTER TABLE Paciente
-ADD CONSTRAINT FK_Paciente_UsuarioRegistro
-    FOREIGN KEY (IdUsuarioRegistro)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-ALTER TABLE Paciente
-ADD CONSTRAINT FK_Paciente_UsuarioModificacion
-    FOREIGN KEY (IdUsuarioModificacion)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-
-CREATE TABLE Cita (
-    IdCita INT IDENTITY(1,1) PRIMARY KEY,
-    IdPaciente INT NOT NULL,
-    IdDoctor INT NOT NULL,
-    FechaHora DATETIME NOT NULL,
-    Motivo VARCHAR(250) NOT NULL,
-    Estado VARCHAR(20) NOT NULL DEFAULT 'Pendiente',
-    Observaciones VARCHAR(500),
-
-    CONSTRAINT FK_Cita_Paciente
-        FOREIGN KEY (IdPaciente)
-        REFERENCES Paciente(IdPaciente),
-
-    CONSTRAINT FK_Cita_Doctor
-        FOREIGN KEY (IdDoctor)
-        REFERENCES Doctor(IdDoctor),
-
-    CONSTRAINT CK_Cita_Estado
-        CHECK (Estado IN (
-            'Pendiente',
-            'Confirmada',
-            'Atendida',
-            'Cancelada'
-        ))
-);
-GO
-ALTER TABLE Cita
-ADD CONSTRAINT FK_Cita_UsuarioRegistro
-    FOREIGN KEY (IdUsuarioRegistro)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-ALTER TABLE Cita
-ADD CONSTRAINT FK_Cita_UsuarioModificacion
-    FOREIGN KEY (IdUsuarioModificacion)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-
-CREATE TABLE HistorialClinico (
-    IdHistorial INT IDENTITY(1,1) PRIMARY KEY,
-    IdPaciente INT NOT NULL,
-    IdCita INT NULL,
-    FechaAtencion DATETIME NOT NULL DEFAULT GETDATE(),
-    Diagnostico VARCHAR(500) NOT NULL,
-    Tratamiento VARCHAR(500) NOT NULL,
-    Observaciones VARCHAR(1000),
-
-    CONSTRAINT FK_HistorialClinico_Paciente
-        FOREIGN KEY (IdPaciente)
-        REFERENCES Paciente(IdPaciente),
-
-    CONSTRAINT FK_HistorialClinico_Cita
-        FOREIGN KEY (IdCita)
-        REFERENCES Cita(IdCita)
-);
-GO
-ALTER TABLE HistorialClinico
-ADD CONSTRAINT FK_Historial_UsuarioRegistro
-    FOREIGN KEY (IdUsuarioRegistro)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-ALTER TABLE HistorialClinico
-ADD CONSTRAINT FK_Historial_UsuarioModificacion
-    FOREIGN KEY (IdUsuarioModificacion)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-CREATE TABLE Pago (
-    IdPago INT IDENTITY(1,1) PRIMARY KEY,
-    IdCita INT NOT NULL,
-    FechaPago DATETIME NOT NULL DEFAULT GETDATE(),
-    Monto DECIMAL(10,2) NOT NULL,
-    MetodoPago VARCHAR(30) NOT NULL,
-    Concepto VARCHAR(250) NOT NULL,
-    Estado VARCHAR(20) NOT NULL DEFAULT 'Pendiente',
-
-    CONSTRAINT FK_Pago_Cita
-        FOREIGN KEY (IdCita)
-        REFERENCES Cita(IdCita),
-
-    CONSTRAINT CK_Pago_Monto
-        CHECK (Monto > 0),
-
-    CONSTRAINT CK_Pago_Metodo
-        CHECK (MetodoPago IN (
-            'Efectivo',
-            'QR'
-        )),
-
-    CONSTRAINT CK_Pago_Estado
-        CHECK (Estado IN (
-            'Pendiente',
-            'Pagado'
-        ))
-);
-GO
-ALTER TABLE Pago
-ADD CONSTRAINT FK_Pago_UsuarioRegistro
-    FOREIGN KEY (IdUsuarioRegistro)
-    REFERENCES Usuario(IdUsuario);
-GO
-
-ALTER TABLE Pago
-ADD CONSTRAINT FK_Pago_UsuarioModificacion
-    FOREIGN KEY (IdUsuarioModificacion)
-    REFERENCES Usuario(IdUsuario);
 GO
 
 CREATE TABLE Usuario (
-    IdUsuario INT IDENTITY(1,1) PRIMARY KEY,
-    NombreUsuario VARCHAR(50) NOT NULL UNIQUE,
-    ClaveHash VARCHAR(255) NOT NULL,
-    Rol VARCHAR(20) NOT NULL,
-    IdDoctor INT NULL,
-    Estado BIT NOT NULL DEFAULT 1,
-
-    CONSTRAINT FK_Usuario_Doctor
-        FOREIGN KEY (IdDoctor)
-        REFERENCES Doctor(IdDoctor),
-
-    CONSTRAINT CK_Usuario_Rol
-        CHECK (Rol IN (
-            'Administrador',
-            'Doctor'
-        ))
+    IdUsuario     INT IDENTITY(1,1) PRIMARY KEY,
+    NombreUsuario VARCHAR(50)  NOT NULL UNIQUE,
+    ClaveHash     VARCHAR(255) NOT NULL,
+    Rol           VARCHAR(20)  NOT NULL,
+    IdDoctor      INT NULL,
+    Estado        BIT          NOT NULL DEFAULT 1,
+    CONSTRAINT CK_Usuario_Rol CHECK (Rol IN ('Administrador', 'Doctor'))
 );
 GO
 
-
-USE ConsultorioDental_Carsal;
-GO
-
--- =============================================
--- TRAZABILIDAD: TABLA DOCTOR
--- =============================================
-
-ALTER TABLE Doctor
-ADD
-    IdUsuarioRegistro INT NULL,
-    FechaRegistro DATETIME NOT NULL
-        DEFAULT GETDATE(),
+CREATE TABLE Paciente (
+    IdPaciente            INT IDENTITY(1,1) PRIMARY KEY,
+    Ci                    VARCHAR(20)  NOT NULL UNIQUE,
+    Nombres               VARCHAR(100) NOT NULL,
+    PrimerApellido        VARCHAR(100) NOT NULL,
+    SegundoApellido       VARCHAR(100),
+    FechaNacimiento       DATE,
+    Sexo                  VARCHAR(20),
+    Celular               VARCHAR(20),
+    Direccion             VARCHAR(200),
+    Estado                BIT          NOT NULL DEFAULT 1,   -- faltaba en el original
+    FechaRegistro         DATETIME     NOT NULL DEFAULT GETDATE(),
+    IdUsuarioRegistro     INT NULL,
     IdUsuarioModificacion INT NULL,
-    FechaModificacion DATETIME NULL;
+    FechaModificacion     DATETIME NULL
+);
 GO
 
--- =============================================
--- TRAZABILIDAD: TABLA PACIENTE
--- =============================================
-
-ALTER TABLE Paciente
-ADD
-    IdUsuarioRegistro INT NULL,
+CREATE TABLE Cita (
+    IdCita                INT IDENTITY(1,1) PRIMARY KEY,
+    IdPaciente            INT NOT NULL,
+    IdDoctor              INT NOT NULL,
+    FechaHora             DATETIME NOT NULL,
+    Motivo                VARCHAR(250) NULL,                 -- ahora opcional
+    Estado                VARCHAR(20)  NOT NULL DEFAULT 'Pendiente',
+    Observaciones         VARCHAR(500),
+    IdUsuarioRegistro     INT NULL,
+    FechaRegistro         DATETIME     NOT NULL DEFAULT GETDATE(),
     IdUsuarioModificacion INT NULL,
-    FechaModificacion DATETIME NULL;
+    FechaModificacion     DATETIME NULL,
+    CONSTRAINT FK_Cita_Paciente FOREIGN KEY (IdPaciente) REFERENCES Paciente(IdPaciente),
+    CONSTRAINT FK_Cita_Doctor   FOREIGN KEY (IdDoctor)   REFERENCES Doctor(IdDoctor),
+    CONSTRAINT CK_Cita_Estado   CHECK (Estado IN ('Pendiente','Confirmada','Atendida','Cancelada'))
+);
 GO
 
--- =============================================
--- TRAZABILIDAD: TABLA CITA
--- =============================================
-
-ALTER TABLE Cita
-ADD
-    IdUsuarioRegistro INT NULL,
-    FechaRegistro DATETIME NOT NULL
-        DEFAULT GETDATE(),
+CREATE TABLE HistorialClinico (
+    IdHistorial           INT IDENTITY(1,1) PRIMARY KEY,
+    IdPaciente            INT NOT NULL,
+    IdCita                INT NULL,
+    FechaAtencion         DATETIME NOT NULL DEFAULT GETDATE(),
+    Diagnostico           VARCHAR(500)  NOT NULL,
+    Tratamiento           VARCHAR(500)  NOT NULL,
+    Observaciones         VARCHAR(1000),
+    IdUsuarioRegistro     INT NULL,
     IdUsuarioModificacion INT NULL,
-    FechaModificacion DATETIME NULL;
+    FechaModificacion     DATETIME NULL,
+    CONSTRAINT FK_HistorialClinico_Paciente FOREIGN KEY (IdPaciente) REFERENCES Paciente(IdPaciente),
+    CONSTRAINT FK_HistorialClinico_Cita     FOREIGN KEY (IdCita)     REFERENCES Cita(IdCita)
+);
 GO
 
--- =============================================
--- TRAZABILIDAD: TABLA HISTORIAL CLINICO
--- =============================================
-
-ALTER TABLE HistorialClinico
-ADD
-    IdUsuarioRegistro INT NULL,
+CREATE TABLE Pago (
+    IdPago                INT IDENTITY(1,1) PRIMARY KEY,
+    IdCita                INT NOT NULL,
+    FechaPago             DATETIME NOT NULL DEFAULT GETDATE(),
+    Monto                 DECIMAL(10,2) NOT NULL,
+    MetodoPago            VARCHAR(30)   NOT NULL,
+    Concepto              VARCHAR(250)  NOT NULL,
+    Estado                VARCHAR(20)   NOT NULL DEFAULT 'Pendiente',
+    IdUsuarioRegistro     INT NULL,
     IdUsuarioModificacion INT NULL,
-    FechaModificacion DATETIME NULL;
+    FechaModificacion     DATETIME NULL,
+    CONSTRAINT FK_Pago_Cita   FOREIGN KEY (IdCita) REFERENCES Cita(IdCita),
+    CONSTRAINT CK_Pago_Monto  CHECK (Monto > 0),
+    CONSTRAINT CK_Pago_Metodo CHECK (MetodoPago IN ('Efectivo','QR')),
+    CONSTRAINT CK_Pago_Estado CHECK (Estado IN ('Pendiente','Pagado'))
+);
 GO
 
--- =============================================
--- TRAZABILIDAD: TABLA PAGO
--- =============================================
+-- =====================================================================
+-- 2. FOREIGN KEYS HACIA USUARIO (trazabilidad)
+-- =====================================================================
 
-ALTER TABLE Pago
-ADD
-    IdUsuarioRegistro INT NULL,
-    IdUsuarioModificacion INT NULL,
-    FechaModificacion DATETIME NULL;
+ALTER TABLE Usuario ADD CONSTRAINT FK_Usuario_Doctor
+    FOREIGN KEY (IdDoctor) REFERENCES Doctor(IdDoctor);
+
+ALTER TABLE Doctor ADD CONSTRAINT FK_Doctor_UsuarioRegistro
+    FOREIGN KEY (IdUsuarioRegistro) REFERENCES Usuario(IdUsuario);
+ALTER TABLE Doctor ADD CONSTRAINT FK_Doctor_UsuarioModificacion
+    FOREIGN KEY (IdUsuarioModificacion) REFERENCES Usuario(IdUsuario);
+
+ALTER TABLE Paciente ADD CONSTRAINT FK_Paciente_UsuarioRegistro
+    FOREIGN KEY (IdUsuarioRegistro) REFERENCES Usuario(IdUsuario);
+ALTER TABLE Paciente ADD CONSTRAINT FK_Paciente_UsuarioModificacion
+    FOREIGN KEY (IdUsuarioModificacion) REFERENCES Usuario(IdUsuario);
+
+ALTER TABLE Cita ADD CONSTRAINT FK_Cita_UsuarioRegistro
+    FOREIGN KEY (IdUsuarioRegistro) REFERENCES Usuario(IdUsuario);
+ALTER TABLE Cita ADD CONSTRAINT FK_Cita_UsuarioModificacion
+    FOREIGN KEY (IdUsuarioModificacion) REFERENCES Usuario(IdUsuario);
+
+ALTER TABLE HistorialClinico ADD CONSTRAINT FK_Historial_UsuarioRegistro
+    FOREIGN KEY (IdUsuarioRegistro) REFERENCES Usuario(IdUsuario);
+ALTER TABLE HistorialClinico ADD CONSTRAINT FK_Historial_UsuarioModificacion
+    FOREIGN KEY (IdUsuarioModificacion) REFERENCES Usuario(IdUsuario);
+
+ALTER TABLE Pago ADD CONSTRAINT FK_Pago_UsuarioRegistro
+    FOREIGN KEY (IdUsuarioRegistro) REFERENCES Usuario(IdUsuario);
+ALTER TABLE Pago ADD CONSTRAINT FK_Pago_UsuarioModificacion
+    FOREIGN KEY (IdUsuarioModificacion) REFERENCES Usuario(IdUsuario);
 GO
 
-
-
-
-USE LabConsultorioDental_Carsal;
+-- =====================================================================
+-- 3. USUARIO ADMINISTRADOR INICIAL
+-- IMPORTANTE: ClaveHash debe generarse igual que lo hace la aplicacion C#.
+-- Este ejemplo usa SHA-256 en hexadecimal MAYUSCULAS. Usuario: admin / Clave: admin123
+-- Si el login de C# usa otro metodo (MD5, minusculas, Base64), cambiarlo aqui.
+-- =====================================================================
+INSERT INTO Usuario (NombreUsuario, ClaveHash, Rol, IdDoctor, Estado)
+VALUES ('admin',
+        CONVERT(VARCHAR(255), HASHBYTES('SHA2_256', 'admin123'), 2),
+        'Administrador',
+        NULL,
+        1);
 GO
 
+-- =====================================================================
+-- 4. CONSULTA DE VERIFICACION DE RELACIONES
+-- =====================================================================
 SELECT
     fk.name AS NombreRelacion,
     OBJECT_NAME(fk.parent_object_id) AS TablaOrigen,
-    COL_NAME(
-        fkc.parent_object_id,
-        fkc.parent_column_id
-    ) AS ColumnaOrigen,
+    COL_NAME(fkc.parent_object_id, fkc.parent_column_id) AS ColumnaOrigen,
     OBJECT_NAME(fk.referenced_object_id) AS TablaDestino,
-    COL_NAME(
-        fkc.referenced_object_id,
-        fkc.referenced_column_id
-    ) AS ColumnaDestino
+    COL_NAME(fkc.referenced_object_id, fkc.referenced_column_id) AS ColumnaDestino
 FROM sys.foreign_keys AS fk
 INNER JOIN sys.foreign_key_columns AS fkc
     ON fk.object_id = fkc.constraint_object_id
 ORDER BY TablaOrigen, NombreRelacion;
 GO
 
--- =============================================
--- PROCEDIMIENTOS ALMACENADOS: PACIENTES
--- =============================================
+-- =====================================================================
+-- 5. PROCEDIMIENTOS ALMACENADOS: PACIENTES
+-- =====================================================================
 
--- =============================================
--- 1. LISTAR PACIENTES ACTIVOS
--- =============================================
-CREATE PROCEDURE paPacienteListar
+-- 5.1 Listar pacientes activos
+CREATE OR ALTER PROCEDURE dbo.paPacienteListar
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -292,16 +202,14 @@ BEGIN
         Celular, Direccion, FechaRegistro, Estado,
         IdUsuarioRegistro, IdUsuarioModificacion,
         FechaModificacion
-    FROM Paciente
+    FROM dbo.Paciente
     WHERE Estado = 1
     ORDER BY PrimerApellido, Nombres;
 END;
 GO
 
--- =============================================
--- 2. BUSCAR PACIENTE POR CI
--- =============================================
-CREATE PROCEDURE paPacienteBuscarPorCi
+-- 5.2 Buscar paciente por CI
+CREATE OR ALTER PROCEDURE dbo.paPacienteBuscarPorCi
     @Ci VARCHAR(20)
 AS
 BEGIN
@@ -313,15 +221,13 @@ BEGIN
         Celular, Direccion, FechaRegistro, Estado,
         IdUsuarioRegistro, IdUsuarioModificacion,
         FechaModificacion
-    FROM Paciente
+    FROM dbo.Paciente
     WHERE Ci = @Ci AND Estado = 1;
 END;
 GO
 
--- =============================================
--- 3. REGISTRAR PACIENTE
--- =============================================
-CREATE PROCEDURE paPacienteInsertar
+-- 5.3 Registrar paciente
+CREATE OR ALTER PROCEDURE dbo.paPacienteInsertar
     @Ci VARCHAR(20),
     @Nombres VARCHAR(100),
     @PrimerApellido VARCHAR(100),
@@ -335,13 +241,13 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    IF EXISTS (SELECT 1 FROM Paciente WHERE Ci = @Ci)
+    IF EXISTS (SELECT 1 FROM dbo.Paciente WHERE Ci = @Ci)
     BEGIN
         RAISERROR('Ya existe un paciente registrado con ese CI.', 16, 1);
         RETURN;
     END;
 
-    INSERT INTO Paciente (
+    INSERT INTO dbo.Paciente (
         Ci, Nombres, PrimerApellido, SegundoApellido,
         FechaNacimiento, Sexo, Celular, Direccion,
         IdUsuarioRegistro, Estado
@@ -354,11 +260,8 @@ BEGIN
 END;
 GO
 
-
-USE LabConsultorioDental_Carsal;
-GO
-
-CREATE PROCEDURE dbo.paPacienteModificar
+-- 5.4 Modificar paciente
+CREATE OR ALTER PROCEDURE dbo.paPacienteModificar
     @IdPaciente INT,
     @Ci VARCHAR(20),
     @Nombres VARCHAR(100),
@@ -375,7 +278,7 @@ BEGIN
 
     IF EXISTS (
         SELECT 1
-        FROM Paciente
+        FROM dbo.Paciente
         WHERE Ci = @Ci
           AND IdPaciente <> @IdPaciente
           AND Estado = 1
@@ -385,7 +288,7 @@ BEGIN
         RETURN;
     END;
 
-    UPDATE Paciente
+    UPDATE dbo.Paciente
     SET Ci = @Ci,
         Nombres = @Nombres,
         PrimerApellido = @PrimerApellido,
@@ -401,18 +304,15 @@ BEGIN
 END;
 GO
 
-
-USE LabConsultorioDental_Carsal;
-GO
-
-CREATE PROCEDURE dbo.paPacienteEliminar
+-- 5.5 Eliminar paciente (baja logica)
+CREATE OR ALTER PROCEDURE dbo.paPacienteEliminar
     @IdPaciente INT,
     @IdUsuarioModificacion INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    UPDATE Paciente
+    UPDATE dbo.Paciente
     SET Estado = 0,
         IdUsuarioModificacion = @IdUsuarioModificacion,
         FechaModificacion = GETDATE()
@@ -421,13 +321,12 @@ BEGIN
 END;
 GO
 
+-- =====================================================================
+-- 6. PROCEDIMIENTOS ALMACENADOS: DOCTOR
+-- =====================================================================
 
--- procedimientos almacenados DOCTOR --
-
-USE LabConsultorioDental_Carsal;
-GO
-
-CREATE PROCEDURE dbo.paDoctorInsertar
+-- 6.1 Registrar doctor
+CREATE OR ALTER PROCEDURE dbo.paDoctorInsertar
     @Ci VARCHAR(20),
     @Nombres VARCHAR(100),
     @Apellidos VARCHAR(200),
@@ -439,11 +338,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    IF EXISTS (
-        SELECT 1
-        FROM dbo.Doctor
-        WHERE Ci = @Ci
-    )
+    IF EXISTS (SELECT 1 FROM dbo.Doctor WHERE Ci = @Ci)
     BEGIN
         RAISERROR('Ya existe un doctor con ese CI.', 16, 1);
         RETURN;
@@ -451,37 +346,21 @@ BEGIN
 
     INSERT INTO dbo.Doctor
     (
-        Ci,
-        Nombres,
-        Apellidos,
-        Celular,
-        Especialidad,
-        Direccion,
-        Estado,
-        IdUsuarioRegistro,
-        FechaRegistro
+        Ci, Nombres, Apellidos, Celular, Especialidad, Direccion,
+        Estado, IdUsuarioRegistro, FechaRegistro
     )
     VALUES
     (
-        @Ci,
-        @Nombres,
-        @Apellidos,
-        @Celular,
-        @Especialidad,
+        @Ci, @Nombres, @Apellidos, @Celular,
+        ISNULL(@Especialidad, 'General'),   -- la columna es NOT NULL
         @Direccion,
-        1,
-        @IdUsuarioRegistro,
-        GETDATE()
+        1, @IdUsuarioRegistro, GETDATE()
     );
 END;
 GO
 
--- procedimiento para modificar un DOCTOR --
-
-USE LabConsultorioDental_Carsal;
-GO
-
-CREATE PROCEDURE dbo.paDoctorModificar
+-- 6.2 Modificar doctor
+CREATE OR ALTER PROCEDURE dbo.paDoctorModificar
     @IdDoctor INT,
     @Ci VARCHAR(20),
     @Nombres VARCHAR(100),
@@ -511,9 +390,10 @@ BEGIN
         Nombres = @Nombres,
         Apellidos = @Apellidos,
         Celular = @Celular,
-        Especialidad = @Especialidad,
+        Especialidad = ISNULL(@Especialidad, 'General'),
         Direccion = @Direccion,
-        IdUsuarioModificacion = @IdUsuarioModificacion
+        IdUsuarioModificacion = @IdUsuarioModificacion,
+        FechaModificacion = GETDATE()
     WHERE IdDoctor = @IdDoctor
       AND Estado = 1;
 
@@ -525,12 +405,8 @@ BEGIN
 END;
 GO
 
--- procedimiento para eliminar un DOCTOR --
-
-USE LabConsultorioDental_Carsal;
-GO
-
-CREATE PROCEDURE dbo.paDoctorEliminar
+-- 6.3 Eliminar doctor (baja logica)
+CREATE OR ALTER PROCEDURE dbo.paDoctorEliminar
     @IdDoctor INT,
     @IdUsuarioModificacion INT
 AS
@@ -540,7 +416,8 @@ BEGIN
     UPDATE dbo.Doctor
     SET
         Estado = 0,
-        IdUsuarioModificacion = @IdUsuarioModificacion
+        IdUsuarioModificacion = @IdUsuarioModificacion,
+        FechaModificacion = GETDATE()
     WHERE IdDoctor = @IdDoctor
       AND Estado = 1;
 
@@ -552,34 +429,28 @@ BEGIN
 END;
 GO
 
--- procedimiento para Buscar un DOCTOR --
-
-USE LabConsultorioDental_Carsal;
-GO
-
-CREATE PROCEDURE dbo.paDoctorBuscarPorCi
+-- 6.4 Buscar doctor por CI
+CREATE OR ALTER PROCEDURE dbo.paDoctorBuscarPorCi
     @Ci VARCHAR(20)
 AS
 BEGIN
     SET NOCOUNT ON;
 
     SELECT
-        IdDoctor,
-        Ci,
-        Nombres,
-        Apellidos,
-        Celular,
-        Especialidad,
-        Direccion
+        IdDoctor, Ci, Nombres, Apellidos,
+        Celular, Especialidad, Direccion
     FROM dbo.Doctor
     WHERE Ci = @Ci
       AND Estado = 1;
 END;
 GO
 
--- procedimientos almacenados citas --
+-- =====================================================================
+-- 7. PROCEDIMIENTOS ALMACENADOS: CITAS
+-- =====================================================================
 
-CREATE PROCEDURE dbo.paCitaListar
+-- 7.1 Listar citas (proximas pendientes primero)
+CREATE OR ALTER PROCEDURE dbo.paCitaListar
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -609,9 +480,8 @@ BEGIN
 END;
 GO
 
--- procedimieto para buscar y recuperar los datos --
-
-CREATE PROCEDURE dbo.paCitaBuscarPorId
+-- 7.2 Buscar cita por Id
+CREATE OR ALTER PROCEDURE dbo.paCitaBuscarPorId
     @IdCita INT
 AS
 BEGIN
@@ -631,55 +501,44 @@ BEGIN
         C.FechaHora,
         C.Estado
     FROM dbo.Cita C
-    INNER JOIN dbo.Paciente P
-        ON C.IdPaciente = P.IdPaciente
-    INNER JOIN dbo.Doctor D
-        ON C.IdDoctor = D.IdDoctor
+    INNER JOIN dbo.Paciente P ON C.IdPaciente = P.IdPaciente
+    INNER JOIN dbo.Doctor D ON C.IdDoctor = D.IdDoctor
     WHERE C.IdCita = @IdCita;
 END;
 GO
 
--- =============================================
--- PROCEDIMIENTO: paCitaInsertar
--- DESCRIPCIÓN: Registrar una nueva cita médica
--- =============================================
-
-CREATE PROCEDURE dbo.paCitaInsertar
+-- 7.3 Registrar cita
+CREATE OR ALTER PROCEDURE dbo.paCitaInsertar
     @IdPaciente INT,
     @IdDoctor INT,
     @FechaHora DATETIME,
-    @IdUsuarioRegistro INT
+    @IdUsuarioRegistro INT,
+    @Motivo VARCHAR(250) = NULL      -- opcional: no rompe el codigo C# existente
 AS
 BEGIN
     SET NOCOUNT ON;
 
     BEGIN TRY
 
-        -- Validar que el paciente esté activo
         IF NOT EXISTS (
-            SELECT 1
-            FROM dbo.Paciente
-            WHERE IdPaciente = @IdPaciente
-              AND Estado = 1
+            SELECT 1 FROM dbo.Paciente
+            WHERE IdPaciente = @IdPaciente AND Estado = 1
         )
         BEGIN
             RAISERROR('El paciente no existe o está inactivo.', 16, 1);
             RETURN;
         END;
 
-        -- Validar que el doctor esté activo
         IF NOT EXISTS (
-            SELECT 1
-            FROM dbo.Doctor
-            WHERE IdDoctor = @IdDoctor
-              AND Estado = 1
+            SELECT 1 FROM dbo.Doctor
+            WHERE IdDoctor = @IdDoctor AND Estado = 1
         )
         BEGIN
             RAISERROR('El doctor no existe o está inactivo.', 16, 1);
             RETURN;
         END;
 
-        -- Validar horario de atención: 08:00 a 20:00
+        -- Horario de atencion: 08:00 a 20:00, cada 30 minutos
         IF CAST(@FechaHora AS TIME) < '08:00'
            OR CAST(@FechaHora AS TIME) >= '20:00'
            OR DATEPART(MINUTE, @FechaHora) NOT IN (0, 30)
@@ -689,10 +548,8 @@ BEGIN
             RETURN;
         END;
 
-        -- Validar que no exista otra cita pendiente en ese horario
         IF EXISTS (
-            SELECT 1
-            FROM dbo.Cita
+            SELECT 1 FROM dbo.Cita
             WHERE IdDoctor = @IdDoctor
               AND FechaHora = @FechaHora
               AND Estado = 'Pendiente'
@@ -702,20 +559,11 @@ BEGIN
             RETURN;
         END;
 
-        -- Registrar la cita
         INSERT INTO dbo.Cita (
-            IdPaciente,
-            IdDoctor,
-            FechaHora,
-            Estado,
-            IdUsuarioRegistro
+            IdPaciente, IdDoctor, FechaHora, Motivo, Estado, IdUsuarioRegistro
         )
         VALUES (
-            @IdPaciente,
-            @IdDoctor,
-            @FechaHora,
-            'Pendiente',
-            @IdUsuarioRegistro
+            @IdPaciente, @IdDoctor, @FechaHora, @Motivo, 'Pendiente', @IdUsuarioRegistro
         );
 
         SELECT SCOPE_IDENTITY() AS IdCita;
@@ -728,12 +576,8 @@ BEGIN
 END;
 GO
 
--- =============================================
--- PROCEDIMIENTO: paCitaModificar
--- DESCRIPCIÓN: Modificar una cita pendiente
--- =============================================
-
-CREATE PROCEDURE dbo.paCitaModificar
+-- 7.4 Modificar cita pendiente
+CREATE OR ALTER PROCEDURE dbo.paCitaModificar
     @IdCita INT,
     @IdDoctor INT,
     @FechaHora DATETIME,
@@ -744,31 +588,24 @@ BEGIN
 
     BEGIN TRY
 
-        -- Verificar que la cita exista y esté pendiente
         IF NOT EXISTS (
-            SELECT 1
-            FROM dbo.Cita
-            WHERE IdCita = @IdCita
-              AND Estado = 'Pendiente'
+            SELECT 1 FROM dbo.Cita
+            WHERE IdCita = @IdCita AND Estado = 'Pendiente'
         )
         BEGIN
             RAISERROR('La cita no existe o no está pendiente.', 16, 1);
             RETURN;
         END;
 
-        -- Verificar que el doctor esté activo
         IF NOT EXISTS (
-            SELECT 1
-            FROM dbo.Doctor
-            WHERE IdDoctor = @IdDoctor
-              AND Estado = 1
+            SELECT 1 FROM dbo.Doctor
+            WHERE IdDoctor = @IdDoctor AND Estado = 1
         )
         BEGIN
             RAISERROR('El doctor no existe o está inactivo.', 16, 1);
             RETURN;
         END;
 
-        -- Validar horario de atención
         IF CAST(@FechaHora AS TIME) < '08:00'
            OR CAST(@FechaHora AS TIME) >= '20:00'
            OR DATEPART(MINUTE, @FechaHora) NOT IN (0, 30)
@@ -778,10 +615,8 @@ BEGIN
             RETURN;
         END;
 
-        -- Verificar que el horario no esté ocupado por otra cita pendiente
         IF EXISTS (
-            SELECT 1
-            FROM dbo.Cita
+            SELECT 1 FROM dbo.Cita
             WHERE IdDoctor = @IdDoctor
               AND FechaHora = @FechaHora
               AND Estado = 'Pendiente'
@@ -792,7 +627,6 @@ BEGIN
             RETURN;
         END;
 
-        -- Actualizar la cita
         UPDATE dbo.Cita
         SET
             IdDoctor = @IdDoctor,
@@ -809,31 +643,23 @@ BEGIN
 END;
 GO
 
--- =============================================
--- PROCEDIMIENTO: paCitaCancelar
--- DESCRIPCIÓN: Anular lógicamente una cita
--- =============================================
-
-CREATE PROCEDURE dbo.paCitaCancelar
+-- 7.5 Cancelar cita (anulacion logica)
+CREATE OR ALTER PROCEDURE dbo.paCitaCancelar
     @IdCita INT,
     @IdUsuarioModificacion INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Verificar que la cita exista y esté pendiente
     IF NOT EXISTS (
-        SELECT 1
-        FROM dbo.Cita
-        WHERE IdCita = @IdCita
-          AND Estado = 'Pendiente'
+        SELECT 1 FROM dbo.Cita
+        WHERE IdCita = @IdCita AND Estado = 'Pendiente'
     )
     BEGIN
         RAISERROR('La cita no existe o no está pendiente.', 16, 1);
         RETURN;
     END;
 
-    -- Anular lógicamente la cita
     UPDATE dbo.Cita
     SET
         Estado = 'Cancelada',
@@ -844,13 +670,8 @@ BEGIN
 END;
 GO
 
--- =============================================
--- PROCEDIMIENTO: paCitaHorariosOcupados
--- DESCRIPCIÓN: Consultar horarios ocupados de un doctor
--- en una fecha determinada
--- =============================================
-
-CREATE PROCEDURE dbo.paCitaHorariosOcupados
+-- 7.6 Horarios ocupados de un doctor en una fecha
+CREATE OR ALTER PROCEDURE dbo.paCitaHorariosOcupados
     @IdDoctor INT,
     @Fecha DATE
 AS
@@ -867,12 +688,8 @@ BEGIN
 END;
 GO
 
--- =============================================
--- PROCEDIMIENTO: paCitaListarPorFecha
--- DESCRIPCIÓN: Listar todas las citas de una fecha
--- =============================================
-
-CREATE PROCEDURE dbo.paCitaListarPorFecha
+-- 7.7 Listar citas de una fecha
+CREATE OR ALTER PROCEDURE dbo.paCitaListarPorFecha
     @Fecha DATE
 AS
 BEGIN
@@ -892,11 +709,17 @@ BEGIN
         C.FechaHora,
         C.Estado
     FROM dbo.Cita C
-    INNER JOIN dbo.Paciente P
-        ON C.IdPaciente = P.IdPaciente
-    INNER JOIN dbo.Doctor D
-        ON C.IdDoctor = D.IdDoctor
+    INNER JOIN dbo.Paciente P ON C.IdPaciente = P.IdPaciente
+    INNER JOIN dbo.Doctor D ON C.IdDoctor = D.IdDoctor
     WHERE CAST(C.FechaHora AS DATE) = @Fecha
     ORDER BY C.FechaHora ASC;
 END;
+GO
+
+-- =====================================================================
+-- 8. VERIFICACION FINAL
+-- =====================================================================
+SELECT name AS Tabla FROM sys.tables ORDER BY name;
+SELECT name AS Procedimiento FROM sys.procedures ORDER BY name;
+SELECT IdUsuario, NombreUsuario, Rol, Estado FROM dbo.Usuario;
 GO

@@ -19,6 +19,26 @@ namespace CpCarsal
 
         private void FrmLogin_Load(object sender, EventArgs e)
         {
+            // TEMPORAL: crea/restablece "administrador" (admin123) y muestra
+            // a que servidor y base se conecta la aplicacion.
+            // Borrar este bloque try/catch cuando el login ya funcione.
+            try
+            {
+                MessageBox.Show(
+                    ClnCarsal.UsuarioCln.RestablecerAdministrador(),
+                    "Conexion actual");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.InnerException != null
+                        ? ex.InnerException.Message
+                        : ex.Message,
+                    "Error de conexion",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
             txtUsuario.Clear();
             txtContraseña.Clear();
 
