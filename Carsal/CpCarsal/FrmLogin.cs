@@ -46,7 +46,7 @@ namespace CpCarsal
                 {
                     this.Hide();
 
-                    using (FrmPaciente frm = new FrmPaciente())
+                    using (frmMenuPrincipal frm = new frmMenuPrincipal())
                     {
                         frm.ShowDialog();
                     }
