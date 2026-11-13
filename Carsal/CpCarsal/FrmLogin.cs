@@ -44,14 +44,28 @@ namespace CpCarsal
 
                 if (acceso)
                 {
+                    var usuarioActual = ClnCarsal.UsuarioCln.ObtenerPorNombre(usuario);
+
                     this.Hide();
 
-                    using (frmMenuPrincipal frm = new frmMenuPrincipal())
+                    using (frmMenuPrincipal frm = new frmMenuPrincipal(
+                        usuarioActual.NombreUsuario,
+                        usuarioActual.Rol))
                     {
-                        frm.ShowDialog();
-                    }
+                        DialogResult resultado = frm.ShowDialog();
 
-                    this.Close();
+                        if (resultado == DialogResult.Retry)
+                        {
+                            this.Show();
+                            txtUsuario.Clear();
+                            txtContraseña.Clear();
+                            txtUsuario.Focus();
+                        }
+                        else
+                        {
+                            this.Close();
+                        }
+                    }
                 }
                 else
                 {

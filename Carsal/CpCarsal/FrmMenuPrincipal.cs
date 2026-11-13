@@ -6,9 +6,24 @@ namespace CpCarsal
 {
     public partial class frmMenuPrincipal : Form
     {
-        public frmMenuPrincipal()
+        private string nombreUsuario;
+        private string rolUsuario;
+
+        public frmMenuPrincipal(string usuario, string rol)
         {
             InitializeComponent();
+            nombreUsuario = usuario;
+            rolUsuario = rol;
+
+            lblUsuario.Text = "Usuario: " + nombreUsuario;
+            lblRol.Text = "Rol: " + rolUsuario;
+
+            if (rolUsuario == "Doctor")
+            {
+                btnDoctores.Visible = false;
+                btnUsuarios.Visible = false;
+            }
+
 
             this.WindowState = FormWindowState.Maximized;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -44,6 +59,21 @@ namespace CpCarsal
         private void btnUsuarios_Click(object sender, EventArgs e)
         {
             AbrirFormulario(new FrmUsuario());
+        }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            DialogResult resultado = MessageBox.Show(
+                "¿Está seguro de que desea cerrar sesión?",
+                "Cerrar sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+                this.DialogResult = DialogResult.Retry;
+                this.Close();
+            }
         }
     }
 }

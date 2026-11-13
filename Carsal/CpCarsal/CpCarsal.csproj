@@ -153,6 +153,18 @@
   <ItemGroup>
     <None Include="Resources\icons8-user-50.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\login.jfif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lllogin.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Clínica Dental CARSAL .png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

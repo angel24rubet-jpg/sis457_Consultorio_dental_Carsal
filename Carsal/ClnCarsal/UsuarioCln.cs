@@ -79,5 +79,14 @@ namespace ClnCarsal
                     contraseña, usuario.ClaveHash);
             }
         }
+        public static Usuario ObtenerPorNombre(string nombreUsuario)
+        {
+            using (var contexto = new LabConsultorioDental_CarsalEntities())
+            {
+                return contexto.Usuario.FirstOrDefault(
+                    u => u.NombreUsuario == nombreUsuario &&
+                         u.Estado == true);
+            }
+        }
     }
 }

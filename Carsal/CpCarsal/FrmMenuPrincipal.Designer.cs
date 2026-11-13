@@ -223,9 +223,9 @@
             this.lblRol.ForeColor = System.Drawing.Color.White;
             this.lblRol.Location = new System.Drawing.Point(529, 42);
             this.lblRol.Name = "lblRol";
-            this.lblRol.Size = new System.Drawing.Size(137, 25);
+            this.lblRol.Size = new System.Drawing.Size(141, 25);
             this.lblRol.TabIndex = 3;
-            this.lblRol.Text = "Asministrador";
+            this.lblRol.Text = "Administrador";
             this.lblRol.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnCerrarSesion
@@ -242,6 +242,7 @@
             this.btnCerrarSesion.TabIndex = 4;
             this.btnCerrarSesion.Text = "CERRAR SISTEMA";
             this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // frmMenuPrincipal
             // 
