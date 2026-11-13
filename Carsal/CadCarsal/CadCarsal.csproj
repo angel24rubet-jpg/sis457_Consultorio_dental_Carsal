@@ -98,6 +98,12 @@
     <Compile Include="Pago.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
+    <Compile Include="paHistorialCitasDisponibles_Result.cs">
+      <DependentUpon>Modelo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="paHistorialListarPorPaciente_Result.cs">
+      <DependentUpon>Modelo.tt</DependentUpon>
+    </Compile>
     <Compile Include="paPacienteBuscarPorCi_Result.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>

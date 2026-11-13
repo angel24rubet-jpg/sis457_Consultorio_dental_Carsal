@@ -384,5 +384,77 @@ namespace CadCarsal
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paCitaModificar", idCitaParameter, idDoctorParameter, fechaHoraParameter, idUsuarioModificacionParameter);
         }
+    
+        public virtual ObjectResult<paHistorialCitasDisponibles_Result> paHistorialCitasDisponibles(Nullable<int> idPaciente)
+        {
+            var idPacienteParameter = idPaciente.HasValue ?
+                new ObjectParameter("IdPaciente", idPaciente) :
+                new ObjectParameter("IdPaciente", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paHistorialCitasDisponibles_Result>("paHistorialCitasDisponibles", idPacienteParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<decimal>> paHistorialInsertar(Nullable<int> idPaciente, Nullable<int> idCita, string diagnostico, string tratamiento, string observaciones, Nullable<int> idUsuarioRegistro)
+        {
+            var idPacienteParameter = idPaciente.HasValue ?
+                new ObjectParameter("IdPaciente", idPaciente) :
+                new ObjectParameter("IdPaciente", typeof(int));
+    
+            var idCitaParameter = idCita.HasValue ?
+                new ObjectParameter("IdCita", idCita) :
+                new ObjectParameter("IdCita", typeof(int));
+    
+            var diagnosticoParameter = diagnostico != null ?
+                new ObjectParameter("Diagnostico", diagnostico) :
+                new ObjectParameter("Diagnostico", typeof(string));
+    
+            var tratamientoParameter = tratamiento != null ?
+                new ObjectParameter("Tratamiento", tratamiento) :
+                new ObjectParameter("Tratamiento", typeof(string));
+    
+            var observacionesParameter = observaciones != null ?
+                new ObjectParameter("Observaciones", observaciones) :
+                new ObjectParameter("Observaciones", typeof(string));
+    
+            var idUsuarioRegistroParameter = idUsuarioRegistro.HasValue ?
+                new ObjectParameter("IdUsuarioRegistro", idUsuarioRegistro) :
+                new ObjectParameter("IdUsuarioRegistro", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("paHistorialInsertar", idPacienteParameter, idCitaParameter, diagnosticoParameter, tratamientoParameter, observacionesParameter, idUsuarioRegistroParameter);
+        }
+    
+        public virtual ObjectResult<paHistorialListarPorPaciente_Result> paHistorialListarPorPaciente(Nullable<int> idPaciente)
+        {
+            var idPacienteParameter = idPaciente.HasValue ?
+                new ObjectParameter("IdPaciente", idPaciente) :
+                new ObjectParameter("IdPaciente", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<paHistorialListarPorPaciente_Result>("paHistorialListarPorPaciente", idPacienteParameter);
+        }
+    
+        public virtual int paHistorialModificar(Nullable<int> idHistorial, string diagnostico, string tratamiento, string observaciones, Nullable<int> idUsuarioModificacion)
+        {
+            var idHistorialParameter = idHistorial.HasValue ?
+                new ObjectParameter("IdHistorial", idHistorial) :
+                new ObjectParameter("IdHistorial", typeof(int));
+    
+            var diagnosticoParameter = diagnostico != null ?
+                new ObjectParameter("Diagnostico", diagnostico) :
+                new ObjectParameter("Diagnostico", typeof(string));
+    
+            var tratamientoParameter = tratamiento != null ?
+                new ObjectParameter("Tratamiento", tratamiento) :
+                new ObjectParameter("Tratamiento", typeof(string));
+    
+            var observacionesParameter = observaciones != null ?
+                new ObjectParameter("Observaciones", observaciones) :
+                new ObjectParameter("Observaciones", typeof(string));
+    
+            var idUsuarioModificacionParameter = idUsuarioModificacion.HasValue ?
+                new ObjectParameter("IdUsuarioModificacion", idUsuarioModificacion) :
+                new ObjectParameter("IdUsuarioModificacion", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("paHistorialModificar", idHistorialParameter, diagnosticoParameter, tratamientoParameter, observacionesParameter, idUsuarioModificacionParameter);
+        }
     }
 }

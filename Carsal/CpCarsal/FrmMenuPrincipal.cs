@@ -75,5 +75,10 @@ namespace CpCarsal
                 this.Close();
             }
         }
+
+        private void btnHistorial_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new FrmHistorialClinico());
+        }
     }
 }
