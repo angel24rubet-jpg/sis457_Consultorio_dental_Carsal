@@ -15,6 +15,23 @@ namespace ClnCarsal
                 return contexto.paHistorialListarPorPaciente(idPaciente).ToList();
             }
         }
+        // Buscar dentro del historial de un paciente (diagnóstico, tratamiento, observaciones o doctor)
+        public static List<paHistorialListarPorPaciente_Result> BuscarEnHistorial(int idPaciente, string texto)
+        {
+            var historial = ListarPorPaciente(idPaciente);      // 1. trae todo su historial
+
+            if (string.IsNullOrWhiteSpace(texto))               // 2. sin texto, devuelve todo
+                return historial;
+
+            string buscado = texto.Trim().ToLower();
+
+            return historial.Where(h =>                          // 3. filtra
+                (h.Diagnostico ?? "").ToLower().Contains(buscado) ||
+                (h.Tratamiento ?? "").ToLower().Contains(buscado) ||
+                (h.Observaciones ?? "").ToLower().Contains(buscado) ||
+                (h.Doctor ?? "").ToLower().Contains(buscado)
+            ).ToList();
+        }
 
         // Citas del paciente que todavía se pueden marcar como atendidas
         public static List<paHistorialCitasDisponibles_Result> CitasDisponibles(int idPaciente)
