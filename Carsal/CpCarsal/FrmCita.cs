@@ -1,11 +1,10 @@
 ﻿
+using ClnCarsal;
 using System;
 using System.Collections.Generic;
-
+using System.Drawing;
 using System.Linq;
-
 using System.Windows.Forms;
-using ClnCarsal;
 
 namespace CpCarsal
 {
@@ -105,20 +104,152 @@ namespace CpCarsal
             dtpFecha.Value = DateTime.Today;
         }
 
+
+        private void DarFormatoGrilla()
+        {
+            System.Drawing.Color oscuro = System.Drawing.Color.FromArgb(0, 64, 64);
+
+            dgvLista.BackgroundColor = System.Drawing.Color.White;
+            dgvLista.BorderStyle = BorderStyle.None;
+            dgvLista.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvLista.GridColor = System.Drawing.Color.FromArgb(227, 235, 235);
+            dgvLista.RowHeadersVisible = false;
+            dgvLista.AllowUserToAddRows = false;
+            dgvLista.AllowUserToDeleteRows = false;
+            dgvLista.AllowUserToResizeRows = false;
+            dgvLista.ReadOnly = true;
+            dgvLista.MultiSelect = false;
+            dgvLista.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvLista.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Encabezado
+            dgvLista.EnableHeadersVisualStyles = false;
+            dgvLista.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvLista.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvLista.ColumnHeadersHeight = 38;
+            dgvLista.ColumnHeadersDefaultCellStyle.BackColor = oscuro;
+            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            dgvLista.ColumnHeadersDefaultCellStyle.SelectionBackColor = oscuro;
+            dgvLista.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            dgvLista.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvLista.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            // Filas
+            dgvLista.RowTemplate.Height = 34;
+            dgvLista.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dgvLista.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(31, 45, 45);
+            dgvLista.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(203, 232, 229);
+            dgvLista.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(31, 45, 45);
+            dgvLista.DefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvLista.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(244, 249, 249);
+        }
+
+
+
         private void ActualizarLista()
         {
-            dgvLista.DataSource = null;
             dgvLista.DataSource = CitaCln.Listar();
 
-            dgvLista.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.Fill;
+            
 
+            dgvLista.DataSource = null;
+            dgvLista.Columns.Clear();
+
+            dgvLista.AutoGenerateColumns = true;
+            dgvLista.DataSource = CitaCln.Listar();
+
+            DarFormatoGrilla();
+
+            // Configuracion general
+            dgvLista.ReadOnly = true;
+            dgvLista.AllowUserToAddRows = false;
+            dgvLista.AllowUserToDeleteRows = false;
+            dgvLista.MultiSelect = false;
             dgvLista.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
 
-            dgvLista.MultiSelect = false;
-            dgvLista.ReadOnly = true;
-            dgvLista.AllowUserToAddRows = false;
+            dgvLista.RowHeadersVisible = false;
+            dgvLista.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvLista.BackgroundColor = Color.White;
+            dgvLista.BorderStyle = BorderStyle.None;
+            dgvLista.CellBorderStyle =
+                DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvLista.GridColor = Color.FromArgb(220, 235, 233);
+
+            // Encabezados
+            dgvLista.EnableHeadersVisualStyles = false;
+            dgvLista.ColumnHeadersDefaultCellStyle.BackColor =
+                Color.FromArgb(0, 73, 70);
+
+            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvLista.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 9F, FontStyle.Bold);
+
+            dgvLista.ColumnHeadersHeight = 38;
+
+            // Filas
+            dgvLista.DefaultCellStyle.BackColor = Color.White;
+            dgvLista.DefaultCellStyle.ForeColor =
+                Color.FromArgb(25, 55, 65);
+
+            dgvLista.DefaultCellStyle.Font =
+                new Font("Segoe UI", 9F, FontStyle.Regular);
+
+            dgvLista.DefaultCellStyle.SelectionBackColor =
+                Color.FromArgb(0, 137, 135);
+
+            dgvLista.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvLista.AlternatingRowsDefaultCellStyle.BackColor =
+                Color.FromArgb(232, 245, 243);
+
+            dgvLista.RowTemplate.Height = 34;
+
+            // Ocultar identificadores
+            dgvLista.Columns["IdCita"].Visible = false;
+            dgvLista.Columns["IdPaciente"].Visible = false;
+            dgvLista.Columns["IdDoctor"].Visible = false;
+
+            // Encabezados del paciente
+            dgvLista.Columns["Ci"].HeaderText = "CI";
+            dgvLista.Columns["NombrePaciente"].HeaderText = "Nombre";
+            dgvLista.Columns["PrimerApellido"].HeaderText = "Primer apellido";
+            dgvLista.Columns["SegundoApellido"].HeaderText = "Segundo apellido";
+
+            // Encabezados de la cita y doctor
+            dgvLista.Columns["FechaHora"].HeaderText = "Fecha y hora";
+            dgvLista.Columns["NombreDoctor"].HeaderText = "Nombre doctor";
+            dgvLista.Columns["ApellidosDoctor"].HeaderText = "Apellidos doctor";
+            dgvLista.Columns["Especialidad"].HeaderText = "Especialidad";
+            dgvLista.Columns["Estado"].HeaderText = "Estado";
+
+            // Orden de las columnas
+            dgvLista.Columns["Ci"].DisplayIndex = 0;
+            dgvLista.Columns["NombrePaciente"].DisplayIndex = 1;
+            dgvLista.Columns["PrimerApellido"].DisplayIndex = 2;
+            dgvLista.Columns["SegundoApellido"].DisplayIndex = 3;
+            dgvLista.Columns["FechaHora"].DisplayIndex = 4;
+            dgvLista.Columns["NombreDoctor"].DisplayIndex = 5;
+            dgvLista.Columns["ApellidosDoctor"].DisplayIndex = 6;
+            dgvLista.Columns["Especialidad"].DisplayIndex = 7;
+            dgvLista.Columns["Estado"].DisplayIndex = 8;
+
+            // Formato de fecha y hora
+            dgvLista.Columns["FechaHora"].DefaultCellStyle.Format =
+                "dd/MM/yyyy HH:mm";
+
+            // Anchos de columnas
+            dgvLista.Columns["Ci"].FillWeight = 65;
+            dgvLista.Columns["NombrePaciente"].FillWeight = 100;
+            dgvLista.Columns["PrimerApellido"].FillWeight = 100;
+            dgvLista.Columns["SegundoApellido"].FillWeight = 100;
+            dgvLista.Columns["FechaHora"].FillWeight = 110;
+            dgvLista.Columns["NombreDoctor"].FillWeight = 100;
+            dgvLista.Columns["ApellidosDoctor"].FillWeight = 110;
+            dgvLista.Columns["Especialidad"].FillWeight = 95;
+            dgvLista.Columns["Estado"].FillWeight = 80;
 
             dgvLista.ClearSelection();
 
@@ -127,6 +258,7 @@ namespace CpCarsal
 
             idCitaSeleccionada = 0;
         }
+
 
         // CARGAR ESPECIALIDADES
 
