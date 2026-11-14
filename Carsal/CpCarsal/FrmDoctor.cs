@@ -12,14 +12,83 @@ namespace CpCarsal
 {
     public partial class FrmDoctor : Form
     {
+        private int idDoctorSeleccionado = 0;
+        private bool modoEdicion = false;
         public FrmDoctor()
         {
             InitializeComponent();
+
+            pnlRegistro.Enabled = false;
         }
 
         private void FrmDoctor_Load(object sender, EventArgs e)
         {
+            ConfigurarDgvLista();
+
             dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
+
+            dgvLista.Columns["IdDoctor"].Visible = false;
+        }
+        private void LimpiarCampos()
+        {
+            txtCi.Clear();
+            txtNombres.Clear();
+            txtPrimerApellido.Clear();
+            txtSegundoApellido.Clear();
+            txtEspecialidad.Clear();
+            txtDireccion.Clear();
+            txtCelular.Clear();
+
+            idDoctorSeleccionado = 0;
+            modoEdicion = false;
+
+            btnModificar.Text = "MODIFICAR DATOS";
+        }
+
+        private void ConfigurarDgvLista()
+        {
+            dgvLista.EnableHeadersVisualStyles = false;
+
+            dgvLista.BackgroundColor = Color.White;
+            dgvLista.BorderStyle = BorderStyle.None;
+            dgvLista.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+
+            dgvLista.ColumnHeadersDefaultCellStyle.BackColor =
+                Color.FromArgb(6, 68, 90);
+
+            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvLista.ColumnHeadersDefaultCellStyle.Font =
+                new Font("Segoe UI", 10, FontStyle.Bold);
+
+            dgvLista.ColumnHeadersHeight = 40;
+
+            dgvLista.DefaultCellStyle.BackColor = Color.White;
+            dgvLista.DefaultCellStyle.ForeColor =
+                Color.FromArgb(24, 59, 80);
+
+            dgvLista.DefaultCellStyle.Font =
+                new Font("Segoe UI", 9, FontStyle.Regular);
+
+            dgvLista.AlternatingRowsDefaultCellStyle.BackColor =
+                Color.FromArgb(230, 244, 245);
+
+            dgvLista.DefaultCellStyle.SelectionBackColor =
+                Color.FromArgb(0, 140, 150);
+
+            dgvLista.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            dgvLista.RowTemplate.Height = 34;
+
+            dgvLista.RowHeadersVisible = false;
+            dgvLista.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvLista.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+
+            dgvLista.MultiSelect = false;
+            dgvLista.ReadOnly = true;
+            dgvLista.AllowUserToAddRows = false;
         }
 
         private void btnRegistrar_Click(object sender, EventArgs e)
@@ -53,7 +122,17 @@ namespace CpCarsal
                 MessageBox.Show("Doctor registrado correctamente.");
 
                 dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
+
+                LimpiarCampos();
+
+                pnlRegistro.Enabled = false;
+
+                btnRegistrar.Enabled = true;
+                btnModificar.Enabled = true;
+
+
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show(
@@ -70,12 +149,61 @@ namespace CpCarsal
         {
             try
             {
-                if (dgvLista.CurrentRow == null)
+                // Primera pulsacion: recuperar datos del doctor
+                if (!modoEdicion)
                 {
-                    MessageBox.Show("Seleccione un doctor de la lista.");
+                    if (idDoctorSeleccionado == 0)
+                    {
+                        MessageBox.Show("Seleccione un doctor de la lista.");
+                        return;
+                    }
+
+                    var fila = dgvLista.Rows
+                        .Cast<DataGridViewRow>()
+                        .FirstOrDefault(r =>
+                            Convert.ToInt32(r.Cells["IdDoctor"].Value)
+                            == idDoctorSeleccionado);
+
+                    if (fila == null)
+                    {
+                        MessageBox.Show("No se encontró el doctor seleccionado.");
+                        return;
+                    }
+
+                    txtCi.Text = fila.Cells["Ci"].Value?.ToString();
+                    txtNombres.Text = fila.Cells["Nombres"].Value?.ToString();
+
+                    string apellidos =
+                        fila.Cells["Apellidos"].Value?.ToString() ?? "";
+
+                    string[] partes = apellidos.Split(
+                        new char[] { ' ' },
+                        StringSplitOptions.RemoveEmptyEntries);
+
+                    txtPrimerApellido.Text =
+                        partes.Length > 0 ? partes[0] : "";
+
+                    txtSegundoApellido.Text =
+                        partes.Length > 1
+                        ? string.Join(" ", partes, 1, partes.Length - 1)
+                        : "";
+
+                    txtCelular.Text = fila.Cells["Celular"].Value?.ToString();
+                    txtEspecialidad.Text = fila.Cells["Especialidad"].Value?.ToString();
+                    txtDireccion.Text = fila.Cells["Direccion"].Value?.ToString();
+
+                    pnlRegistro.Enabled = true;
+
+                    btnRegistrar.Enabled = false;
+                    btnModificar.Enabled = true;
+
+                    modoEdicion = true;
+                    btnModificar.Text = "GUARDAR CAMBIOS";
+
                     return;
                 }
 
+                // Segunda pulsacion: guardar modificaciones
                 if (string.IsNullOrWhiteSpace(txtCi.Text) ||
                     string.IsNullOrWhiteSpace(txtNombres.Text) ||
                     string.IsNullOrWhiteSpace(txtPrimerApellido.Text))
@@ -84,12 +212,9 @@ namespace CpCarsal
                         "Complete el CI, los nombres y el primer apellido.");
                     return;
                 }
-
-                int idDoctor = Convert.ToInt32(
-                    dgvLista.CurrentRow.Cells["IdDoctor"].Value);
-
+        
                 ClnCarsal.DoctorCln.Modificar(
-                    idDoctor,
+                    idDoctorSeleccionado,
                     txtCi.Text.Trim(),
                     txtNombres.Text.Trim(),
                     txtPrimerApellido.Text.Trim(),
@@ -107,6 +232,13 @@ namespace CpCarsal
                 MessageBox.Show("Doctor modificado correctamente.");
 
                 dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
+
+                LimpiarCampos();
+
+                pnlRegistro.Enabled = false;
+
+                btnRegistrar.Enabled = true;
+                btnModificar.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -127,22 +259,8 @@ namespace CpCarsal
 
             DataGridViewRow fila = dgvLista.Rows[e.RowIndex];
 
-            txtCi.Text = fila.Cells["Ci"].Value?.ToString();
-            txtNombres.Text = fila.Cells["Nombres"].Value?.ToString();
-
-            string apellidos = fila.Cells["Apellidos"].Value?.ToString() ?? "";
-            string[] partes = apellidos.Split(
-                new char[] { ' ' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            txtPrimerApellido.Text = partes.Length > 0 ? partes[0] : "";
-            txtSegundoApellido.Text = partes.Length > 1
-                ? string.Join(" ", partes, 1, partes.Length - 1)
-                : "";
-
-            txtCelular.Text = fila.Cells["Celular"].Value?.ToString();
-            txtEspecialidad.Text = fila.Cells["Especialidad"].Value?.ToString();
-            txtDireccion.Text = fila.Cells["Direccion"].Value?.ToString();
+            idDoctorSeleccionado = Convert.ToInt32(
+                fila.Cells["IdDoctor"].Value);
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
@@ -238,6 +356,32 @@ namespace CpCarsal
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+
+        private void btnNuevaCita_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnNuevoDoctor_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+
+            pnlRegistro.Enabled = true;
+
+            btnRegistrar.Enabled = true;
+            btnModificar.Enabled = false;
+            txtCi.Focus();
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+
+            pnlRegistro.Enabled = false;
+
+            btnRegistrar.Enabled = true;
+            btnModificar.Enabled = true;
         }
     }
 }
