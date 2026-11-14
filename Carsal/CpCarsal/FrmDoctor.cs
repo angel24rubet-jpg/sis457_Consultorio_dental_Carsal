@@ -44,6 +44,13 @@ namespace CpCarsal
 
             btnModificar.Text = "MODIFICAR DATOS";
         }
+        private void ActualizarLista()
+        {
+            ActualizarLista();
+
+            if (dgvLista.Columns.Contains("IdDoctor"))
+                dgvLista.Columns["IdDoctor"].Visible = false;
+        }
 
         private void ConfigurarDgvLista()
         {

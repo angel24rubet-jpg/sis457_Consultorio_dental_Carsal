@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblTitulo = new System.Windows.Forms.Label();
             this.lblBuscarCi = new System.Windows.Forms.Label();
             this.txtBuscarCi = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
@@ -48,61 +47,61 @@
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.dgvLista = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlRegistro = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblTitulo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLista)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.pnlRegistro.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lblTitulo
-            // 
-            this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitulo.Location = new System.Drawing.Point(581, 32);
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(175, 20);
-            this.lblTitulo.TabIndex = 26;
-            this.lblTitulo.Text = "GESTION DE CITAS";
             // 
             // lblBuscarCi
             // 
             this.lblBuscarCi.AutoSize = true;
-            this.lblBuscarCi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBuscarCi.Location = new System.Drawing.Point(358, 95);
+            this.lblBuscarCi.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBuscarCi.Location = new System.Drawing.Point(546, 169);
             this.lblBuscarCi.Name = "lblBuscarCi";
-            this.lblBuscarCi.Size = new System.Drawing.Size(206, 16);
+            this.lblBuscarCi.Size = new System.Drawing.Size(141, 17);
             this.lblBuscarCi.TabIndex = 27;
-            this.lblBuscarCi.Text = "BUSCAR PACIENTE POR CI:";
+            this.lblBuscarCi.Text = "Buscar Paciente por Ci:";
             // 
             // txtBuscarCi
             // 
             this.txtBuscarCi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarCi.Location = new System.Drawing.Point(571, 89);
+            this.txtBuscarCi.Location = new System.Drawing.Point(693, 167);
             this.txtBuscarCi.Name = "txtBuscarCi";
             this.txtBuscarCi.Size = new System.Drawing.Size(287, 22);
             this.txtBuscarCi.TabIndex = 28;
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(894, 89);
+            this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBuscar.ForeColor = System.Drawing.Color.White;
+            this.btnBuscar.Location = new System.Drawing.Point(1001, 154);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(75, 23);
+            this.btnBuscar.Size = new System.Drawing.Size(83, 46);
             this.btnBuscar.TabIndex = 29;
             this.btnBuscar.Text = "BUSCAR";
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // lblNombrePaciente
             // 
             this.lblNombrePaciente.AutoSize = true;
-            this.lblNombrePaciente.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNombrePaciente.Location = new System.Drawing.Point(235, 136);
+            this.lblNombrePaciente.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNombrePaciente.Location = new System.Drawing.Point(139, 45);
             this.lblNombrePaciente.Name = "lblNombrePaciente";
-            this.lblNombrePaciente.Size = new System.Drawing.Size(86, 16);
+            this.lblNombrePaciente.Size = new System.Drawing.Size(59, 17);
             this.lblNombrePaciente.TabIndex = 30;
-            this.lblNombrePaciente.Text = "PACIENTE:";
+            this.lblNombrePaciente.Text = "Paciente:";
             // 
             // txtNombrePaciente
             // 
             this.txtNombrePaciente.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNombrePaciente.Location = new System.Drawing.Point(344, 136);
+            this.txtNombrePaciente.Location = new System.Drawing.Point(237, 43);
             this.txtNombrePaciente.Name = "txtNombrePaciente";
             this.txtNombrePaciente.ReadOnly = true;
             this.txtNombrePaciente.Size = new System.Drawing.Size(400, 22);
@@ -110,29 +109,32 @@
             // 
             // btnNuevaCita
             // 
-            this.btnNuevaCita.Location = new System.Drawing.Point(750, 136);
+            this.btnNuevaCita.BackColor = System.Drawing.Color.Teal;
+            this.btnNuevaCita.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnNuevaCita.ForeColor = System.Drawing.Color.White;
+            this.btnNuevaCita.Location = new System.Drawing.Point(369, 205);
             this.btnNuevaCita.Name = "btnNuevaCita";
-            this.btnNuevaCita.Size = new System.Drawing.Size(97, 23);
+            this.btnNuevaCita.Size = new System.Drawing.Size(134, 46);
             this.btnNuevaCita.TabIndex = 32;
             this.btnNuevaCita.Text = "NUEVA CITA";
-            this.btnNuevaCita.UseVisualStyleBackColor = true;
+            this.btnNuevaCita.UseVisualStyleBackColor = false;
             this.btnNuevaCita.Click += new System.EventHandler(this.btnNuevaCita_Click);
             // 
             // lblEspecialidad
             // 
             this.lblEspecialidad.AutoSize = true;
-            this.lblEspecialidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEspecialidad.Location = new System.Drawing.Point(235, 224);
+            this.lblEspecialidad.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEspecialidad.Location = new System.Drawing.Point(114, 103);
             this.lblEspecialidad.Name = "lblEspecialidad";
-            this.lblEspecialidad.Size = new System.Drawing.Size(119, 16);
+            this.lblEspecialidad.Size = new System.Drawing.Size(84, 17);
             this.lblEspecialidad.TabIndex = 33;
-            this.lblEspecialidad.Text = "ESPECIALIDAD:";
+            this.lblEspecialidad.Text = "Especialidad:";
             // 
             // cboEspecialidad
             // 
             this.cboEspecialidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboEspecialidad.FormattingEnabled = true;
-            this.cboEspecialidad.Location = new System.Drawing.Point(380, 224);
+            this.cboEspecialidad.Location = new System.Drawing.Point(237, 103);
             this.cboEspecialidad.Name = "cboEspecialidad";
             this.cboEspecialidad.Size = new System.Drawing.Size(163, 21);
             this.cboEspecialidad.TabIndex = 34;
@@ -141,18 +143,18 @@
             // lblDoctor
             // 
             this.lblDoctor.AutoSize = true;
-            this.lblDoctor.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDoctor.Location = new System.Drawing.Point(235, 287);
+            this.lblDoctor.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDoctor.Location = new System.Drawing.Point(147, 155);
             this.lblDoctor.Name = "lblDoctor";
-            this.lblDoctor.Size = new System.Drawing.Size(75, 16);
+            this.lblDoctor.Size = new System.Drawing.Size(51, 17);
             this.lblDoctor.TabIndex = 35;
-            this.lblDoctor.Text = "DOCTOR:";
+            this.lblDoctor.Text = "Doctor:";
             // 
             // cboDoctor
             // 
             this.cboDoctor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboDoctor.FormattingEnabled = true;
-            this.cboDoctor.Location = new System.Drawing.Point(380, 286);
+            this.cboDoctor.Location = new System.Drawing.Point(237, 151);
             this.cboDoctor.Name = "cboDoctor";
             this.cboDoctor.Size = new System.Drawing.Size(163, 21);
             this.cboDoctor.TabIndex = 36;
@@ -161,17 +163,17 @@
             // lblFecha
             // 
             this.lblFecha.AutoSize = true;
-            this.lblFecha.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFecha.Location = new System.Drawing.Point(235, 333);
+            this.lblFecha.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFecha.Location = new System.Drawing.Point(558, 100);
             this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(61, 16);
+            this.lblFecha.Size = new System.Drawing.Size(44, 17);
             this.lblFecha.TabIndex = 37;
-            this.lblFecha.Text = "FECHA:";
+            this.lblFecha.Text = "Fecha:";
             // 
             // dtpFecha
             // 
             this.dtpFecha.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFecha.Location = new System.Drawing.Point(380, 333);
+            this.dtpFecha.Location = new System.Drawing.Point(621, 100);
             this.dtpFecha.Name = "dtpFecha";
             this.dtpFecha.Size = new System.Drawing.Size(200, 20);
             this.dtpFecha.TabIndex = 38;
@@ -180,108 +182,160 @@
             // lblHora
             // 
             this.lblHora.AutoSize = true;
-            this.lblHora.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHora.Location = new System.Drawing.Point(235, 377);
+            this.lblHora.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblHora.Location = new System.Drawing.Point(562, 159);
             this.lblHora.Name = "lblHora";
-            this.lblHora.Size = new System.Drawing.Size(54, 16);
+            this.lblHora.Size = new System.Drawing.Size(40, 17);
             this.lblHora.TabIndex = 39;
-            this.lblHora.Text = "HORA:";
+            this.lblHora.Text = "Hora:";
             // 
             // cboHora
             // 
             this.cboHora.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboHora.FormattingEnabled = true;
-            this.cboHora.Location = new System.Drawing.Point(380, 377);
+            this.cboHora.Location = new System.Drawing.Point(621, 155);
             this.cboHora.Name = "cboHora";
             this.cboHora.Size = new System.Drawing.Size(163, 21);
             this.cboHora.TabIndex = 40;
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(672, 242);
+            this.btnGuardar.BackColor = System.Drawing.Color.Teal;
+            this.btnGuardar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Location = new System.Drawing.Point(318, 206);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(118, 23);
+            this.btnGuardar.Size = new System.Drawing.Size(142, 46);
             this.btnGuardar.TabIndex = 44;
             this.btnGuardar.Text = "GUARDAR CITA";
-            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnModificar
             // 
-            this.btnModificar.Location = new System.Drawing.Point(436, 452);
+            this.btnModificar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(99)))), ((int)(((byte)(168)))));
+            this.btnModificar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnModificar.ForeColor = System.Drawing.Color.White;
+            this.btnModificar.Location = new System.Drawing.Point(780, 225);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(128, 23);
+            this.btnModificar.Size = new System.Drawing.Size(165, 46);
             this.btnModificar.TabIndex = 45;
             this.btnModificar.Text = "MODIFICAR CITA";
-            this.btnModificar.UseVisualStyleBackColor = true;
+            this.btnModificar.UseVisualStyleBackColor = false;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
             // btnEliminar
             // 
-            this.btnEliminar.Location = new System.Drawing.Point(640, 452);
+            this.btnEliminar.BackColor = System.Drawing.Color.Red;
+            this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEliminar.ForeColor = System.Drawing.Color.White;
+            this.btnEliminar.Location = new System.Drawing.Point(590, 225);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(104, 23);
+            this.btnEliminar.Size = new System.Drawing.Size(165, 46);
             this.btnEliminar.TabIndex = 46;
             this.btnEliminar.Text = "ELIMINAR CITA";
-            this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.UseVisualStyleBackColor = false;
             this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(686, 334);
+            this.btnCancelar.BackColor = System.Drawing.Color.Red;
+            this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelar.ForeColor = System.Drawing.Color.White;
+            this.btnCancelar.Location = new System.Drawing.Point(508, 206);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(104, 23);
+            this.btnCancelar.Size = new System.Drawing.Size(140, 46);
             this.btnCancelar.TabIndex = 47;
             this.btnCancelar.Text = "CANCELAR";
-            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // dgvLista
             // 
             this.dgvLista.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLista.Location = new System.Drawing.Point(175, 522);
+            this.dgvLista.Location = new System.Drawing.Point(3, 32);
             this.dgvLista.Name = "dgvLista";
-            this.dgvLista.Size = new System.Drawing.Size(993, 187);
+            this.dgvLista.Size = new System.Drawing.Size(1560, 187);
             this.dgvLista.TabIndex = 48;
             this.dgvLista.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLista_CellClick);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.dgvLista);
+            this.panel1.Controls.Add(this.btnModificar);
+            this.panel1.Controls.Add(this.btnEliminar);
+            this.panel1.Location = new System.Drawing.Point(31, 526);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1595, 274);
+            this.panel1.TabIndex = 49;
+            // 
+            // pnlRegistro
+            // 
+            this.pnlRegistro.BackColor = System.Drawing.Color.White;
+            this.pnlRegistro.Controls.Add(this.lblNombrePaciente);
+            this.pnlRegistro.Controls.Add(this.txtNombrePaciente);
+            this.pnlRegistro.Controls.Add(this.btnCancelar);
+            this.pnlRegistro.Controls.Add(this.btnGuardar);
+            this.pnlRegistro.Controls.Add(this.lblEspecialidad);
+            this.pnlRegistro.Controls.Add(this.cboHora);
+            this.pnlRegistro.Controls.Add(this.cboEspecialidad);
+            this.pnlRegistro.Controls.Add(this.lblHora);
+            this.pnlRegistro.Controls.Add(this.lblDoctor);
+            this.pnlRegistro.Controls.Add(this.dtpFecha);
+            this.pnlRegistro.Controls.Add(this.cboDoctor);
+            this.pnlRegistro.Controls.Add(this.lblFecha);
+            this.pnlRegistro.Location = new System.Drawing.Point(356, 257);
+            this.pnlRegistro.Name = "pnlRegistro";
+            this.pnlRegistro.Size = new System.Drawing.Size(974, 263);
+            this.pnlRegistro.TabIndex = 50;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.lblTitulo);
+            this.panel2.Location = new System.Drawing.Point(0, 16);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(801, 140);
+            this.panel2.TabIndex = 56;
+            // 
+            // lblTitulo
+            // 
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Oswald", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.Location = new System.Drawing.Point(12, 6);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(514, 109);
+            this.lblTitulo.TabIndex = 25;
+            this.lblTitulo.Text = "GESTION DE CITAS";
             // 
             // FrmCita
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1398, 812);
-            this.Controls.Add(this.dgvLista);
-            this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.btnEliminar);
-            this.Controls.Add(this.btnModificar);
-            this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.cboHora);
-            this.Controls.Add(this.lblHora);
-            this.Controls.Add(this.dtpFecha);
-            this.Controls.Add(this.lblFecha);
-            this.Controls.Add(this.cboDoctor);
-            this.Controls.Add(this.lblDoctor);
-            this.Controls.Add(this.cboEspecialidad);
-            this.Controls.Add(this.lblEspecialidad);
+            this.ClientSize = new System.Drawing.Size(1656, 812);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.pnlRegistro);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnNuevaCita);
-            this.Controls.Add(this.txtNombrePaciente);
-            this.Controls.Add(this.lblNombrePaciente);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.txtBuscarCi);
             this.Controls.Add(this.lblBuscarCi);
-            this.Controls.Add(this.lblTitulo);
             this.Name = "FrmCita";
             this.Text = "FrmCita";
             this.Load += new System.EventHandler(this.FrmCita_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLista)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.pnlRegistro.ResumeLayout(false);
+            this.pnlRegistro.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblBuscarCi;
         private System.Windows.Forms.TextBox txtBuscarCi;
         private System.Windows.Forms.Button btnBuscar;
@@ -301,5 +355,9 @@
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.DataGridView dgvLista;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlRegistro;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label lblTitulo;
     }
 }
