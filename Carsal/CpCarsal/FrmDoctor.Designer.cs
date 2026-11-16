@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCi = new System.Windows.Forms.TextBox();
             this.lblCi = new System.Windows.Forms.Label();
             this.btnEliminar = new System.Windows.Forms.Button();
@@ -84,6 +84,9 @@
             // btnEliminar
             // 
             this.btnEliminar.BackColor = System.Drawing.Color.Red;
+            this.btnEliminar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEliminar.FlatAppearance.BorderSize = 0;
+            this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
             this.btnEliminar.Location = new System.Drawing.Point(433, 423);
@@ -97,6 +100,9 @@
             // btnModificar
             // 
             this.btnModificar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(99)))), ((int)(((byte)(168)))));
+            this.btnModificar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnModificar.FlatAppearance.BorderSize = 0;
+            this.btnModificar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModificar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnModificar.ForeColor = System.Drawing.Color.White;
             this.btnModificar.Location = new System.Drawing.Point(243, 423);
@@ -110,9 +116,12 @@
             // btnRegistrar
             // 
             this.btnRegistrar.BackColor = System.Drawing.Color.Teal;
+            this.btnRegistrar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRegistrar.FlatAppearance.BorderSize = 0;
+            this.btnRegistrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegistrar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegistrar.ForeColor = System.Drawing.Color.White;
-            this.btnRegistrar.Location = new System.Drawing.Point(129, 423);
+            this.btnRegistrar.Location = new System.Drawing.Point(71, 423);
             this.btnRegistrar.Name = "btnRegistrar";
             this.btnRegistrar.Size = new System.Drawing.Size(118, 38);
             this.btnRegistrar.TabIndex = 43;
@@ -205,6 +214,9 @@
             // btnBuscarCi
             // 
             this.btnBuscarCi.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnBuscarCi.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscarCi.FlatAppearance.BorderSize = 0;
+            this.btnBuscarCi.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscarCi.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBuscarCi.ForeColor = System.Drawing.Color.White;
             this.btnBuscarCi.Location = new System.Drawing.Point(482, 35);
@@ -236,10 +248,10 @@
             // lblTitulo
             // 
             this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Oswald", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.Font = new System.Drawing.Font("Oswald", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitulo.Location = new System.Drawing.Point(12, 12);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(643, 109);
+            this.lblTitulo.Size = new System.Drawing.Size(356, 59);
             this.lblTitulo.TabIndex = 25;
             this.lblTitulo.Text = "GESTION DE DOCTORES";
             // 
@@ -250,14 +262,14 @@
             this.dgvLista.BackgroundColor = System.Drawing.Color.White;
             this.dgvLista.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvLista.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Teal;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLista.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.Teal;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLista.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             this.dgvLista.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLista.EnableHeadersVisualStyles = false;
             this.dgvLista.Location = new System.Drawing.Point(32, 98);
@@ -281,6 +293,9 @@
             // btnMostrarLista
             // 
             this.btnMostrarLista.BackColor = System.Drawing.Color.Navy;
+            this.btnMostrarLista.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnMostrarLista.FlatAppearance.BorderSize = 0;
+            this.btnMostrarLista.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMostrarLista.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMostrarLista.ForeColor = System.Drawing.Color.White;
             this.btnMostrarLista.Location = new System.Drawing.Point(588, 35);
@@ -351,14 +366,17 @@
             // btnNuevoDoctor
             // 
             this.btnNuevoDoctor.BackColor = System.Drawing.Color.Teal;
+            this.btnNuevoDoctor.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNuevoDoctor.FlatAppearance.BorderSize = 0;
+            this.btnNuevoDoctor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNuevoDoctor.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNuevoDoctor.Image = global::CpCarsal.Properties.Resources.icons8_add_50;
             this.btnNuevoDoctor.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnNuevoDoctor.Location = new System.Drawing.Point(176, 173);
             this.btnNuevoDoctor.Name = "btnNuevoDoctor";
-            this.btnNuevoDoctor.Size = new System.Drawing.Size(173, 63);
+            this.btnNuevoDoctor.Size = new System.Drawing.Size(202, 63);
             this.btnNuevoDoctor.TabIndex = 54;
-            this.btnNuevoDoctor.Text = "Nueva Cita";
+            this.btnNuevoDoctor.Text = "Nuevo Doctor";
             this.btnNuevoDoctor.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnNuevoDoctor.UseVisualStyleBackColor = false;
             this.btnNuevoDoctor.Click += new System.EventHandler(this.btnNuevoDoctor_Click);
@@ -367,16 +385,19 @@
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
             this.panel2.Controls.Add(this.lblTitulo);
-            this.panel2.Location = new System.Drawing.Point(0, 27);
+            this.panel2.Location = new System.Drawing.Point(0, 19);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(970, 140);
+            this.panel2.Size = new System.Drawing.Size(520, 90);
             this.panel2.TabIndex = 55;
             // 
             // btnCancelar
             // 
-            this.btnCancelar.BackColor = System.Drawing.Color.Red;
+            this.btnCancelar.BackColor = System.Drawing.Color.Silver;
+            this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelar.FlatAppearance.BorderSize = 0;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancelar.ForeColor = System.Drawing.Color.White;
+            this.btnCancelar.ForeColor = System.Drawing.Color.Black;
             this.btnCancelar.Location = new System.Drawing.Point(263, 423);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(118, 38);

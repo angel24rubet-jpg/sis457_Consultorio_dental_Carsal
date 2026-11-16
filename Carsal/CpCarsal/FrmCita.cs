@@ -450,12 +450,6 @@ namespace CpCarsal
             {
                 string ci = txtBuscarCi.Text.Trim();
 
-                pacienteEncontrado = false;
-                idPacienteSeleccionado = 0;
-
-                txtNombrePaciente.Clear();
-                btnNuevaCita.Enabled = false;
-
                 if (string.IsNullOrWhiteSpace(ci))
                 {
                     MessageBox.Show("Ingrese el CI del paciente.");
@@ -463,37 +457,67 @@ namespace CpCarsal
                     return;
                 }
 
-                var resultado = PacienteCln.BuscarPorCi(ci)
-                    as System.Collections.IEnumerable;
+                var paciente = ClnCarsal.PacienteCln.BuscarPorCi(ci)
+                    .FirstOrDefault();
 
-                if (resultado == null ||
-                    !resultado.Cast<object>().Any())
+                // Si el paciente no existe
+                if (paciente == null)
                 {
-                    MessageBox.Show(
-                        "No se encontró un paciente activo con ese CI.");
+                    DialogResult respuesta = MessageBox.Show(
+                        "El paciente con el CI " + ci +
+                        " no está registrado, ¿desea registrarlo?",
+                        "Paciente no registrado",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+
+                    if (respuesta == DialogResult.Yes)
+                    {
+                        using (FrmPaciente formulario = new FrmPaciente())
+                        {
+                            formulario.RegistroDesdeCita = true;
+                            formulario.CiDesdeCita = ci;
+
+                            if (formulario.ShowDialog() == DialogResult.OK)
+                            {
+                                idPacienteSeleccionado =
+                                    formulario.IdPacienteRegistrado;
+
+                                txtNombrePaciente.Text =
+                                    formulario.NombrePacienteRegistrado;
+
+                                pnlRegistro.Enabled = true;
+                            }
+                        }
+                        HabilitarRegistro();
+                    }
 
                     return;
                 }
 
-                dynamic paciente =
-                    resultado.Cast<object>().First();
-
-                idPacienteSeleccionado =
-                    Convert.ToInt32(paciente.IdPaciente);
+                // Si el paciente existe
+                idPacienteSeleccionado = paciente.IdPaciente;
 
                 txtNombrePaciente.Text =
                     paciente.Nombres + " " +
                     paciente.PrimerApellido + " " +
                     paciente.SegundoApellido;
 
-                pacienteEncontrado = true;
-                btnNuevaCita.Enabled = true;
+                pnlRegistro.Enabled = true;
+
+                HabilitarRegistro();
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error al buscar paciente: " + ex.Message);
+                    ex.InnerException != null
+                        ? ex.InnerException.Message
+                        : ex.Message,
+                    "Error al buscar paciente",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 

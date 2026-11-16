@@ -10,6 +10,15 @@ namespace CpCarsal
         private int idPacienteSeleccionado = 0;
         private bool modoEdicion = false;
 
+        public bool RegistroDesdeCita { get; set; } = false;
+
+        public string CiDesdeCita { get; set; }
+
+        public int IdPacienteRegistrado { get; private set; }
+
+        public string NombrePacienteRegistrado { get; private set; }
+
+
         public FrmPaciente()
         {
             InitializeComponent();
@@ -20,6 +29,13 @@ namespace CpCarsal
             DarFormatoGrilla();
             Limpiar();
             Listar();
+
+            if (RegistroDesdeCita)
+            {
+                txtCi.Text = CiDesdeCita;
+                txtCi.ReadOnly = true;
+                pnlDatos.Enabled = true;
+            }
         }
 
         // ================= LISTAR =================
@@ -157,8 +173,36 @@ namespace CpCarsal
                     ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
                 );
 
-                MessageBox.Show("Paciente registrado correctamente.", "Pacientes",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    "Paciente registrado correctamente.",
+                    "Pacientes",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                // Si se registro desde el formulario de citas
+                if (RegistroDesdeCita)
+                {
+                    var paciente = ClnCarsal.PacienteCln.BuscarPorCi(
+                        txtCi.Text.Trim()
+                    ).FirstOrDefault();
+
+                    if (paciente != null)
+                    {
+                        IdPacienteRegistrado = paciente.IdPaciente;
+
+                        NombrePacienteRegistrado =
+                            paciente.Nombres + " " +
+                            paciente.PrimerApellido + " " +
+                            paciente.SegundoApellido;
+
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                        return;
+                    }
+                }
+
+                // Registro normal
                 Limpiar();
                 Listar();
             }

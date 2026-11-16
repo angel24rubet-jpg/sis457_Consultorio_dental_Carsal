@@ -98,6 +98,26 @@ namespace CpCarsal
             dgvLista.AllowUserToAddRows = false;
         }
 
+        private void ConfigurarEstadoBoton(Button boton)
+        {
+            boton.FlatStyle = FlatStyle.Flat;
+            boton.FlatAppearance.BorderSize = 0;
+            boton.UseVisualStyleBackColor = false;
+
+            if (boton.Enabled)
+            {
+                // Boton habilitado
+                boton.BackColor = Color.FromArgb(6, 68, 90);
+                boton.ForeColor = Color.White;
+            }
+            else
+            {
+                // Boton deshabilitado visualmente
+                boton.BackColor = Color.FromArgb(75, 112, 128);
+                boton.ForeColor = Color.White;
+            }
+        }
+
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
             try
@@ -378,6 +398,10 @@ namespace CpCarsal
 
             btnRegistrar.Enabled = true;
             btnModificar.Enabled = false;
+
+            ConfigurarEstadoBoton(btnRegistrar);
+            ConfigurarEstadoBoton(btnModificar);
+
             txtCi.Focus();
         }
 
@@ -389,6 +413,9 @@ namespace CpCarsal
 
             btnRegistrar.Enabled = true;
             btnModificar.Enabled = true;
+
+            ConfigurarEstadoBoton(btnRegistrar);
+ConfigurarEstadoBoton(btnModificar);
         }
     }
 }
