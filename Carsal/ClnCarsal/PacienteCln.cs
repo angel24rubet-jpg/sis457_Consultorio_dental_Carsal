@@ -108,6 +108,9 @@ namespace ClnCarsal
 
                 if (CalcularEdad(fechaNacimiento) > 120)
                     throw new Exception("La fecha de nacimiento no es válida (más de 120 años).");
+
+                if (CalcularEdad(fechaNacimiento) < 5)
+                    throw new Exception("Solo se pueden registrar pacientes de 5 años o más.");
             }
 
             if (!string.IsNullOrWhiteSpace(celular))
