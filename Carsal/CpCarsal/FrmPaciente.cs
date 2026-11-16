@@ -29,6 +29,7 @@ namespace CpCarsal
             DarFormatoGrilla();
             Limpiar();
             Listar();
+            dtpFechaNacimiento.MaxDate = DateTime.Today.AddYears(-3);
 
             if (RegistroDesdeCita)
             {
@@ -140,6 +141,38 @@ namespace CpCarsal
             {
                 erpCampos.SetError(dtpFechaNacimiento, "La fecha no puede ser futura");
                 esValido = false;
+            }
+            // Validar fecha de nacimiento
+            DateTime fechaNacimiento = dtpFechaNacimiento.Value.Date;
+            DateTime hoy = DateTime.Today;
+
+            if (fechaNacimiento > hoy)
+            {
+                MessageBox.Show(
+                    "La fecha de nacimiento no puede ser futura.",
+                    "CONSULTORIO CARSAL",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                dtpFechaNacimiento.Focus();
+                return false;
+            }
+
+            // Validar edad minima de 3 años
+            DateTime fechaMinima = hoy.AddYears(-3);
+
+            if (fechaNacimiento > fechaMinima)
+            {
+                MessageBox.Show(
+                    "El paciente debe tener como minimo 3 años de edad.",
+                    "CONSULTORIO CARSAL",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                dtpFechaNacimiento.Focus();
+                return false;
             }
 
             return esValido;

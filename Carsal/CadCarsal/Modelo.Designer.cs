@@ -1,4 +1,4 @@
-﻿// La generación de código T4 está habilitada para el modelo 'C:\SIS457_2026_2\Proyecto consultorio dental SIS457\sis457_Consultorio_dental_Carsal\Carsal\CadCarsal\Modelo.edmx'. 
+﻿// La generación de código T4 está habilitada para el modelo 'C:\Users\user\Desktop\laboratorio_sis457_2\Carsal\CadCarsal\Modelo.edmx'. 
 // Para habilitar la generación de código heredada, cambie el valor de la propiedad del diseñador 'Estrategia de generación de código'
 // por 'ObjectContext heredado'. Esta propiedad está disponible en la ventana Propiedades cuando se abre
 // el modelo en el diseñador.

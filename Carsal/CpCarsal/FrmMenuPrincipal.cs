@@ -108,5 +108,10 @@ namespace CpCarsal
         {
             AbrirFormulario(new FrmPago());
         }
+
+        private void pnlMenuLateral_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
