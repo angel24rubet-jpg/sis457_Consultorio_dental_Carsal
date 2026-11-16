@@ -216,6 +216,15 @@
   <ItemGroup>
     <None Include="Resources\icons8-add-50.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuPppp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuPppp1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -1,6 +1,6 @@
-﻿
-using ClnCarsal;
+﻿using ClnCarsal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -12,21 +12,17 @@ namespace CpCarsal
     {
         private int idPacienteSeleccionado = 0;
         private int idCitaSeleccionada = 0;
-
         private int idUsuarioActual = 1;
-
-        private bool pacienteEncontrado = false;
         private bool modoEdicion = false;
 
         public FrmCita()
         {
             InitializeComponent();
-
-            ConfigurarEstadoInicial();
         }
 
         private void FrmCita_Load(object sender, EventArgs e)
         {
+            DarFormatoGrilla();
 
             dtpFecha.Format = DateTimePickerFormat.Short;
             dtpFecha.MinDate = DateTime.Today;
@@ -34,85 +30,60 @@ namespace CpCarsal
             cboEspecialidad.DropDownStyle = ComboBoxStyle.DropDownList;
             cboDoctor.DropDownStyle = ComboBoxStyle.DropDownList;
             cboHora.DropDownStyle = ComboBoxStyle.DropDownList;
-
             txtNombrePaciente.ReadOnly = true;
 
             CargarEspecialidades();
-            CargarListaCitas();
-
+            ActualizarLista();
             ConfigurarEstadoInicial();
         }
 
-        // ESTADOS DEL FORMULARIO
-
+        // ESTADO INICIAL Y LIMPIEZA
         private void ConfigurarEstadoInicial()
         {
             LimpiarCampos();
 
             pnlRegistro.Enabled = false;
-
             txtBuscarCi.Enabled = true;
             btnBuscar.Enabled = true;
-
-            btnNuevaCita.Enabled = false;
-
             btnGuardar.Enabled = false;
             btnCancelar.Enabled = false;
-
             btnModificar.Enabled = false;
             btnEliminar.Enabled = false;
 
-            pacienteEncontrado = false;
             modoEdicion = false;
-
             idPacienteSeleccionado = 0;
             idCitaSeleccionada = 0;
-
             btnGuardar.Text = "REGISTRAR CITA";
         }
 
         private void HabilitarRegistro()
         {
             pnlRegistro.Enabled = true;
-
             btnGuardar.Enabled = true;
             btnCancelar.Enabled = true;
-
-            btnNuevaCita.Enabled = false;
-
             btnModificar.Enabled = false;
             btnEliminar.Enabled = false;
-        }
-
-        private void DeshabilitarRegistro()
-        {
-            pnlRegistro.Enabled = false;
-
-            btnGuardar.Enabled = false;
-            btnCancelar.Enabled = false;
         }
 
         private void LimpiarCampos()
         {
             txtBuscarCi.Clear();
             txtNombrePaciente.Clear();
-
             cboEspecialidad.SelectedIndex = -1;
             cboDoctor.DataSource = null;
             cboHora.Items.Clear();
-
             dtpFecha.Value = DateTime.Today;
         }
 
-
+        // FORMATO DE LA TABLA
         private void DarFormatoGrilla()
         {
-            System.Drawing.Color oscuro = System.Drawing.Color.FromArgb(0, 64, 64);
+            Color oscuro = Color.FromArgb(0, 64, 64);
 
-            dgvLista.BackgroundColor = System.Drawing.Color.White;
+            dgvLista.BackgroundColor = Color.White;
             dgvLista.BorderStyle = BorderStyle.None;
             dgvLista.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvLista.GridColor = System.Drawing.Color.FromArgb(227, 235, 235);
+            dgvLista.GridColor = Color.FromArgb(227, 235, 235);
             dgvLista.RowHeadersVisible = false;
             dgvLista.AllowUserToAddRows = false;
             dgvLista.AllowUserToDeleteRows = false;
@@ -122,215 +93,175 @@ namespace CpCarsal
             dgvLista.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvLista.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Encabezado
             dgvLista.EnableHeadersVisualStyles = false;
             dgvLista.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvLista.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgvLista.ColumnHeadersHeight = 38;
             dgvLista.ColumnHeadersDefaultCellStyle.BackColor = oscuro;
-            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvLista.ColumnHeadersDefaultCellStyle.SelectionBackColor = oscuro;
-            dgvLista.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            dgvLista.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             dgvLista.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
             dgvLista.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
-            // Filas
             dgvLista.RowTemplate.Height = 34;
-            dgvLista.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dgvLista.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(31, 45, 45);
-            dgvLista.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(203, 232, 229);
-            dgvLista.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(31, 45, 45);
+            dgvLista.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            dgvLista.DefaultCellStyle.ForeColor = Color.FromArgb(31, 45, 45);
+            dgvLista.DefaultCellStyle.SelectionBackColor = Color.FromArgb(203, 232, 229);
+            dgvLista.DefaultCellStyle.SelectionForeColor = Color.FromArgb(31, 45, 45);
             dgvLista.DefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
-            dgvLista.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(244, 249, 249);
+            dgvLista.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(244, 249, 249);
         }
 
-
-
+        // LISTAR Y ORGANIZAR CITAS
         private void ActualizarLista()
         {
-            dgvLista.DataSource = CitaCln.Listar();
-
-            
-
             dgvLista.DataSource = null;
             dgvLista.Columns.Clear();
-
             dgvLista.AutoGenerateColumns = true;
             dgvLista.DataSource = CitaCln.Listar();
 
             DarFormatoGrilla();
 
-            // Configuracion general
-            dgvLista.ReadOnly = true;
-            dgvLista.AllowUserToAddRows = false;
-            dgvLista.AllowUserToDeleteRows = false;
-            dgvLista.MultiSelect = false;
-            dgvLista.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
+            string[] columnasNecesarias =
+            {
+                "IdCita", "IdPaciente", "IdDoctor", "Ci",
+                "NombrePaciente", "PrimerApellido", "SegundoApellido",
+                "FechaHora", "NombreDoctor", "ApellidosDoctor",
+                "Especialidad", "Estado"
+            };
 
-            dgvLista.RowHeadersVisible = false;
-            dgvLista.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.Fill;
+            foreach (string nombre in columnasNecesarias)
+            {
+                if (!dgvLista.Columns.Contains(nombre))
+                {
+                    MessageBox.Show(
+                        "No se encontró la columna '" + nombre +
+                        "' en el resultado de paCitaListar(). Verifique el procedimiento almacenado.",
+                        "ERROR EN LA LISTA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
 
-            dgvLista.BackgroundColor = Color.White;
-            dgvLista.BorderStyle = BorderStyle.None;
-            dgvLista.CellBorderStyle =
-                DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvLista.GridColor = Color.FromArgb(220, 235, 233);
-
-            // Encabezados
-            dgvLista.EnableHeadersVisualStyles = false;
-            dgvLista.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(0, 73, 70);
-
-            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvLista.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 9F, FontStyle.Bold);
-
-            dgvLista.ColumnHeadersHeight = 38;
-
-            // Filas
-            dgvLista.DefaultCellStyle.BackColor = Color.White;
-            dgvLista.DefaultCellStyle.ForeColor =
-                Color.FromArgb(25, 55, 65);
-
-            dgvLista.DefaultCellStyle.Font =
-                new Font("Segoe UI", 9F, FontStyle.Regular);
-
-            dgvLista.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(0, 137, 135);
-
-            dgvLista.DefaultCellStyle.SelectionForeColor = Color.White;
-
-            dgvLista.AlternatingRowsDefaultCellStyle.BackColor =
-                Color.FromArgb(232, 245, 243);
-
-            dgvLista.RowTemplate.Height = 34;
-
-            // Ocultar identificadores
+            // Ocultar identificadores y fecha original (se muestran dos columnas separadas).
             dgvLista.Columns["IdCita"].Visible = false;
             dgvLista.Columns["IdPaciente"].Visible = false;
             dgvLista.Columns["IdDoctor"].Visible = false;
+            dgvLista.Columns["FechaHora"].Visible = false;
 
-            // Encabezados del paciente
+            // Encabezados
             dgvLista.Columns["Ci"].HeaderText = "CI";
-            dgvLista.Columns["NombrePaciente"].HeaderText = "Nombre";
+            dgvLista.Columns["NombrePaciente"].HeaderText = "Nombres";
             dgvLista.Columns["PrimerApellido"].HeaderText = "Primer apellido";
             dgvLista.Columns["SegundoApellido"].HeaderText = "Segundo apellido";
-
-            // Encabezados de la cita y doctor
-            dgvLista.Columns["FechaHora"].HeaderText = "Fecha y hora";
             dgvLista.Columns["NombreDoctor"].HeaderText = "Nombre doctor";
             dgvLista.Columns["ApellidosDoctor"].HeaderText = "Apellidos doctor";
             dgvLista.Columns["Especialidad"].HeaderText = "Especialidad";
             dgvLista.Columns["Estado"].HeaderText = "Estado";
 
-            // Orden de las columnas
+            // Fecha y hora se muestran por separado, usando el mismo dato FechaHora.
+            DataGridViewTextBoxColumn columnaFecha = new DataGridViewTextBoxColumn();
+            columnaFecha.Name = "Fecha";
+            columnaFecha.HeaderText = "Fecha";
+            columnaFecha.DataPropertyName = "FechaHora";
+            columnaFecha.DefaultCellStyle.Format = "dd/MM/yyyy";
+            columnaFecha.ReadOnly = true;
+            dgvLista.Columns.Add(columnaFecha);
+
+            DataGridViewTextBoxColumn columnaHora = new DataGridViewTextBoxColumn();
+            columnaHora.Name = "Hora";
+            columnaHora.HeaderText = "Hora";
+            columnaHora.DataPropertyName = "FechaHora";
+            columnaHora.DefaultCellStyle.Format = "HH:mm";
+            columnaHora.ReadOnly = true;
+            dgvLista.Columns.Add(columnaHora);
+
+            // Orden solicitado: CI, paciente, fecha, hora, doctor, especialidad y estado.
             dgvLista.Columns["Ci"].DisplayIndex = 0;
             dgvLista.Columns["NombrePaciente"].DisplayIndex = 1;
             dgvLista.Columns["PrimerApellido"].DisplayIndex = 2;
             dgvLista.Columns["SegundoApellido"].DisplayIndex = 3;
-            dgvLista.Columns["FechaHora"].DisplayIndex = 4;
-            dgvLista.Columns["NombreDoctor"].DisplayIndex = 5;
-            dgvLista.Columns["ApellidosDoctor"].DisplayIndex = 6;
-            dgvLista.Columns["Especialidad"].DisplayIndex = 7;
-            dgvLista.Columns["Estado"].DisplayIndex = 8;
+            dgvLista.Columns["Fecha"].DisplayIndex = 4;
+            dgvLista.Columns["Hora"].DisplayIndex = 5;
+            dgvLista.Columns["NombreDoctor"].DisplayIndex = 6;
+            dgvLista.Columns["ApellidosDoctor"].DisplayIndex = 7;
+            dgvLista.Columns["Especialidad"].DisplayIndex = 8;
+            dgvLista.Columns["Estado"].DisplayIndex = 9;
 
-            // Formato de fecha y hora
-            dgvLista.Columns["FechaHora"].DefaultCellStyle.Format =
-                "dd/MM/yyyy HH:mm";
-
-            // Anchos de columnas
             dgvLista.Columns["Ci"].FillWeight = 65;
             dgvLista.Columns["NombrePaciente"].FillWeight = 100;
             dgvLista.Columns["PrimerApellido"].FillWeight = 100;
             dgvLista.Columns["SegundoApellido"].FillWeight = 100;
-            dgvLista.Columns["FechaHora"].FillWeight = 110;
+            dgvLista.Columns["Fecha"].FillWeight = 85;
+            dgvLista.Columns["Hora"].FillWeight = 65;
             dgvLista.Columns["NombreDoctor"].FillWeight = 100;
             dgvLista.Columns["ApellidosDoctor"].FillWeight = 110;
             dgvLista.Columns["Especialidad"].FillWeight = 95;
             dgvLista.Columns["Estado"].FillWeight = 80;
 
             dgvLista.ClearSelection();
-
             btnModificar.Enabled = false;
             btnEliminar.Enabled = false;
-
             idCitaSeleccionada = 0;
         }
 
-
         // CARGAR ESPECIALIDADES
-
         private void CargarEspecialidades()
         {
-            var doctores = DoctorCln.Listar()
-                as System.Collections.IEnumerable;
-
-            var especialidades = new List<string>();
+            IEnumerable doctores = DoctorCln.Listar() as IEnumerable;
+            List<string> especialidades = new List<string>();
 
             if (doctores != null)
             {
                 foreach (var doctor in doctores)
                 {
-                    string especialidad = (string)doctor
-                        .GetType()
-                        .GetProperty("Especialidad")
-                        .GetValue(doctor, null);
+                    var propiedad = doctor.GetType().GetProperty("Especialidad");
+                    if (propiedad == null) continue;
 
+                    string especialidad = Convert.ToString(propiedad.GetValue(doctor, null));
                     if (!string.IsNullOrWhiteSpace(especialidad) &&
                         !especialidades.Contains(especialidad))
-                    {
                         especialidades.Add(especialidad);
-                    }
                 }
             }
 
             especialidades.Sort();
-
             cboEspecialidad.DataSource = especialidades;
             cboEspecialidad.SelectedIndex = -1;
         }
-        // CARGAR DOCTORES
 
+        // CARGAR DOCTORES SEGUN ESPECIALIDAD
         private void CargarDoctores()
         {
             cboDoctor.DataSource = null;
             cboDoctor.Items.Clear();
 
-            if (cboEspecialidad.SelectedIndex == -1)
-                return;
+            if (cboEspecialidad.SelectedIndex == -1) return;
 
-            string especialidad =
-                cboEspecialidad.SelectedItem.ToString();
-
-            var doctores = DoctorCln.Listar()
-                as System.Collections.IEnumerable;
-
-            var lista = new List<object>();
+            string especialidad = Convert.ToString(cboEspecialidad.SelectedItem);
+            IEnumerable doctores = DoctorCln.Listar() as IEnumerable;
+            List<object> lista = new List<object>();
 
             if (doctores != null)
             {
                 foreach (var doctor in doctores)
                 {
-                    string esp = (string)doctor.GetType()
-                        .GetProperty("Especialidad")
-                        .GetValue(doctor, null);
+                    var tipo = doctor.GetType();
+                    var propEspecialidad = tipo.GetProperty("Especialidad");
+                    var propId = tipo.GetProperty("IdDoctor");
+                    var propNombres = tipo.GetProperty("Nombres");
+                    var propApellidos = tipo.GetProperty("Apellidos");
 
+                    if (propEspecialidad == null || propId == null ||
+                        propNombres == null || propApellidos == null)
+                        continue;
+
+                    string esp = Convert.ToString(propEspecialidad.GetValue(doctor, null));
                     if (esp == especialidad)
                     {
-                        int id = Convert.ToInt32(
-                            doctor.GetType()
-                            .GetProperty("IdDoctor")
-                            .GetValue(doctor, null));
-
-                        string nombres = (string)doctor.GetType()
-                            .GetProperty("Nombres")
-                            .GetValue(doctor, null);
-
-                        string apellidos = (string)doctor.GetType()
-                            .GetProperty("Apellidos")
-                            .GetValue(doctor, null);
+                        int id = Convert.ToInt32(propId.GetValue(doctor, null));
+                        string nombres = Convert.ToString(propNombres.GetValue(doctor, null));
+                        string apellidos = Convert.ToString(propApellidos.GetValue(doctor, null));
 
                         lista.Add(new
                         {
@@ -347,40 +278,32 @@ namespace CpCarsal
             cboDoctor.SelectedIndex = -1;
         }
 
-        // CARGAR HORARIOS DISPONIBLES
+        // CARGAR HORARIOS DISPONIBLES Y MARCAR LOS OCUPADOS
         private void CargarHorariosDisponibles()
         {
             cboHora.Items.Clear();
 
-            if (cboDoctor.SelectedIndex == -1)
+            if (cboDoctor.SelectedIndex == -1 || cboDoctor.SelectedValue == null)
                 return;
 
-            int idDoctor =
-                Convert.ToInt32(cboDoctor.SelectedValue);
-
+            int idDoctor = Convert.ToInt32(cboDoctor.SelectedValue);
             DateTime fecha = dtpFecha.Value.Date;
-
-            var resultado = CitaCln.HorariosOcupados(
-                idDoctor, fecha)
-                as System.Collections.IEnumerable;
-
-            var horariosOcupados = new List<TimeSpan>();
+            IEnumerable resultado = CitaCln.HorariosOcupados(idDoctor, fecha) as IEnumerable;
+            List<TimeSpan> horariosOcupados = new List<TimeSpan>();
 
             if (resultado != null)
             {
                 foreach (var registro in resultado)
                 {
-                    var propiedad = registro.GetType()
-                        .GetProperty("HoraOcupada");
+                    if (registro == null) continue;
 
-                    if (propiedad != null)
-                    {
-                        object valor =
-                            propiedad.GetValue(registro, null);
+                    var propiedad = registro.GetType().GetProperty("HoraOcupada");
+                    if (propiedad == null) continue;
 
-                        if (valor is TimeSpan)
-                            horariosOcupados.Add((TimeSpan)valor);
-                    }
+                    object valor = propiedad.GetValue(registro, null);
+                    TimeSpan horaOcupada;
+                    if (valor != null && TimeSpan.TryParse(valor.ToString(), out horaOcupada))
+                        horariosOcupados.Add(horaOcupada);
                 }
             }
 
@@ -388,19 +311,15 @@ namespace CpCarsal
             {
                 for (int minuto = 0; minuto < 60; minuto += 30)
                 {
-                    TimeSpan turno =
-                        new TimeSpan(hora, minuto, 0);
+                    TimeSpan turno = new TimeSpan(hora, minuto, 0);
+                    DateTime fechaHora = fecha.Add(turno);
+                    if (fechaHora <= DateTime.Now) continue;
 
-                    if (!horariosOcupados.Contains(turno))
-                    {
-                        DateTime fechaHora = fecha.Add(turno);
+                    string texto = fechaHora.ToString("HH:mm");
+                    if (horariosOcupados.Any(h => h.Hours == turno.Hours && h.Minutes == turno.Minutes))
+                        texto += " - OCUPADO";
 
-                        if (fechaHora > DateTime.Now)
-                        {
-                            cboHora.Items.Add(
-                                fechaHora.ToString("HH:mm"));
-                        }
-                    }
+                    cboHora.Items.Add(texto);
                 }
             }
 
@@ -408,145 +327,96 @@ namespace CpCarsal
         }
 
         // EVENTOS DE LOS COMBOS
-
-        private void cboEspecialidad_SelectedIndexChanged(
-            object sender, EventArgs e)
+        private void cboEspecialidad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!pnlRegistro.Enabled)
-                return;
-
-            CargarDoctores();
+            if (pnlRegistro.Enabled)
+                CargarDoctores();
         }
 
-        private void cboDoctor_SelectedIndexChanged(
-            object sender, EventArgs e)
+        private void cboDoctor_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!pnlRegistro.Enabled)
-                return;
-
-            if (cboDoctor.SelectedIndex != -1)
+            if (pnlRegistro.Enabled && cboDoctor.SelectedIndex != -1)
                 CargarHorariosDisponibles();
         }
 
-        private void dtpFecha_ValueChanged(
-            object sender, EventArgs e)
+        private void dtpFecha_ValueChanged(object sender, EventArgs e)
         {
-            if (!pnlRegistro.Enabled)
-                return;
-
-
-            if (cboDoctor.SelectedIndex != -1)
-
+            if (pnlRegistro.Enabled && cboDoctor.SelectedIndex != -1)
                 CargarHorariosDisponibles();
-
         }
 
+        private void cboHora_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cboHora.Text.Contains("OCUPADO"))
+            {
+                MessageBox.Show(
+                    "Esta hora ya está ocupada. Seleccione otro horario.",
+                    "MENSAJE-CONSULTORIO CARSAL",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                cboHora.SelectedIndex = -1;
+            }
+        }
 
-        // BUSCAR PACIENTE
-
+        // BUSCAR PACIENTE POR CI
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             try
             {
                 string ci = txtBuscarCi.Text.Trim();
-
                 if (string.IsNullOrWhiteSpace(ci))
                 {
-                    MessageBox.Show("Ingrese el CI del paciente.");
+                    MessageBox.Show("Ingrese el CI del paciente.", 
+                        "MENSAJE CONSULTORIO CARSAL");
                     txtBuscarCi.Focus();
                     return;
                 }
 
-                var paciente = ClnCarsal.PacienteCln.BuscarPorCi(ci)
-                    .FirstOrDefault();
+                var paciente = PacienteCln.BuscarPorCi(ci).FirstOrDefault();
 
-                // Si el paciente no existe
                 if (paciente == null)
                 {
                     DialogResult respuesta = MessageBox.Show(
-                        "El paciente con el CI " + ci +
-                        " no está registrado, ¿desea registrarlo?",
-                        "Paciente no registrado",
+                        "El paciente con el CI " + ci + " no está registrado, ¿desea registrarlo?",
+                        "MENSAJE-CONSULTORIO CARSAL",
                         MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
-                    );
+                        MessageBoxIcon.Question);
 
-                    if (respuesta == DialogResult.Yes)
+                    if (respuesta != DialogResult.Yes) return;
+
+                    using (FrmPaciente formulario = new FrmPaciente())
                     {
-                        using (FrmPaciente formulario = new FrmPaciente())
-                        {
-                            formulario.RegistroDesdeCita = true;
-                            formulario.CiDesdeCita = ci;
+                        formulario.RegistroDesdeCita = true;
+                        formulario.CiDesdeCita = ci;
 
-                            if (formulario.ShowDialog() == DialogResult.OK)
-                            {
-                                idPacienteSeleccionado =
-                                    formulario.IdPacienteRegistrado;
+                        if (formulario.ShowDialog() != DialogResult.OK) return;
 
-                                txtNombrePaciente.Text =
-                                    formulario.NombrePacienteRegistrado;
-
-                                pnlRegistro.Enabled = true;
-                            }
-                        }
-                        HabilitarRegistro();
+                        idPacienteSeleccionado = formulario.IdPacienteRegistrado;
+                        txtNombrePaciente.Text = formulario.NombrePacienteRegistrado;
                     }
 
+                    if (idPacienteSeleccionado == 0) return;
+                    HabilitarRegistro();
                     return;
                 }
 
-                // Si el paciente existe
                 idPacienteSeleccionado = paciente.IdPaciente;
-
-                txtNombrePaciente.Text =
-                    paciente.Nombres + " " +
-                    paciente.PrimerApellido + " " +
-                    paciente.SegundoApellido;
-
-                pnlRegistro.Enabled = true;
+                txtNombrePaciente.Text = paciente.Nombres + " " +
+                    paciente.PrimerApellido + " " + paciente.SegundoApellido;
 
                 HabilitarRegistro();
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    ex.InnerException != null
-                        ? ex.InnerException.Message
-                        : ex.Message,
-                    "Error al buscar paciente",
+                    ex.GetBaseException().Message,
+                    "ERROR AL BUSCAR PACIENTE",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                    MessageBoxIcon.Error);
             }
-        }
-
-        // NUEVA CITA
-
-        private void btnNuevaCita_Click(object sender, EventArgs e)
-        {
-            if (!pacienteEncontrado ||
-                idPacienteSeleccionado == 0)
-            {
-                MessageBox.Show("Primero busque un paciente.");
-                return;
-            }
-
-            modoEdicion = false;
-            idCitaSeleccionada = 0;
-
-            btnGuardar.Text = "REGISTRAR CITA";
-            cboEspecialidad.SelectedIndex = -1;
-            cboDoctor.DataSource = null;
-            cboHora.Items.Clear();
-
-            HabilitarRegistro();
-
-            btnNuevaCita.Enabled = false;
         }
 
         // REGISTRAR O MODIFICAR CITA
-
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             try
@@ -563,7 +433,7 @@ namespace CpCarsal
                     return;
                 }
 
-                if (cboDoctor.SelectedIndex == -1)
+                if (cboDoctor.SelectedIndex == -1 || cboDoctor.SelectedValue == null)
                 {
                     MessageBox.Show("Seleccione un doctor.");
                     return;
@@ -575,95 +445,98 @@ namespace CpCarsal
                     return;
                 }
 
-                int idDoctor =
-                    Convert.ToInt32(cboDoctor.SelectedValue);
+                string horarioSeleccionado = cboHora.SelectedItem.ToString();
+                if (horarioSeleccionado.Contains("OCUPADO"))
+                {
+                    MessageBox.Show(
+                        "El horario seleccionado ya tiene una cita registrada. Por favor, seleccione otra hora.",
+                        "HORARIO OCUPADO",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    cboHora.SelectedIndex = -1;
+                    return;
+                }
 
-                DateTime fechaHora = dtpFecha.Value.Date.Add(
-                    TimeSpan.Parse(cboHora.SelectedItem.ToString()));
+                int idDoctor = Convert.ToInt32(cboDoctor.SelectedValue);
+                TimeSpan hora = TimeSpan.Parse(horarioSeleccionado);
+                DateTime fechaHora = dtpFecha.Value.Date.Add(hora);
 
                 if (!modoEdicion)
                 {
-
-                    CitaCln.Insertar(
-                        idPacienteSeleccionado,
-                        idDoctor,
-                        fechaHora,
-                        idUsuarioActual);
-
+                    CitaCln.Insertar(idPacienteSeleccionado, idDoctor, fechaHora, idUsuarioActual);
                     MessageBox.Show(
-                        "Cita registrada correctamente.");
+                        "Cita registrada correctamente.",
+                        "CONSULTORIO CARSAL",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
-
                 else
-
                 {
-
-                    CitaCln.Modificar(
-                        idCitaSeleccionada,
-                        idDoctor,
-                        fechaHora,
-                        idUsuarioActual);
-
+                    CitaCln.Modificar(idCitaSeleccionada, idDoctor, fechaHora, idUsuarioActual);
                     MessageBox.Show(
-                        "Cita modificada correctamente.");
+                        "Cita modificada correctamente.",
+                        "CONSULTORIO CARSAL",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
 
                 ActualizarLista();
-
-                // Volver al estado inicial
                 ConfigurarEstadoInicial();
-
                 txtBuscarCi.Focus();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    "No se pudo guardar la cita: " + ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                string mensaje = ex.GetBaseException().Message;
+                if (mensaje.IndexOf("ocupad", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    mensaje.IndexOf("duplic", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    MessageBox.Show(
+                        "El horario seleccionado ya está ocupado. Por favor, seleccione otro horario.",
+                        "HORARIO OCUPADO",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No se pudo guardar la cita.\n\n" + mensaje,
+                        "ERROR AL GUARDAR",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
         }
 
         // CANCELAR REGISTRO O MODIFICACION
-
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             ActualizarLista();
-
             ConfigurarEstadoInicial();
-
             txtBuscarCi.Focus();
         }
 
-        // SELECCIONAR CITA DE LA LISTA
-
-        private void dgvLista_CellClick(
-            object sender, DataGridViewCellEventArgs e)
+        // SELECCIONAR UNA CITA DE LA TABLA
+        private void dgvLista_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || modoEdicion)
+            if (e.RowIndex < 0 || modoEdicion) return;
+
+            DataGridViewRow fila = dgvLista.Rows[e.RowIndex];
+            if (fila.Cells["IdCita"].Value == null || fila.Cells["Estado"].Value == null)
                 return;
 
-            DataGridViewRow fila =
-                dgvLista.Rows[e.RowIndex];
-
-            idCitaSeleccionada = Convert.ToInt32(
-                fila.Cells["IdCita"].Value);
-
-            string estado =
-                fila.Cells["Estado"].Value.ToString();
+            idCitaSeleccionada = Convert.ToInt32(fila.Cells["IdCita"].Value);
+            string estado = Convert.ToString(fila.Cells["Estado"].Value);
 
             btnModificar.Enabled = estado == "Pendiente";
             btnEliminar.Enabled = estado == "Pendiente";
         }
 
-        // MODIFICAR CITA
-
+        // MODIFICAR CITA SELECCIONADA
         private void btnModificar_Click(object sender, EventArgs e)
         {
             if (idCitaSeleccionada == 0)
             {
-                MessageBox.Show("Seleccione una cita.");
+                MessageBox.Show("Seleccione una cita.", "MENSAJE-CONSULTORIO CARSAL");
                 return;
             }
 
@@ -671,135 +544,95 @@ namespace CpCarsal
             {
                 DataGridViewRow fila = dgvLista.Rows
                     .Cast<DataGridViewRow>()
-                    .FirstOrDefault(r =>
-                        Convert.ToInt32(
-                            r.Cells["IdCita"].Value) ==
-                        idCitaSeleccionada);
+                    .FirstOrDefault(r => r.Cells["IdCita"].Value != null &&
+                        Convert.ToInt32(r.Cells["IdCita"].Value) == idCitaSeleccionada);
 
                 if (fila == null)
                 {
-
-                    MessageBox.Show(
-                        "No se encontró la cita seleccionada.");
+                    MessageBox.Show("No se encontró la cita seleccionada.", "MENSAJE-CONSULTORIO CARSAL");
                     return;
                 }
 
-                idPacienteSeleccionado = Convert.ToInt32(
-
-                    fila.Cells["IdPaciente"].Value);
-
+                idPacienteSeleccionado = Convert.ToInt32(fila.Cells["IdPaciente"].Value);
                 txtNombrePaciente.Text =
-
-                    Convert.ToString(fila.Cells["NombrePaciente"].Value) +
-                    " " +
-                    Convert.ToString(fila.Cells["PrimerApellido"].Value) +
-                    " " +
+                    Convert.ToString(fila.Cells["NombrePaciente"].Value) + " " +
+                    Convert.ToString(fila.Cells["PrimerApellido"].Value) + " " +
                     Convert.ToString(fila.Cells["SegundoApellido"].Value);
 
-                string especialidad =
-
-                    Convert.ToString(
-
-                        fila.Cells["Especialidad"].Value);
-
-                int idDoctor = Convert.ToInt32(
-                    fila.Cells["IdDoctor"].Value);
-
-                DateTime fechaHora = Convert.ToDateTime(
-                    fila.Cells["FechaHora"].Value);
+                string especialidad = Convert.ToString(fila.Cells["Especialidad"].Value);
+                int idDoctor = Convert.ToInt32(fila.Cells["IdDoctor"].Value);
+                DateTime fechaHora = Convert.ToDateTime(fila.Cells["FechaHora"].Value);
 
                 modoEdicion = true;
-
                 HabilitarRegistro();
 
-                // Bloquear búsqueda durante la modificación
                 txtBuscarCi.Enabled = false;
                 btnBuscar.Enabled = false;
-                btnNuevaCita.Enabled = false;
-
                 btnModificar.Enabled = false;
                 btnEliminar.Enabled = false;
 
-                // Recuperar especialidad y doctor
-
                 cboEspecialidad.SelectedItem = especialidad;
-
-                        CargarDoctores();
-
+                CargarDoctores();
                 cboDoctor.SelectedValue = idDoctor;
 
-                // Recuperar fecha
                 dtpFecha.Value = fechaHora.Date;
-
                 CargarHorariosDisponibles();
 
-                // Conservar el horario actual
-                string horaActual =
-                    fechaHora.ToString("HH:mm");
-
+                string horaActual = fechaHora.ToString("HH:mm");
                 if (!cboHora.Items.Contains(horaActual))
                     cboHora.Items.Add(horaActual);
-
                 cboHora.SelectedItem = horaActual;
 
                 btnGuardar.Text = "GUARDAR CAMBIOS";
-
             }
-
             catch (Exception ex)
-
             {
                 MessageBox.Show(
-                    "Error al recuperar los datos: " + ex.Message);
+                    "Error al recuperar los datos de la cita.\n\n" + ex.GetBaseException().Message,
+                    "ERROR AL MODIFICAR",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
-        // ELIMINAR / CANCELAR CITA
-
+        // CANCELAR CITA
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (idCitaSeleccionada == 0)
             {
-                MessageBox.Show("Seleccione una cita.");
+                MessageBox.Show("Seleccione una cita.", "MENSAJE-CONSULTORIO CARSAL");
                 return;
             }
 
             DialogResult respuesta = MessageBox.Show(
-                "¿Está seguro de anular esta cita?",
-                "Confirmar anulación",
+                "¿Está seguro de cancelar esta cita?",
+                "MENSAJE-CONSULTORIO CARSAL",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (respuesta != DialogResult.Yes)
-                return;
+            if (respuesta != DialogResult.Yes) return;
 
             try
             {
-                CitaCln.Cancelar(
-                    idCitaSeleccionada,
-                    idUsuarioActual);
-
+                CitaCln.Cancelar(idCitaSeleccionada, idUsuarioActual);
                 MessageBox.Show(
-                    "La cita fue anulada correctamente.");
+                    "La cita fue cancelada correctamente.",
+                    "CONSULTORIO CARSAL",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
                 ActualizarLista();
-
                 ConfigurarEstadoInicial();
-
                 txtBuscarCi.Focus();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Error al anular la cita: " + ex.Message);
+                    "Error al cancelar la cita.\n\n" + ex.GetBaseException().Message,
+                    "ERROR AL CANCELAR",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
-        }
-       
-        // CARGAR LISTA AL INGRESAR
-       
-        private void CargarListaCitas()
-        {
-            ActualizarLista();
         }
     }
 }

@@ -33,7 +33,6 @@
             this.btnBuscar = new System.Windows.Forms.Button();
             this.lblNombrePaciente = new System.Windows.Forms.Label();
             this.txtNombrePaciente = new System.Windows.Forms.TextBox();
-            this.btnNuevaCita = new System.Windows.Forms.Button();
             this.lblEspecialidad = new System.Windows.Forms.Label();
             this.cboEspecialidad = new System.Windows.Forms.ComboBox();
             this.lblDoctor = new System.Windows.Forms.Label();
@@ -61,7 +60,7 @@
             // 
             this.lblBuscarCi.AutoSize = true;
             this.lblBuscarCi.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBuscarCi.Location = new System.Drawing.Point(546, 169);
+            this.lblBuscarCi.Location = new System.Drawing.Point(545, 100);
             this.lblBuscarCi.Name = "lblBuscarCi";
             this.lblBuscarCi.Size = new System.Drawing.Size(141, 17);
             this.lblBuscarCi.TabIndex = 27;
@@ -70,7 +69,7 @@
             // txtBuscarCi
             // 
             this.txtBuscarCi.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBuscarCi.Location = new System.Drawing.Point(693, 167);
+            this.txtBuscarCi.Location = new System.Drawing.Point(692, 98);
             this.txtBuscarCi.Name = "txtBuscarCi";
             this.txtBuscarCi.Size = new System.Drawing.Size(287, 22);
             this.txtBuscarCi.TabIndex = 28;
@@ -83,7 +82,7 @@
             this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
-            this.btnBuscar.Location = new System.Drawing.Point(1001, 154);
+            this.btnBuscar.Location = new System.Drawing.Point(1000, 85);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(83, 46);
             this.btnBuscar.TabIndex = 29;
@@ -109,22 +108,6 @@
             this.txtNombrePaciente.ReadOnly = true;
             this.txtNombrePaciente.Size = new System.Drawing.Size(400, 22);
             this.txtNombrePaciente.TabIndex = 31;
-            // 
-            // btnNuevaCita
-            // 
-            this.btnNuevaCita.BackColor = System.Drawing.Color.Teal;
-            this.btnNuevaCita.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNuevaCita.FlatAppearance.BorderSize = 0;
-            this.btnNuevaCita.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNuevaCita.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNuevaCita.ForeColor = System.Drawing.Color.White;
-            this.btnNuevaCita.Location = new System.Drawing.Point(365, 205);
-            this.btnNuevaCita.Name = "btnNuevaCita";
-            this.btnNuevaCita.Size = new System.Drawing.Size(134, 46);
-            this.btnNuevaCita.TabIndex = 32;
-            this.btnNuevaCita.Text = "NUEVA CITA";
-            this.btnNuevaCita.UseVisualStyleBackColor = false;
-            this.btnNuevaCita.Click += new System.EventHandler(this.btnNuevaCita_Click);
             // 
             // lblEspecialidad
             // 
@@ -228,7 +211,7 @@
             this.btnModificar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModificar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnModificar.ForeColor = System.Drawing.Color.White;
-            this.btnModificar.Location = new System.Drawing.Point(833, 228);
+            this.btnModificar.Location = new System.Drawing.Point(620, 316);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(165, 46);
             this.btnModificar.TabIndex = 45;
@@ -244,7 +227,7 @@
             this.btnEliminar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEliminar.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(620, 228);
+            this.btnEliminar.Location = new System.Drawing.Point(822, 316);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(165, 46);
             this.btnEliminar.TabIndex = 46;
@@ -271,9 +254,9 @@
             // dgvLista
             // 
             this.dgvLista.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLista.Location = new System.Drawing.Point(3, 32);
+            this.dgvLista.Location = new System.Drawing.Point(17, 37);
             this.dgvLista.Name = "dgvLista";
-            this.dgvLista.Size = new System.Drawing.Size(1560, 187);
+            this.dgvLista.Size = new System.Drawing.Size(1560, 273);
             this.dgvLista.TabIndex = 48;
             this.dgvLista.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLista_CellClick);
             // 
@@ -283,9 +266,9 @@
             this.panel1.Controls.Add(this.dgvLista);
             this.panel1.Controls.Add(this.btnModificar);
             this.panel1.Controls.Add(this.btnEliminar);
-            this.panel1.Location = new System.Drawing.Point(31, 526);
+            this.panel1.Location = new System.Drawing.Point(31, 415);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1595, 274);
+            this.panel1.Size = new System.Drawing.Size(1595, 378);
             this.panel1.TabIndex = 49;
             // 
             // pnlRegistro
@@ -303,7 +286,7 @@
             this.pnlRegistro.Controls.Add(this.dtpFecha);
             this.pnlRegistro.Controls.Add(this.cboDoctor);
             this.pnlRegistro.Controls.Add(this.lblFecha);
-            this.pnlRegistro.Location = new System.Drawing.Point(356, 257);
+            this.pnlRegistro.Location = new System.Drawing.Point(345, 146);
             this.pnlRegistro.Name = "pnlRegistro";
             this.pnlRegistro.Size = new System.Drawing.Size(974, 263);
             this.pnlRegistro.TabIndex = 50;
@@ -335,7 +318,6 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pnlRegistro);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btnNuevaCita);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.txtBuscarCi);
             this.Controls.Add(this.lblBuscarCi);
@@ -359,7 +341,6 @@
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Label lblNombrePaciente;
         private System.Windows.Forms.TextBox txtNombrePaciente;
-        private System.Windows.Forms.Button btnNuevaCita;
         private System.Windows.Forms.Label lblEspecialidad;
         private System.Windows.Forms.ComboBox cboEspecialidad;
         private System.Windows.Forms.Label lblDoctor;

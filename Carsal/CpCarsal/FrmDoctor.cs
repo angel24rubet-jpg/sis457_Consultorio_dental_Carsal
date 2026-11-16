@@ -21,15 +21,27 @@ namespace CpCarsal
             pnlRegistro.Enabled = false;
         }
 
+
+
         private void FrmDoctor_Load(object sender, EventArgs e)
         {
-            ConfigurarDgvLista();
+            // Cargar especialidades
             CargarEspecialidades();
 
+            // Cargar doctores
             dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
 
-            dgvLista.Columns["IdDoctor"].Visible = false;
+            // Ocultar identificador
+            if (dgvLista.Columns.Contains("IdDoctor"))
+            {
+                dgvLista.Columns["IdDoctor"].Visible = false;
+            }
+
+            // Aplicar formato visual
+            DarFormatoGrilla();
         }
+
+
         // Llena el desplegable con las especialidades de la tabla
         private void CargarEspecialidades()
         {
@@ -61,50 +73,43 @@ namespace CpCarsal
                 dgvLista.Columns["IdDoctor"].Visible = false;
         }
 
-        private void ConfigurarDgvLista()
+        private void DarFormatoGrilla()
         {
-            dgvLista.EnableHeadersVisualStyles = false;
+            System.Drawing.Color oscuro = System.Drawing.Color.FromArgb(0, 64, 64);
 
-            dgvLista.BackgroundColor = Color.White;
+            dgvLista.BackgroundColor = System.Drawing.Color.White;
             dgvLista.BorderStyle = BorderStyle.None;
             dgvLista.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-
-            dgvLista.ColumnHeadersDefaultCellStyle.BackColor =
-                Color.FromArgb(6, 68, 90);
-
-            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvLista.ColumnHeadersDefaultCellStyle.Font =
-                new Font("Segoe UI", 10, FontStyle.Bold);
-
-            dgvLista.ColumnHeadersHeight = 40;
-
-            dgvLista.DefaultCellStyle.BackColor = Color.White;
-            dgvLista.DefaultCellStyle.ForeColor =
-                Color.FromArgb(24, 59, 80);
-
-            dgvLista.DefaultCellStyle.Font =
-                new Font("Segoe UI", 9, FontStyle.Regular);
-
-            dgvLista.AlternatingRowsDefaultCellStyle.BackColor =
-                Color.FromArgb(230, 244, 245);
-
-            dgvLista.DefaultCellStyle.SelectionBackColor =
-                Color.FromArgb(0, 140, 150);
-
-            dgvLista.DefaultCellStyle.SelectionForeColor = Color.White;
-
-            dgvLista.RowTemplate.Height = 34;
-
+            dgvLista.GridColor = System.Drawing.Color.FromArgb(227, 235, 235);
             dgvLista.RowHeadersVisible = false;
-            dgvLista.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.Fill;
-
-            dgvLista.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
-
-            dgvLista.MultiSelect = false;
-            dgvLista.ReadOnly = true;
             dgvLista.AllowUserToAddRows = false;
+            dgvLista.AllowUserToDeleteRows = false;
+            dgvLista.AllowUserToResizeRows = false;
+            dgvLista.ReadOnly = true;
+            dgvLista.MultiSelect = false;
+            dgvLista.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvLista.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Encabezado
+            dgvLista.EnableHeadersVisualStyles = false;
+            dgvLista.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvLista.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvLista.ColumnHeadersHeight = 38;
+            dgvLista.ColumnHeadersDefaultCellStyle.BackColor = oscuro;
+            dgvLista.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            dgvLista.ColumnHeadersDefaultCellStyle.SelectionBackColor = oscuro;
+            dgvLista.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            dgvLista.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvLista.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            // Filas
+            dgvLista.RowTemplate.Height = 34;
+            dgvLista.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dgvLista.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(31, 45, 45);
+            dgvLista.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(203, 232, 229);
+            dgvLista.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(31, 45, 45);
+            dgvLista.DefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgvLista.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(244, 249, 249);
         }
 
         private void ConfigurarEstadoBoton(Button boton)
@@ -136,7 +141,8 @@ namespace CpCarsal
                     string.IsNullOrWhiteSpace(txtPrimerApellido.Text))
                 {
                     MessageBox.Show(
-                        "Complete el CI, los nombres y el primer apellido.");
+                        "Complete el CI, los nombres y el primer apellido.",
+                        "MENSAJE-CONSULTORIO CARSAL");
                     return;
                 }
                 if (cboEspecialidad.SelectedIndex == -1)
@@ -158,7 +164,8 @@ namespace CpCarsal
            ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
        ); ;
 
-                MessageBox.Show("Doctor registrado correctamente.");
+                MessageBox.Show("Doctor registrado correctamente.", 
+                    "MENSAJE-CONSULTORIO CARSAL");
 
                 dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
 
@@ -193,7 +200,8 @@ namespace CpCarsal
                 {
                     if (idDoctorSeleccionado == 0)
                     {
-                        MessageBox.Show("Seleccione un doctor de la lista.");
+                        MessageBox.Show("Seleccione un doctor de la lista.", 
+                            "MENSAJE-CONSULTORIO CARSAL");
                         return;
                     }
 
@@ -205,7 +213,8 @@ namespace CpCarsal
 
                     if (fila == null)
                     {
-                        MessageBox.Show("No se encontró el doctor seleccionado.");
+                        MessageBox.Show("No se encontró el doctor seleccionado.", 
+                            "MENSAJE-CONSULTORIO CARSAL");
                         return;
                     }
 
@@ -249,7 +258,8 @@ namespace CpCarsal
                     string.IsNullOrWhiteSpace(txtPrimerApellido.Text))
                 {
                     MessageBox.Show(
-                        "Complete el CI, los nombres y el primer apellido.");
+                        "Complete el CI, los nombres y el primer apellido.",
+                        "MENSAJE-CONSULTORIO CARSAL");
                     return;
                 }
 
@@ -268,7 +278,8 @@ namespace CpCarsal
                     ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
                 );
 
-                MessageBox.Show("Doctor modificado correctamente.");
+                MessageBox.Show("Doctor modificado correctamente.", 
+                    "MENSAJE-CONSULTORIO CARSAL");
 
                 dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
 
@@ -308,7 +319,8 @@ namespace CpCarsal
             {
                 if (dgvLista.CurrentRow == null)
                 {
-                    MessageBox.Show("Seleccione un doctor de la lista.");
+                    MessageBox.Show("Seleccione un doctor de la lista.",
+                        "MENSAJE-CONSULTORIO CARSAL");
                     return;
                 }
 
@@ -316,8 +328,8 @@ namespace CpCarsal
                     dgvLista.CurrentRow.Cells["IdDoctor"].Value);
 
                 DialogResult respuesta = MessageBox.Show(
-                    "¿Está seguro de que desea desactivar este doctor?",
-                    "Confirmar desactivación",
+                    "¿Está seguro de que desea aliminar este doctor?",
+                    "MENSAJE-CONSULTORIO CARSAL",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
@@ -329,7 +341,8 @@ namespace CpCarsal
                     ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
                 );
 
-                MessageBox.Show("Doctor desactivado correctamente.");
+                MessageBox.Show("Doctor eliminado correctamente.", 
+                    "MENSAJE-CONSULTORIO CARSAL");
 
                 dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
             }
@@ -339,7 +352,7 @@ namespace CpCarsal
                     ex.InnerException != null
                         ? ex.InnerException.Message
                         : ex.Message,
-                    "Error al desactivar doctor",
+                    "Error al eliminar doctor",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -353,7 +366,8 @@ namespace CpCarsal
 
                 if (string.IsNullOrWhiteSpace(ci))
                 {
-                    MessageBox.Show("Ingrese el CI del doctor que desea buscar.");
+                    MessageBox.Show("Ingrese el CI del doctor que desea buscar", 
+                        "MENSAJE-CONSULTORIO CARSAL");
                     txtBuscarCi.Focus();
                     return;
                 }
@@ -363,7 +377,8 @@ namespace CpCarsal
 
                 if (dgvLista.Rows.Count == 0)
                 {
-                    MessageBox.Show("No se encontró un doctor activo con ese CI.");
+                    MessageBox.Show("No se encontró un doctor activo con ese CI.",
+                        "MENSAJE-CONSULTORIO CARSAL");
                 }
             }
             catch (Exception ex)
