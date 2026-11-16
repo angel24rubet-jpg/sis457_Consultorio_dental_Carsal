@@ -26,13 +26,13 @@ namespace CadCarsal
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
         public string Celular { get; set; }
-        public string Especialidad { get; set; }
         public string Direccion { get; set; }
         public bool Estado { get; set; }
         public Nullable<int> IdUsuarioRegistro { get; set; }
         public System.DateTime FechaRegistro { get; set; }
         public Nullable<int> IdUsuarioModificacion { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public int IdEspecialidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cita> Cita { get; set; }
@@ -40,5 +40,6 @@ namespace CadCarsal
         public virtual Usuario Usuario1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Usuario> Usuario2 { get; set; }
+        public virtual Especialidad Especialidad { get; set; }
     }
 }

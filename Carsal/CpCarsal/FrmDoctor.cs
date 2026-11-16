@@ -24,10 +24,19 @@ namespace CpCarsal
         private void FrmDoctor_Load(object sender, EventArgs e)
         {
             ConfigurarDgvLista();
+            CargarEspecialidades();
 
             dgvLista.DataSource = ClnCarsal.DoctorCln.Listar();
 
             dgvLista.Columns["IdDoctor"].Visible = false;
+        }
+        // Llena el desplegable con las especialidades de la tabla
+        private void CargarEspecialidades()
+        {
+            cboEspecialidad.DisplayMember = "Nombre";          // lo que se VE
+            cboEspecialidad.ValueMember = "IdEspecialidad";    // lo que se GUARDA
+            cboEspecialidad.DataSource = ClnCarsal.EspecialidadCln.Listar();
+            cboEspecialidad.SelectedIndex = -1;
         }
         private void LimpiarCampos()
         {
@@ -35,7 +44,7 @@ namespace CpCarsal
             txtNombres.Clear();
             txtPrimerApellido.Clear();
             txtSegundoApellido.Clear();
-            txtEspecialidad.Clear();
+            cboEspecialidad.SelectedIndex = -1;
             txtDireccion.Clear();
             txtCelular.Clear();
 
@@ -130,21 +139,24 @@ namespace CpCarsal
                         "Complete el CI, los nombres y el primer apellido.");
                     return;
                 }
-
+                if (cboEspecialidad.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Seleccione la especialidad del doctor.");
+                    return;
+                }
                 ClnCarsal.DoctorCln.Insertar(
-                    txtCi.Text.Trim(),
-                    txtNombres.Text.Trim(),
-                    txtPrimerApellido.Text.Trim(),
-                    string.IsNullOrWhiteSpace(txtSegundoApellido.Text)
-                        ? null : txtSegundoApellido.Text.Trim(),
-                    string.IsNullOrWhiteSpace(txtCelular.Text)
-                        ? null : txtCelular.Text.Trim(),
-                    string.IsNullOrWhiteSpace(txtEspecialidad.Text)
-                        ? null : txtEspecialidad.Text.Trim(),
-                    string.IsNullOrWhiteSpace(txtDireccion.Text)
-                        ? null : txtDireccion.Text.Trim(),
-                    ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
-                );
+                       txtCi.Text.Trim(),
+           txtNombres.Text.Trim(),
+           txtPrimerApellido.Text.Trim(),
+           string.IsNullOrWhiteSpace(txtSegundoApellido.Text)
+               ? null : txtSegundoApellido.Text.Trim(),
+           string.IsNullOrWhiteSpace(txtCelular.Text)
+               ? null : txtCelular.Text.Trim(),
+           (int)cboEspecialidad.SelectedValue,
+           string.IsNullOrWhiteSpace(txtDireccion.Text)
+               ? null : txtDireccion.Text.Trim(),
+           ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
+       ); ;
 
                 MessageBox.Show("Doctor registrado correctamente.");
 
@@ -216,7 +228,8 @@ namespace CpCarsal
                         : "";
 
                     txtCelular.Text = fila.Cells["Celular"].Value?.ToString();
-                    txtEspecialidad.Text = fila.Cells["Especialidad"].Value?.ToString();
+                    cboEspecialidad.SelectedIndex = cboEspecialidad.FindStringExact(
+    fila.Cells["Especialidad"].Value?.ToString());
                     txtDireccion.Text = fila.Cells["Direccion"].Value?.ToString();
 
                     pnlRegistro.Enabled = true;
@@ -239,7 +252,7 @@ namespace CpCarsal
                         "Complete el CI, los nombres y el primer apellido.");
                     return;
                 }
-        
+
                 ClnCarsal.DoctorCln.Modificar(
                     idDoctorSeleccionado,
                     txtCi.Text.Trim(),
@@ -249,8 +262,7 @@ namespace CpCarsal
                         ? null : txtSegundoApellido.Text.Trim(),
                     string.IsNullOrWhiteSpace(txtCelular.Text)
                         ? null : txtCelular.Text.Trim(),
-                    string.IsNullOrWhiteSpace(txtEspecialidad.Text)
-                        ? null : txtEspecialidad.Text.Trim(),
+                     (int)cboEspecialidad.SelectedValue,
                     string.IsNullOrWhiteSpace(txtDireccion.Text)
                         ? null : txtDireccion.Text.Trim(),
                     ClnCarsal.UsuarioCln.ObtenerIdUsuarioActivo().Value
@@ -415,7 +427,7 @@ namespace CpCarsal
             btnModificar.Enabled = true;
 
             ConfigurarEstadoBoton(btnRegistrar);
-ConfigurarEstadoBoton(btnModificar);
+            ConfigurarEstadoBoton(btnModificar);
         }
     }
 }

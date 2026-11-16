@@ -19,6 +19,17 @@
           <Property Name="IdUsuarioModificacion" Type="int" />
           <Property Name="FechaModificacion" Type="datetime" />
         </EntityType>
+        <EntityType Name="DetallePago">
+          <Key>
+            <PropertyRef Name="IdDetallePago" />
+          </Key>
+          <Property Name="IdDetallePago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPago" Type="int" Nullable="false" />
+          <Property Name="IdServicio" Type="int" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="PrecioUnitario" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Subtotal" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+        </EntityType>
         <EntityType Name="Doctor">
           <Key>
             <PropertyRef Name="IdDoctor" />
@@ -28,8 +39,21 @@
           <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Apellidos" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Celular" Type="varchar" MaxLength="20" />
-          <Property Name="Especialidad" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Direccion" Type="varchar" MaxLength="200" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
+          <Property Name="IdUsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="IdEspecialidad" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Especialidad">
+          <Key>
+            <PropertyRef Name="IdEspecialidad" />
+          </Key>
+          <Property Name="IdEspecialidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdUsuarioRegistro" Type="int" />
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
@@ -82,6 +106,20 @@
           <Property Name="Concepto" Type="varchar" MaxLength="250" Nullable="false" />
           <Property Name="Estado" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="IdUsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="IdServicio" />
+          </Key>
+          <Property Name="IdServicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="250" />
+          <Property Name="Precio" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="int" />
+          <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
           <Property Name="IdUsuarioModificacion" Type="int" />
           <Property Name="FechaModificacion" Type="datetime" />
         </EntityType>
@@ -144,6 +182,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DetallePago_Pago">
+          <End Role="Pago" Type="Self.Pago" Multiplicity="1" />
+          <End Role="DetallePago" Type="Self.DetallePago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pago">
+              <PropertyRef Name="IdPago" />
+            </Principal>
+            <Dependent Role="DetallePago">
+              <PropertyRef Name="IdPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallePago_Servicio">
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="1" />
+          <End Role="DetallePago" Type="Self.DetallePago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servicio">
+              <PropertyRef Name="IdServicio" />
+            </Principal>
+            <Dependent Role="DetallePago">
+              <PropertyRef Name="IdServicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_Especialidad">
+          <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidad">
+              <PropertyRef Name="IdEspecialidad" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="IdEspecialidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Doctor_UsuarioModificacion">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
@@ -164,6 +238,30 @@
               <PropertyRef Name="IdUsuario" />
             </Principal>
             <Dependent Role="Doctor">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Especialidad_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Especialidad">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Especialidad_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Especialidad" Type="Self.Especialidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Especialidad">
               <PropertyRef Name="IdUsuarioRegistro" />
             </Dependent>
           </ReferentialConstraint>
@@ -276,6 +374,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Servicio_UsuarioModificacion">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_UsuarioRegistro">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Servicio" Type="Self.Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Usuario_Doctor">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
@@ -315,6 +437,9 @@
           <Parameter Name="FechaHora" Type="datetime" Mode="In" />
           <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
         </Function>
+        <Function Name="paDetallePagoListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPago" Type="int" Mode="In" />
+        </Function>
         <Function Name="paDoctorBuscarPorCi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Ci" Type="varchar" Mode="In" />
         </Function>
@@ -327,7 +452,7 @@
           <Parameter Name="Nombres" Type="varchar" Mode="In" />
           <Parameter Name="Apellidos" Type="varchar" Mode="In" />
           <Parameter Name="Celular" Type="varchar" Mode="In" />
-          <Parameter Name="Especialidad" Type="varchar" Mode="In" />
+          <Parameter Name="IdEspecialidad" Type="int" Mode="In" />
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
           <Parameter Name="IdUsuarioRegistro" Type="int" Mode="In" />
         </Function>
@@ -337,7 +462,7 @@
           <Parameter Name="Nombres" Type="varchar" Mode="In" />
           <Parameter Name="Apellidos" Type="varchar" Mode="In" />
           <Parameter Name="Celular" Type="varchar" Mode="In" />
-          <Parameter Name="Especialidad" Type="varchar" Mode="In" />
+          <Parameter Name="IdEspecialidad" Type="int" Mode="In" />
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
           <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
         </Function>
@@ -393,12 +518,20 @@
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
           <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
         </Function>
+        <Function Name="paPagoCitasPorCobrar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdPaciente" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paPagoListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="paServicioListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="LabConsultorioDental_CarsalModelStoreContainer">
           <EntitySet Name="Cita" EntityType="Self.Cita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DetallePago" EntityType="Self.DetallePago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Especialidad" EntityType="Self.Especialidad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistorialClinico" EntityType="Self.HistorialClinico" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pago" EntityType="Self.Pago" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Servicio" EntityType="Self.Servicio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Cita_Doctor" Association="Self.FK_Cita_Doctor">
             <End Role="Doctor" EntitySet="Doctor" />
@@ -416,6 +549,18 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Cita" EntitySet="Cita" />
           </AssociationSet>
+          <AssociationSet Name="FK_DetallePago_Pago" Association="Self.FK_DetallePago_Pago">
+            <End Role="Pago" EntitySet="Pago" />
+            <End Role="DetallePago" EntitySet="DetallePago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallePago_Servicio" Association="Self.FK_DetallePago_Servicio">
+            <End Role="Servicio" EntitySet="Servicio" />
+            <End Role="DetallePago" EntitySet="DetallePago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_Especialidad" Association="Self.FK_Doctor_Especialidad">
+            <End Role="Especialidad" EntitySet="Especialidad" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
           <AssociationSet Name="FK_Doctor_UsuarioModificacion" Association="Self.FK_Doctor_UsuarioModificacion">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Doctor" EntitySet="Doctor" />
@@ -423,6 +568,14 @@
           <AssociationSet Name="FK_Doctor_UsuarioRegistro" Association="Self.FK_Doctor_UsuarioRegistro">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Especialidad_UsuarioModificacion" Association="Self.FK_Especialidad_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Especialidad" EntitySet="Especialidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Especialidad_UsuarioRegistro" Association="Self.FK_Especialidad_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Especialidad" EntitySet="Especialidad" />
           </AssociationSet>
           <AssociationSet Name="FK_Historial_UsuarioModificacion" Association="Self.FK_Historial_UsuarioModificacion">
             <End Role="Usuario" EntitySet="Usuario" />
@@ -459,6 +612,14 @@
           <AssociationSet Name="FK_Pago_UsuarioRegistro" Association="Self.FK_Pago_UsuarioRegistro">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Pago" EntitySet="Pago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_UsuarioModificacion" Association="Self.FK_Servicio_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_UsuarioRegistro" Association="Self.FK_Servicio_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Servicio" EntitySet="Servicio" />
           </AssociationSet>
           <AssociationSet Name="FK_Usuario_Doctor" Association="Self.FK_Usuario_Doctor">
             <End Role="Doctor" EntitySet="Doctor" />
@@ -498,7 +659,6 @@
           <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Apellidos" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Celular" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Especialidad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="IdUsuarioRegistro" Type="Int32" />
@@ -509,6 +669,8 @@
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Doctor_UsuarioModificacion" FromRole="Doctor" ToRole="Usuario" />
           <NavigationProperty Name="Usuario1" Relationship="Self.FK_Doctor_UsuarioRegistro" FromRole="Doctor" ToRole="Usuario" />
           <NavigationProperty Name="Usuario2" Relationship="Self.FK_Usuario_Doctor" FromRole="Doctor" ToRole="Usuario" />
+          <Property Name="IdEspecialidad" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Especialidad" Relationship="LabConsultorioDental_CarsalModel.FK_Doctor_Especialidad" FromRole="Doctor" ToRole="Especialidad" />
         </EntityType>
         <EntityType Name="HistorialClinico">
           <Key>
@@ -569,6 +731,7 @@
           <NavigationProperty Name="Cita" Relationship="Self.FK_Pago_Cita" FromRole="Pago" ToRole="Cita" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK_Pago_UsuarioModificacion" FromRole="Pago" ToRole="Usuario" />
           <NavigationProperty Name="Usuario1" Relationship="Self.FK_Pago_UsuarioRegistro" FromRole="Pago" ToRole="Usuario" />
+          <NavigationProperty Name="DetallePago" Relationship="LabConsultorioDental_CarsalModel.FK_DetallePago_Pago" FromRole="Pago" ToRole="DetallePago" />
         </EntityType>
         <EntityType Name="Usuario">
           <Key>
@@ -591,6 +754,10 @@
           <NavigationProperty Name="Paciente1" Relationship="Self.FK_Paciente_UsuarioRegistro" FromRole="Usuario" ToRole="Paciente" />
           <NavigationProperty Name="Pago" Relationship="Self.FK_Pago_UsuarioModificacion" FromRole="Usuario" ToRole="Pago" />
           <NavigationProperty Name="Pago1" Relationship="Self.FK_Pago_UsuarioRegistro" FromRole="Usuario" ToRole="Pago" />
+          <NavigationProperty Name="Especialidad" Relationship="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioModificacion" FromRole="Usuario" ToRole="Especialidad" />
+          <NavigationProperty Name="Especialidad1" Relationship="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioRegistro" FromRole="Usuario" ToRole="Especialidad" />
+          <NavigationProperty Name="Servicio" Relationship="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioModificacion" FromRole="Usuario" ToRole="Servicio" />
+          <NavigationProperty Name="Servicio1" Relationship="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioRegistro" FromRole="Usuario" ToRole="Servicio" />
         </EntityType>
         <Association Name="FK_Cita_Doctor">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
@@ -901,25 +1068,6 @@
             <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
             <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="paDoctorInsertar">
-            <Parameter Name="Ci" Mode="In" Type="String" />
-            <Parameter Name="Nombres" Mode="In" Type="String" />
-            <Parameter Name="Apellidos" Mode="In" Type="String" />
-            <Parameter Name="Celular" Mode="In" Type="String" />
-            <Parameter Name="Especialidad" Mode="In" Type="String" />
-            <Parameter Name="Direccion" Mode="In" Type="String" />
-            <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="paDoctorModificar">
-            <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
-            <Parameter Name="Ci" Mode="In" Type="String" />
-            <Parameter Name="Nombres" Mode="In" Type="String" />
-            <Parameter Name="Apellidos" Mode="In" Type="String" />
-            <Parameter Name="Celular" Mode="In" Type="String" />
-            <Parameter Name="Especialidad" Mode="In" Type="String" />
-            <Parameter Name="Direccion" Mode="In" Type="String" />
-            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="paDoctorEliminar">
             <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
             <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
@@ -955,7 +1103,7 @@
             <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paHistorialCitasDisponibles" ReturnType="Collection(LabConsultorioDental_CarsalModel.paHistorialCitasDisponibles_Result)">
-            <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
+          <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paHistorialInsertar" ReturnType="Collection(Decimal)">
             <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
@@ -966,7 +1114,7 @@
             <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paHistorialListarPorPaciente" ReturnType="Collection(LabConsultorioDental_CarsalModel.paHistorialListarPorPaciente_Result)">
-            <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
+          <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paHistorialModificar">
             <Parameter Name="IdHistorial" Mode="In" Type="Int32" />
@@ -975,6 +1123,64 @@
             <Parameter Name="Observaciones" Mode="In" Type="String" />
             <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="DetallePago" EntityType="LabConsultorioDental_CarsalModel.DetallePago" />
+          <EntitySet Name="Especialidad" EntityType="LabConsultorioDental_CarsalModel.Especialidad" />
+          <EntitySet Name="Servicio" EntityType="LabConsultorioDental_CarsalModel.Servicio" />
+          <AssociationSet Name="FK_DetallePago_Pago" Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Pago">
+            <End Role="Pago" EntitySet="Pago" />
+            <End Role="DetallePago" EntitySet="DetallePago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetallePago_Servicio" Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Servicio">
+            <End Role="Servicio" EntitySet="Servicio" />
+            <End Role="DetallePago" EntitySet="DetallePago" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_Especialidad" Association="LabConsultorioDental_CarsalModel.FK_Doctor_Especialidad">
+            <End Role="Especialidad" EntitySet="Especialidad" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Especialidad_UsuarioModificacion" Association="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Especialidad" EntitySet="Especialidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Especialidad_UsuarioRegistro" Association="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Especialidad" EntitySet="Especialidad" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_UsuarioModificacion" Association="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioModificacion">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Servicio_UsuarioRegistro" Association="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioRegistro">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Servicio" EntitySet="Servicio" />
+          </AssociationSet>
+          <FunctionImport Name="paDetallePagoListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paDetallePagoListar_Result)">
+          <Parameter Name="IdPago" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paDoctorInsertar">
+            <Parameter Name="Ci" Mode="In" Type="String" />
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="Celular" Mode="In" Type="String" />
+            <Parameter Name="IdEspecialidad" Mode="In" Type="Int32" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paDoctorModificar">
+            <Parameter Name="IdDoctor" Mode="In" Type="Int32" />
+            <Parameter Name="Ci" Mode="In" Type="String" />
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="Celular" Mode="In" Type="String" />
+            <Parameter Name="IdEspecialidad" Mode="In" Type="Int32" />
+            <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paPagoCitasPorCobrar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPagoCitasPorCobrar_Result)">
+            <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paPagoListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPagoListar_Result)" />
+          <FunctionImport Name="paServicioListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paServicioListar_Result)" />
         </EntityContainer>
         <ComplexType Name="paPacienteListar_Result">
           <Property Type="Int32" Name="IdPaciente" Nullable="false" />
@@ -1075,6 +1281,165 @@
           <Property Type="String" Name="Doctor" Nullable="true" MaxLength="301" />
           <Property Type="String" Name="RegistradoPor" Nullable="true" MaxLength="50" />
         </ComplexType>
+        <EntityType Name="DetallePago">
+          <Key>
+            <PropertyRef Name="IdDetallePago" />
+          </Key>
+          <Property Name="IdDetallePago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPago" Type="Int32" Nullable="false" />
+          <Property Name="IdServicio" Type="Int32" Nullable="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="PrecioUnitario" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="Subtotal" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <NavigationProperty Name="Pago" Relationship="LabConsultorioDental_CarsalModel.FK_DetallePago_Pago" FromRole="DetallePago" ToRole="Pago" />
+          <NavigationProperty Name="Servicio" Relationship="LabConsultorioDental_CarsalModel.FK_DetallePago_Servicio" FromRole="DetallePago" ToRole="Servicio" />
+        </EntityType>
+        <EntityType Name="Especialidad">
+          <Key>
+            <PropertyRef Name="IdEspecialidad" />
+          </Key>
+          <Property Name="IdEspecialidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="Int32" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Doctor" Relationship="LabConsultorioDental_CarsalModel.FK_Doctor_Especialidad" FromRole="Especialidad" ToRole="Doctor" />
+          <NavigationProperty Name="Usuario" Relationship="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioModificacion" FromRole="Especialidad" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioRegistro" FromRole="Especialidad" ToRole="Usuario" />
+        </EntityType>
+        <EntityType Name="Servicio">
+          <Key>
+            <PropertyRef Name="IdServicio" />
+          </Key>
+          <Property Name="IdServicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="IdUsuarioRegistro" Type="Int32" />
+          <Property Name="FechaRegistro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DetallePago" Relationship="LabConsultorioDental_CarsalModel.FK_DetallePago_Servicio" FromRole="Servicio" ToRole="DetallePago" />
+          <NavigationProperty Name="Usuario" Relationship="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioModificacion" FromRole="Servicio" ToRole="Usuario" />
+          <NavigationProperty Name="Usuario1" Relationship="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioRegistro" FromRole="Servicio" ToRole="Usuario" />
+        </EntityType>
+        <Association Name="FK_DetallePago_Pago">
+          <End Type="LabConsultorioDental_CarsalModel.Pago" Role="Pago" Multiplicity="1" />
+          <End Type="LabConsultorioDental_CarsalModel.DetallePago" Role="DetallePago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pago">
+              <PropertyRef Name="IdPago" />
+            </Principal>
+            <Dependent Role="DetallePago">
+              <PropertyRef Name="IdPago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetallePago_Servicio">
+          <End Type="LabConsultorioDental_CarsalModel.Servicio" Role="Servicio" Multiplicity="1" />
+          <End Type="LabConsultorioDental_CarsalModel.DetallePago" Role="DetallePago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Servicio">
+              <PropertyRef Name="IdServicio" />
+            </Principal>
+            <Dependent Role="DetallePago">
+              <PropertyRef Name="IdServicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Doctor_Especialidad">
+          <End Type="LabConsultorioDental_CarsalModel.Especialidad" Role="Especialidad" Multiplicity="1" />
+          <End Type="LabConsultorioDental_CarsalModel.Doctor" Role="Doctor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Especialidad">
+              <PropertyRef Name="IdEspecialidad" />
+            </Principal>
+            <Dependent Role="Doctor">
+              <PropertyRef Name="IdEspecialidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Especialidad_UsuarioModificacion">
+          <End Type="LabConsultorioDental_CarsalModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="LabConsultorioDental_CarsalModel.Especialidad" Role="Especialidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Especialidad">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Especialidad_UsuarioRegistro">
+          <End Type="LabConsultorioDental_CarsalModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="LabConsultorioDental_CarsalModel.Especialidad" Role="Especialidad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Especialidad">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_UsuarioModificacion">
+          <End Type="LabConsultorioDental_CarsalModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="LabConsultorioDental_CarsalModel.Servicio" Role="Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IdUsuarioModificacion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Servicio_UsuarioRegistro">
+          <End Type="LabConsultorioDental_CarsalModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="LabConsultorioDental_CarsalModel.Servicio" Role="Servicio" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="Servicio">
+              <PropertyRef Name="IdUsuarioRegistro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="paDetallePagoListar_Result">
+          <Property Type="Int32" Name="IdDetallePago" Nullable="false" />
+          <Property Type="String" Name="Servicio" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="Cantidad" Nullable="false" />
+          <Property Type="Decimal" Name="PrecioUnitario" Nullable="false" Precision="10" Scale="2" />
+          <Property Type="Decimal" Name="Subtotal" Nullable="false" Precision="10" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="paPagoCitasPorCobrar_Result">
+          <Property Type="Int32" Name="IdCita" Nullable="false" />
+          <Property Type="DateTime" Name="FechaHora" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="327" />
+        </ComplexType>
+        <ComplexType Name="paPagoListar_Result">
+          <Property Type="Int32" Name="IdPago" Nullable="false" />
+          <Property Type="DateTime" Name="FechaPago" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Ci" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="Paciente" Nullable="false" MaxLength="201" />
+          <Property Type="DateTime" Name="FechaCita" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Concepto" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="MetodoPago" Nullable="false" MaxLength="30" />
+          <Property Type="Decimal" Name="Monto" Nullable="false" Precision="10" Scale="2" />
+          <Property Type="String" Name="Estado" Nullable="false" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="paServicioListar_Result">
+          <Property Type="Int32" Name="IdServicio" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="250" />
+          <Property Type="Decimal" Name="Precio" Nullable="false" Precision="10" Scale="2" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1099,12 +1464,12 @@
           <EntitySetMapping Name="Doctor">
             <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Doctor">
               <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="IdEspecialidad" ColumnName="IdEspecialidad" />
                 <ScalarProperty Name="IdDoctor" ColumnName="IdDoctor" />
                 <ScalarProperty Name="Ci" ColumnName="Ci" />
                 <ScalarProperty Name="Nombres" ColumnName="Nombres" />
                 <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
                 <ScalarProperty Name="Celular" ColumnName="Celular" />
-                <ScalarProperty Name="Especialidad" ColumnName="Especialidad" />
                 <ScalarProperty Name="Direccion" ColumnName="Direccion" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
                 <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
@@ -1262,8 +1627,6 @@
           <FunctionImportMapping FunctionImportName="paPacienteInsertar_Registrar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteInsertar" />
           <FunctionImportMapping FunctionImportName="paPacienteModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteModificar" />
           <FunctionImportMapping FunctionImportName="paPacienteEliminar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPacienteEliminar" />
-          <FunctionImportMapping FunctionImportName="paDoctorInsertar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorInsertar" />
-          <FunctionImportMapping FunctionImportName="paDoctorModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorModificar" />
           <FunctionImportMapping FunctionImportName="paDoctorEliminar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorEliminar" />
           <FunctionImportMapping FunctionImportName="paDoctorBuscarPorCi" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorBuscarPorCi">
             <ResultMapping>
@@ -1362,6 +1725,94 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="paHistorialModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paHistorialModificar" />
+          <EntitySetMapping Name="DetallePago">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.DetallePago">
+              <MappingFragment StoreEntitySet="DetallePago">
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+                <ScalarProperty Name="PrecioUnitario" ColumnName="PrecioUnitario" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="IdServicio" ColumnName="IdServicio" />
+                <ScalarProperty Name="IdPago" ColumnName="IdPago" />
+                <ScalarProperty Name="IdDetallePago" ColumnName="IdDetallePago" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Especialidad">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Especialidad">
+              <MappingFragment StoreEntitySet="Especialidad">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdEspecialidad" ColumnName="IdEspecialidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Servicio">
+            <EntityTypeMapping TypeName="LabConsultorioDental_CarsalModel.Servicio">
+              <MappingFragment StoreEntitySet="Servicio">
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdServicio" ColumnName="IdServicio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="paDetallePagoListar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDetallePagoListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paDetallePagoListar_Result">
+                <ScalarProperty Name="IdDetallePago" ColumnName="IdDetallePago" />
+                <ScalarProperty Name="Servicio" ColumnName="Servicio" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="PrecioUnitario" ColumnName="PrecioUnitario" />
+                <ScalarProperty Name="Subtotal" ColumnName="Subtotal" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paDoctorInsertar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorInsertar" />
+          <FunctionImportMapping FunctionImportName="paDoctorModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paDoctorModificar" />
+          <FunctionImportMapping FunctionImportName="paPagoCitasPorCobrar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPagoCitasPorCobrar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paPagoCitasPorCobrar_Result">
+                <ScalarProperty Name="IdCita" ColumnName="IdCita" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paPagoListar" FunctionName="LabConsultorioDental_CarsalModel.Store.paPagoListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paPagoListar_Result">
+                <ScalarProperty Name="IdPago" ColumnName="IdPago" />
+                <ScalarProperty Name="FechaPago" ColumnName="FechaPago" />
+                <ScalarProperty Name="Ci" ColumnName="Ci" />
+                <ScalarProperty Name="Paciente" ColumnName="Paciente" />
+                <ScalarProperty Name="FechaCita" ColumnName="FechaCita" />
+                <ScalarProperty Name="Concepto" ColumnName="Concepto" />
+                <ScalarProperty Name="MetodoPago" ColumnName="MetodoPago" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paServicioListar" FunctionName="LabConsultorioDental_CarsalModel.Store.paServicioListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paServicioListar_Result">
+                <ScalarProperty Name="IdServicio" ColumnName="IdServicio" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -65,7 +65,7 @@
             this.pnlContenido.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlContenido.Location = new System.Drawing.Point(219, 166);
             this.pnlContenido.Name = "pnlContenido";
-            this.pnlContenido.Size = new System.Drawing.Size(1490, 609);
+            this.pnlContenido.Size = new System.Drawing.Size(1321, 609);
             this.pnlContenido.TabIndex = 2;
             // 
             // pnlSuperior
@@ -81,7 +81,7 @@
             this.pnlSuperior.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlSuperior.Location = new System.Drawing.Point(219, 0);
             this.pnlSuperior.Name = "pnlSuperior";
-            this.pnlSuperior.Size = new System.Drawing.Size(1490, 166);
+            this.pnlSuperior.Size = new System.Drawing.Size(1321, 166);
             this.pnlSuperior.TabIndex = 1;
             // 
             // label1
@@ -106,7 +106,7 @@
             this.btnCerrarSesion.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnCerrarSesion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCerrarSesion.ForeColor = System.Drawing.Color.Transparent;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(1324, 115);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(1155, 115);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(163, 28);
             this.btnCerrarSesion.TabIndex = 4;
@@ -121,7 +121,7 @@
             this.lblRol.BackColor = System.Drawing.Color.Transparent;
             this.lblRol.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRol.ForeColor = System.Drawing.Color.White;
-            this.lblRol.Location = new System.Drawing.Point(1241, 55);
+            this.lblRol.Location = new System.Drawing.Point(1072, 55);
             this.lblRol.Name = "lblRol";
             this.lblRol.Size = new System.Drawing.Size(180, 25);
             this.lblRol.TabIndex = 3;
@@ -135,7 +135,7 @@
             this.lblUsuario.BackColor = System.Drawing.Color.Transparent;
             this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUsuario.ForeColor = System.Drawing.Color.White;
-            this.lblUsuario.Location = new System.Drawing.Point(1232, 16);
+            this.lblUsuario.Location = new System.Drawing.Point(1063, 16);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(220, 25);
             this.lblUsuario.TabIndex = 2;
@@ -262,6 +262,7 @@
             this.btnPagos.TabIndex = 7;
             this.btnPagos.Text = "Pagos";
             this.btnPagos.UseVisualStyleBackColor = true;
+            this.btnPagos.Click += new System.EventHandler(this.btnPagos_Click);
             // 
             // btnUsuarios
             // 
@@ -341,7 +342,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1709, 775);
+            this.ClientSize = new System.Drawing.Size(1540, 775);
             this.Controls.Add(this.pnlContenido);
             this.Controls.Add(this.pnlSuperior);
             this.Controls.Add(this.pnlMenuLateral);

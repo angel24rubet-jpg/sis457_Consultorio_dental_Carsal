@@ -80,5 +80,10 @@ namespace CpCarsal
         {
             AbrirFormulario(new FrmHistorialClinico());
         }
+
+        private void btnPagos_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new FrmPago());
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace ClnCarsal
                         d.Nombres,
                         d.Apellidos,
                         d.Celular,
-                        d.Especialidad,
+                        Especialidad = d.Especialidad.Nombre,
                         d.Direccion
                     })
                     .ToList();
@@ -32,7 +32,7 @@ namespace ClnCarsal
             string primerApellido,
             string segundoApellido,
             string celular,
-            string especialidad,
+            int idEspecialidad,
             string direccion,
             int idUsuarioRegistro)
         {
@@ -48,7 +48,7 @@ namespace ClnCarsal
                     nombres,
                     apellidos,
                     celular,
-                    especialidad,
+                    idEspecialidad,
                     direccion,
                     idUsuarioRegistro
                 );
@@ -63,7 +63,7 @@ namespace ClnCarsal
             string primerApellido,
             string segundoApellido,
             string celular,
-            string especialidad,
+            int idEspecialidad,
             string direccion,
             int idUsuarioModificacion)
         {
@@ -80,7 +80,7 @@ namespace ClnCarsal
                     nombres,
                     apellidos,
                     celular,
-                    especialidad,
+                    idEspecialidad,
                     direccion,
                     idUsuarioModificacion
                 );

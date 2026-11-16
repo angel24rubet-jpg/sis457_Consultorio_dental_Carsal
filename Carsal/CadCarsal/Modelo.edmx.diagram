@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4bdaa6cf06af4c49978abca9b19d5e48" Name="Diagram1" ZoomLevel="83">
+      <Diagram DiagramId="4bdaa6cf06af4c49978abca9b19d5e48" Name="Diagram1" ZoomLevel="80">
         <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Cita" Width="1.5" PointX="6.125" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Doctor" Width="1.5" PointX="3" PointY="11.125" IsExpanded="true" />
         <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.HistorialClinico" Width="1.5" PointX="9.875" PointY="12.5" IsExpanded="true" />
@@ -27,6 +27,16 @@
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Paciente_UsuarioRegistro" ManuallyRouted="false" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Pago_UsuarioModificacion" ManuallyRouted="false" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Pago_UsuarioRegistro" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.DetallePago" Width="1.5" PointX="11.375" PointY="5.625" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Especialidad" Width="1.5" PointX="3" PointY="6.375" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Servicio" Width="1.5" PointX="3" PointY="2.25" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Pago" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Servicio" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Doctor_Especialidad" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioModificacion" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioRegistro" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioModificacion" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioRegistro" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

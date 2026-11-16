@@ -14,6 +14,12 @@ namespace CadCarsal
     
     public partial class Pago
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Pago()
+        {
+            this.DetallePago = new HashSet<DetallePago>();
+        }
+    
         public int IdPago { get; set; }
         public int IdCita { get; set; }
         public System.DateTime FechaPago { get; set; }
@@ -28,5 +34,7 @@ namespace CadCarsal
         public virtual Cita Cita { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario Usuario1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DetallePago> DetallePago { get; set; }
     }
 }

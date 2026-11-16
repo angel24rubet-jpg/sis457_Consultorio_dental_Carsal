@@ -48,12 +48,11 @@
             this.pnlLista = new System.Windows.Forms.Panel();
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
             this.pnlListaCabecera = new System.Windows.Forms.Panel();
+            this.txtFiltro = new System.Windows.Forms.TextBox();
+            this.lblFiltro = new System.Windows.Forms.Label();
             this.lblLista = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
             this.erpCampos = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lblFiltro = new System.Windows.Forms.Label();
-            this.txtFiltro = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.pnlPaciente.SuspendLayout();
             this.pnlAtencion.SuspendLayout();
             this.pnlLista.SuspendLayout();
@@ -197,7 +196,6 @@
             // cboCita
             // 
             this.cboCita.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboCita.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cboCita.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cboCita.FormattingEnabled = true;
             this.cboCita.Location = new System.Drawing.Point(20, 84);
@@ -362,7 +360,6 @@
             // 
             // pnlListaCabecera
             // 
-            this.pnlListaCabecera.Controls.Add(this.button1);
             this.pnlListaCabecera.Controls.Add(this.txtFiltro);
             this.pnlListaCabecera.Controls.Add(this.lblFiltro);
             this.pnlListaCabecera.Controls.Add(this.lblLista);
@@ -371,6 +368,29 @@
             this.pnlListaCabecera.Name = "pnlListaCabecera";
             this.pnlListaCabecera.Size = new System.Drawing.Size(1192, 52);
             this.pnlListaCabecera.TabIndex = 0;
+            // 
+            // txtFiltro
+            // 
+            this.txtFiltro.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFiltro.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtFiltro.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.txtFiltro.Location = new System.Drawing.Point(604, 16);
+            this.txtFiltro.Name = "txtFiltro";
+            this.txtFiltro.Size = new System.Drawing.Size(200, 26);
+            this.txtFiltro.TabIndex = 21;
+            this.txtFiltro.TextChanged += new System.EventHandler(this.txtFiltro_TextChanged);
+            // 
+            // lblFiltro
+            // 
+            this.lblFiltro.AutoSize = true;
+            this.lblFiltro.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblFiltro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
+            this.lblFiltro.Location = new System.Drawing.Point(462, 22);
+            this.lblFiltro.Name = "lblFiltro";
+            this.lblFiltro.Size = new System.Drawing.Size(124, 15);
+            this.lblFiltro.TabIndex = 20;
+            this.lblFiltro.Text = "Buscar en el historial:";
             // 
             // lblLista
             // 
@@ -399,39 +419,6 @@
             // 
             this.erpCampos.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.erpCampos.ContainerControl = this;
-            // 
-            // lblFiltro
-            // 
-            this.lblFiltro.AutoSize = true;
-            this.lblFiltro.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblFiltro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
-            this.lblFiltro.Location = new System.Drawing.Point(462, 22);
-            this.lblFiltro.Name = "lblFiltro";
-            this.lblFiltro.Size = new System.Drawing.Size(124, 15);
-            this.lblFiltro.TabIndex = 20;
-            this.lblFiltro.Text = "Buscar en el historial:";
-            // 
-            // txtFiltro
-            // 
-            this.txtFiltro.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFiltro.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtFiltro.Font = new System.Drawing.Font("Segoe UI", 10.5F);
-            this.txtFiltro.Location = new System.Drawing.Point(604, 16);
-            this.txtFiltro.Name = "txtFiltro";
-            this.txtFiltro.Size = new System.Drawing.Size(200, 26);
-            this.txtFiltro.TabIndex = 21;
-            this.txtFiltro.TextChanged += new System.EventHandler(this.txtFiltro_TextChanged);
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.button1.Location = new System.Drawing.Point(824, 18);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 22;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // FrmHistorialClinico
             // 
@@ -490,6 +477,5 @@
         private System.Windows.Forms.ErrorProvider erpCampos;
         private System.Windows.Forms.Label lblFiltro;
         private System.Windows.Forms.TextBox txtFiltro;
-        private System.Windows.Forms.Button button1;
     }
 }

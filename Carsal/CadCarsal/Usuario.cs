@@ -27,6 +27,10 @@ namespace CadCarsal
             this.Paciente1 = new HashSet<Paciente>();
             this.Pago = new HashSet<Pago>();
             this.Pago1 = new HashSet<Pago>();
+            this.Especialidad = new HashSet<Especialidad>();
+            this.Especialidad1 = new HashSet<Especialidad>();
+            this.Servicio = new HashSet<Servicio>();
+            this.Servicio1 = new HashSet<Servicio>();
         }
     
         public int IdUsuario { get; set; }
@@ -57,5 +61,13 @@ namespace CadCarsal
         public virtual ICollection<Pago> Pago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pago> Pago1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Especialidad> Especialidad { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Especialidad> Especialidad1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Servicio> Servicio { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Servicio> Servicio1 { get; set; }
     }
 }
