@@ -130,9 +130,11 @@ namespace CpCarsal
                 erpCampos.SetError(txtNombres, "Los nombres son obligatorios");
                 esValido = false;
             }
-            if (string.IsNullOrWhiteSpace(txtPrimerApellido.Text))
+            if (string.IsNullOrWhiteSpace(txtPrimerApellido.Text) &&
+                string.IsNullOrWhiteSpace(txtSegundoApellido.Text))
             {
-                erpCampos.SetError(txtPrimerApellido, "El primer apellido es obligatorio");
+                erpCampos.SetError(txtPrimerApellido, "Ingrese al menos un apellido");
+                erpCampos.SetError(txtSegundoApellido, "Ingrese al menos un apellido");
                 esValido = false;
             }
             if (cboSexo.SelectedIndex == -1)

@@ -169,9 +169,9 @@
             this.lblPrimerApellido.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
             this.lblPrimerApellido.Location = new System.Drawing.Point(20, 128);
             this.lblPrimerApellido.Name = "lblPrimerApellido";
-            this.lblPrimerApellido.Size = new System.Drawing.Size(99, 15);
+            this.lblPrimerApellido.Size = new System.Drawing.Size(94, 15);
             this.lblPrimerApellido.TabIndex = 7;
-            this.lblPrimerApellido.Text = "Primer apellido *";
+            this.lblPrimerApellido.Text = "Primer apellido ";
             // 
             // txtPrimerApellido
             // 

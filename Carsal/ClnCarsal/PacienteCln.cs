@@ -92,10 +92,19 @@ namespace ClnCarsal
             if (string.IsNullOrWhiteSpace(nombres) || !SoloLetras.IsMatch(nombres.Trim()))
                 throw new Exception("Los nombres solo pueden contener letras.");
 
-            if (string.IsNullOrWhiteSpace(primerApellido) || !SoloLetras.IsMatch(primerApellido.Trim()))
+            // Debe ingresar al menos uno de los dos apellidos
+            if (string.IsNullOrWhiteSpace(primerApellido) &&
+                string.IsNullOrWhiteSpace(segundoApellido))
+                throw new Exception("Debe ingresar al menos un apellido.");
+
+            // Validar primer apellido solo si fue ingresado
+            if (!string.IsNullOrWhiteSpace(primerApellido) &&
+                !SoloLetras.IsMatch(primerApellido.Trim()))
                 throw new Exception("El primer apellido solo puede contener letras.");
 
-            if (!string.IsNullOrWhiteSpace(segundoApellido) && !SoloLetras.IsMatch(segundoApellido.Trim()))
+            // Validar segundo apellido solo si fue ingresado
+            if (!string.IsNullOrWhiteSpace(segundoApellido) &&
+                !SoloLetras.IsMatch(segundoApellido.Trim()))
                 throw new Exception("El segundo apellido solo puede contener letras.");
 
             if (sexo != "Masculino" && sexo != "Femenino")
@@ -122,6 +131,7 @@ namespace ClnCarsal
         }
 
         // Registrar paciente
+
         public static void Insertar(
             string ci,
             string nombres,
@@ -133,15 +143,22 @@ namespace ClnCarsal
             string direccion,
             int idUsuarioRegistro)
         {
-            Validar(ci, nombres, primerApellido, segundoApellido, fechaNacimiento, sexo, celular);
+            primerApellido = string.IsNullOrWhiteSpace(primerApellido)
+                ? null : primerApellido.Trim();
+
+            segundoApellido = string.IsNullOrWhiteSpace(segundoApellido)
+                ? null : segundoApellido.Trim();
+
+            Validar(ci, nombres, primerApellido, segundoApellido,
+                fechaNacimiento, sexo, celular);
 
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 contexto.paPacienteInsertar(
                     ci.Trim(),
                     nombres.Trim(),
-                    primerApellido.Trim(),
-                    string.IsNullOrWhiteSpace(segundoApellido) ? null : segundoApellido.Trim(),
+                    primerApellido,
+                    segundoApellido,
                     fechaNacimiento,
                     sexo,
                     string.IsNullOrWhiteSpace(celular) ? null : celular.Trim(),
@@ -151,23 +168,33 @@ namespace ClnCarsal
             }
         }
 
+
         // Modificar paciente
         public static void Modificar(
-            int idPaciente,
-            string ci,
-            string nombres,
-            string primerApellido,
-            string segundoApellido,
-            DateTime? fechaNacimiento,
-            string sexo,
-            string celular,
-            string direccion,
-            int idUsuarioModificacion)
+    int idPaciente,
+    string ci,
+    string nombres,
+    string primerApellido,
+    string segundoApellido,
+    DateTime? fechaNacimiento,
+    string sexo,
+    string celular,
+    string direccion,
+    int idUsuarioModificacion)
         {
             if (idPaciente <= 0)
                 throw new Exception("Seleccione un paciente válido.");
 
-            Validar(ci, nombres, primerApellido, segundoApellido, fechaNacimiento, sexo, celular);
+            // Normalizar apellidos
+            primerApellido = string.IsNullOrWhiteSpace(primerApellido)
+                ? null : primerApellido.Trim();
+
+            segundoApellido = string.IsNullOrWhiteSpace(segundoApellido)
+                ? null : segundoApellido.Trim();
+
+            // Validar datos
+            Validar(ci, nombres, primerApellido, segundoApellido,
+                fechaNacimiento, sexo, celular);
 
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
@@ -175,8 +202,8 @@ namespace ClnCarsal
                     idPaciente,
                     ci.Trim(),
                     nombres.Trim(),
-                    primerApellido.Trim(),
-                    string.IsNullOrWhiteSpace(segundoApellido) ? null : segundoApellido.Trim(),
+                    primerApellido,
+                    segundoApellido,
                     fechaNacimiento,
                     sexo,
                     string.IsNullOrWhiteSpace(celular) ? null : celular.Trim(),
