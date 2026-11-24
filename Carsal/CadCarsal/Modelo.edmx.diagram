@@ -5,12 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="4bdaa6cf06af4c49978abca9b19d5e48" Name="Diagram1" ZoomLevel="80">
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Cita" Width="1.5" PointX="6.125" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Doctor" Width="1.5" PointX="3" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.HistorialClinico" Width="1.5" PointX="9.875" PointY="12.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Paciente" Width="1.5" PointX="3" PointY="16" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Pago" Width="1.5" PointX="9.125" PointY="7.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Usuario" Width="1.5" PointX="0.75" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Cita" Width="1.5" PointX="10.5" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Doctor" Width="1.5" PointX="7.5" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.HistorialClinico" Width="1.5" PointX="7.375" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Paciente" Width="1.5" PointX="3.875" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Pago" Width="1.5" PointX="14.5" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Usuario" Width="1.5" PointX="3.875" PointY="2.625" IsExpanded="true" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Cita_Doctor" ManuallyRouted="false" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Cita_Paciente" ManuallyRouted="false" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Cita_UsuarioModificacion" ManuallyRouted="false" />
@@ -27,9 +27,9 @@
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Paciente_UsuarioRegistro" ManuallyRouted="false" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Pago_UsuarioModificacion" ManuallyRouted="false" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Pago_UsuarioRegistro" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.DetallePago" Width="1.5" PointX="11.375" PointY="5.625" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Especialidad" Width="1.5" PointX="3" PointY="6.375" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Servicio" Width="1.5" PointX="3" PointY="2.25" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.DetallePago" Width="1.5" PointX="14.5" PointY="7.25" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Especialidad" Width="1.5" PointX="10.75" PointY="2.875" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Servicio" Width="1.5" PointX="14.5" PointY="2.625" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Pago" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Servicio" />
         <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Doctor_Especialidad" />

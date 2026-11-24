@@ -223,6 +223,7 @@
             this.dtpFechaNacimiento.Name = "dtpFechaNacimiento";
             this.dtpFechaNacimiento.Size = new System.Drawing.Size(205, 26);
             this.dtpFechaNacimiento.TabIndex = 12;
+            this.dtpFechaNacimiento.ValueChanged += new System.EventHandler(this.dtpFechaNacimiento_ValueChanged);
             // 
             // lblSexo
             // 
@@ -256,9 +257,9 @@
             this.lblCelular.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
             this.lblCelular.Location = new System.Drawing.Point(20, 194);
             this.lblCelular.Name = "lblCelular";
-            this.lblCelular.Size = new System.Drawing.Size(45, 15);
+            this.lblCelular.Size = new System.Drawing.Size(126, 15);
             this.lblCelular.TabIndex = 15;
-            this.lblCelular.Text = "Celular";
+            this.lblCelular.Text = "Celular de Referencia";
             // 
             // txtCelular
             // 

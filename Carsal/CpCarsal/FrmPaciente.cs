@@ -29,7 +29,10 @@ namespace CpCarsal
             DarFormatoGrilla();
             Limpiar();
             Listar();
-            dtpFechaNacimiento.MaxDate = DateTime.Today.AddYears(-3);
+            dtpFechaNacimiento.MaxDate = DateTime.Today.AddYears(-5);
+
+            dtpFechaNacimiento.Format = DateTimePickerFormat.Custom;
+            dtpFechaNacimiento.CustomFormat = " ";
 
             if (RegistroDesdeCita)
             {
@@ -160,12 +163,12 @@ namespace CpCarsal
             }
 
             // Validar edad minima de 3 años
-            DateTime fechaMinima = hoy.AddYears(-3);
+            DateTime fechaMinima = hoy.AddYears(-5);
 
             if (fechaNacimiento > fechaMinima)
             {
                 MessageBox.Show(
-                    "El paciente debe tener como minimo 3 años de edad.",
+                    "El paciente debe tener como minimo 5 años de edad.",
                     "CONSULTORIO CARSAL",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
@@ -369,7 +372,7 @@ namespace CpCarsal
             txtCelular.Clear();
             txtDireccion.Clear();
             cboSexo.SelectedIndex = -1;
-            dtpFechaNacimiento.Value = DateTime.Today;
+            dtpFechaNacimiento.Value = dtpFechaNacimiento.MaxDate;
             erpCampos.Clear();
 
             idPacienteSeleccionado = 0;
@@ -378,6 +381,7 @@ namespace CpCarsal
             btnRegistrar.Enabled = true;
             btnEliminar.Enabled = true;
             txtCi.Focus();
+            dtpFechaNacimiento.CustomFormat = " ";
         }
 
         // ================= SELECCIONAR FILA =================
@@ -426,6 +430,11 @@ namespace CpCarsal
                 "Detalle del error",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);
+        }
+
+        private void dtpFechaNacimiento_ValueChanged(object sender, EventArgs e)
+        {
+            dtpFechaNacimiento.CustomFormat = "dd/MM/yyyy";
         }
     }
 }
