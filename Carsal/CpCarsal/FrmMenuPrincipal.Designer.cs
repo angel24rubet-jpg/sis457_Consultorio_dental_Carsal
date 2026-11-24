@@ -50,6 +50,7 @@
             this.btnCitas = new System.Windows.Forms.Button();
             this.btnDoctores = new System.Windows.Forms.Button();
             this.btnPacientes = new System.Windows.Forms.Button();
+            this.btnEspecialidad = new System.Windows.Forms.Button();
             this.pnlSuperior.SuspendLayout();
             this.pnlMenuLateral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
@@ -163,6 +164,7 @@
             this.pnlMenuLateral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.pnlMenuLateral.BackgroundImage = global::CpCarsal.Properties.Resources.panel_lateral;
             this.pnlMenuLateral.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlMenuLateral.Controls.Add(this.btnEspecialidad);
             this.pnlMenuLateral.Controls.Add(this.pictureBox7);
             this.pnlMenuLateral.Controls.Add(this.btnInicio);
             this.pnlMenuLateral.Controls.Add(this.pictureBox6);
@@ -220,7 +222,7 @@
             this.pictureBox6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pictureBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox6.Image = global::CpCarsal.Properties.Resources.icons8_coins_64;
-            this.pictureBox6.Location = new System.Drawing.Point(17, 525);
+            this.pictureBox6.Location = new System.Drawing.Point(17, 577);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(42, 36);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -232,7 +234,7 @@
             this.pictureBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pictureBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox5.Image = global::CpCarsal.Properties.Resources.icons8_user_501;
-            this.pictureBox5.Location = new System.Drawing.Point(18, 583);
+            this.pictureBox5.Location = new System.Drawing.Point(18, 635);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(37, 35);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -244,7 +246,7 @@
             this.pictureBox4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox4.Image = global::CpCarsal.Properties.Resources.icons8_resume_80;
-            this.pictureBox4.Location = new System.Drawing.Point(13, 468);
+            this.pictureBox4.Location = new System.Drawing.Point(13, 520);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(37, 36);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -256,7 +258,7 @@
             this.pictureBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox3.Image = global::CpCarsal.Properties.Resources.citas;
-            this.pictureBox3.Location = new System.Drawing.Point(17, 410);
+            this.pictureBox3.Location = new System.Drawing.Point(17, 462);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(37, 34);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -268,7 +270,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox1.Image = global::CpCarsal.Properties.Resources.doctores;
-            this.pictureBox1.Location = new System.Drawing.Point(18, 352);
+            this.pictureBox1.Location = new System.Drawing.Point(18, 404);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(35, 33);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -293,7 +295,7 @@
             this.btnPagos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.btnPagos.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnPagos.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPagos.Location = new System.Drawing.Point(12, 521);
+            this.btnPagos.Location = new System.Drawing.Point(12, 573);
             this.btnPagos.Name = "btnPagos";
             this.btnPagos.Size = new System.Drawing.Size(189, 45);
             this.btnPagos.TabIndex = 7;
@@ -307,7 +309,7 @@
             this.btnUsuarios.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.btnUsuarios.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnUsuarios.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUsuarios.Location = new System.Drawing.Point(13, 578);
+            this.btnUsuarios.Location = new System.Drawing.Point(13, 630);
             this.btnUsuarios.Name = "btnUsuarios";
             this.btnUsuarios.Size = new System.Drawing.Size(189, 45);
             this.btnUsuarios.TabIndex = 6;
@@ -323,7 +325,7 @@
             this.btnHistorial.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHistorial.ForeColor = System.Drawing.Color.DarkGray;
             this.btnHistorial.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnHistorial.Location = new System.Drawing.Point(12, 463);
+            this.btnHistorial.Location = new System.Drawing.Point(12, 515);
             this.btnHistorial.Name = "btnHistorial";
             this.btnHistorial.Size = new System.Drawing.Size(189, 45);
             this.btnHistorial.TabIndex = 5;
@@ -338,7 +340,7 @@
             this.btnCitas.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.btnCitas.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnCitas.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCitas.Location = new System.Drawing.Point(12, 404);
+            this.btnCitas.Location = new System.Drawing.Point(12, 456);
             this.btnCitas.Name = "btnCitas";
             this.btnCitas.Size = new System.Drawing.Size(189, 45);
             this.btnCitas.TabIndex = 4;
@@ -352,7 +354,7 @@
             this.btnDoctores.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
             this.btnDoctores.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnDoctores.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDoctores.Location = new System.Drawing.Point(12, 346);
+            this.btnDoctores.Location = new System.Drawing.Point(12, 398);
             this.btnDoctores.Name = "btnDoctores";
             this.btnDoctores.Size = new System.Drawing.Size(189, 45);
             this.btnDoctores.TabIndex = 3;
@@ -377,6 +379,24 @@
             this.btnPacientes.Text = "Pacientes";
             this.btnPacientes.UseVisualStyleBackColor = false;
             this.btnPacientes.Click += new System.EventHandler(this.btnPacientes_Click);
+            // 
+            // btnEspecialidad
+            // 
+            this.btnEspecialidad.BackColor = System.Drawing.Color.Black;
+            this.btnEspecialidad.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEspecialidad.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Silver;
+            this.btnEspecialidad.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnEspecialidad.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEspecialidad.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.btnEspecialidad.Image = global::CpCarsal.Properties.Resources.icons8_user_501;
+            this.btnEspecialidad.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEspecialidad.Location = new System.Drawing.Point(12, 343);
+            this.btnEspecialidad.Name = "btnEspecialidad";
+            this.btnEspecialidad.Size = new System.Drawing.Size(189, 45);
+            this.btnEspecialidad.TabIndex = 16;
+            this.btnEspecialidad.Text = "Especialidad";
+            this.btnEspecialidad.UseVisualStyleBackColor = false;
+            this.btnEspecialidad.Click += new System.EventHandler(this.btnEspecialidad_Click);
             // 
             // frmMenuPrincipal
             // 
@@ -429,5 +449,6 @@
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.Button btnInicio;
+        private System.Windows.Forms.Button btnEspecialidad;
     }
 }

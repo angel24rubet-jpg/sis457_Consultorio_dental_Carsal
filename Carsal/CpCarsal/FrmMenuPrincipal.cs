@@ -113,5 +113,10 @@ namespace CpCarsal
         {
 
         }
+
+        private void btnEspecialidad_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new FrmEspecialidad());
+        }
     }
 }

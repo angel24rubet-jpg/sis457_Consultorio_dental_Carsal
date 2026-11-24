@@ -37,7 +37,7 @@
           <Property Name="IdDoctor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ci" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Apellidos" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Apellidos" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Celular" Type="varchar" MaxLength="20" />
           <Property Name="Direccion" Type="varchar" MaxLength="200" />
           <Property Name="Estado" Type="bit" Nullable="false" />
@@ -82,17 +82,17 @@
           <Property Name="IdPaciente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ci" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PrimerApellido" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PrimerApellido" Type="varchar" MaxLength="100" />
           <Property Name="SegundoApellido" Type="varchar" MaxLength="100" />
           <Property Name="FechaNacimiento" Type="date" />
           <Property Name="Sexo" Type="varchar" MaxLength="20" />
           <Property Name="Celular" Type="varchar" MaxLength="20" />
           <Property Name="Direccion" Type="varchar" MaxLength="200" />
-          <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="FechaRegistro" Type="datetime" Nullable="false" />
           <Property Name="IdUsuarioRegistro" Type="int" />
           <Property Name="IdUsuarioModificacion" Type="int" />
           <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Pago">
           <Key>
@@ -452,8 +452,8 @@
           <Parameter Name="Nombres" Type="varchar" Mode="In" />
           <Parameter Name="Apellidos" Type="varchar" Mode="In" />
           <Parameter Name="Celular" Type="varchar" Mode="In" />
-          <Parameter Name="IdEspecialidad" Type="int" Mode="In" />
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="IdEspecialidad" Type="int" Mode="In" />
           <Parameter Name="IdUsuarioRegistro" Type="int" Mode="In" />
         </Function>
         <Function Name="paDoctorModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -464,6 +464,22 @@
           <Parameter Name="Celular" Type="varchar" Mode="In" />
           <Parameter Name="IdEspecialidad" Type="int" Mode="In" />
           <Parameter Name="Direccion" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paEspecialidadEliminar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEspecialidad" Type="int" Mode="In" />
+          <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paEspecialidadInsertar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
+          <Parameter Name="IdUsuarioRegistro" Type="int" Mode="In" />
+        </Function>
+        <Function Name="paEspecialidadListar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="paEspecialidadModificar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEspecialidad" Type="int" Mode="In" />
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="Descripcion" Type="varchar" Mode="In" />
           <Parameter Name="IdUsuarioModificacion" Type="int" Mode="In" />
         </Function>
         <Function Name="paHistorialCitasDisponibles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -657,7 +673,7 @@
           <Property Name="IdDoctor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Ci" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Apellidos" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Celular" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
@@ -698,7 +714,7 @@
           <Property Name="IdPaciente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Ci" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="PrimerApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PrimerApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="SegundoApellido" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FechaNacimiento" Type="DateTime" Precision="0" />
           <Property Name="Sexo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
@@ -1162,8 +1178,8 @@
             <Parameter Name="Nombres" Mode="In" Type="String" />
             <Parameter Name="Apellidos" Mode="In" Type="String" />
             <Parameter Name="Celular" Mode="In" Type="String" />
-            <Parameter Name="IdEspecialidad" Mode="In" Type="Int32" />
             <Parameter Name="Direccion" Mode="In" Type="String" />
+            <Parameter Name="IdEspecialidad" Mode="In" Type="Int32" />
             <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paDoctorModificar">
@@ -1177,10 +1193,26 @@
             <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paPagoCitasPorCobrar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPagoCitasPorCobrar_Result)">
-            <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
+          <Parameter Name="IdPaciente" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="paPagoListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paPagoListar_Result)" />
           <FunctionImport Name="paServicioListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paServicioListar_Result)" />
+          <FunctionImport Name="paEspecialidadEliminar">
+            <Parameter Name="IdEspecialidad" Mode="In" Type="Int32" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paEspecialidadInsertar">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioRegistro" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="paEspecialidadListar" ReturnType="Collection(LabConsultorioDental_CarsalModel.paEspecialidadListar_Result)" />
+          <FunctionImport Name="paEspecialidadModificar">
+            <Parameter Name="IdEspecialidad" Mode="In" Type="Int32" />
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="IdUsuarioModificacion" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="paPacienteListar_Result">
           <Property Type="Int32" Name="IdPaciente" Nullable="false" />
@@ -1439,6 +1471,16 @@
           <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="250" />
           <Property Type="Decimal" Name="Precio" Nullable="false" Precision="10" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="paEspecialidadListar_Result">
+          <Property Type="Int32" Name="IdEspecialidad" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="250" />
+          <Property Type="Boolean" Name="Estado" Nullable="false" />
+          <Property Type="Int32" Name="IdUsuarioRegistro" Nullable="true" />
+          <Property Type="DateTime" Name="FechaRegistro" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="IdUsuarioModificacion" Nullable="true" />
+          <Property Type="DateTime" Name="FechaModificacion" Nullable="true" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1813,6 +1855,23 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paEspecialidadEliminar" FunctionName="LabConsultorioDental_CarsalModel.Store.paEspecialidadEliminar" />
+          <FunctionImportMapping FunctionImportName="paEspecialidadInsertar" FunctionName="LabConsultorioDental_CarsalModel.Store.paEspecialidadInsertar" />
+          <FunctionImportMapping FunctionImportName="paEspecialidadListar" FunctionName="LabConsultorioDental_CarsalModel.Store.paEspecialidadListar">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LabConsultorioDental_CarsalModel.paEspecialidadListar_Result">
+                <ScalarProperty Name="IdEspecialidad" ColumnName="IdEspecialidad" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdUsuarioRegistro" ColumnName="IdUsuarioRegistro" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
+                <ScalarProperty Name="IdUsuarioModificacion" ColumnName="IdUsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="paEspecialidadModificar" FunctionName="LabConsultorioDental_CarsalModel.Store.paEspecialidadModificar" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

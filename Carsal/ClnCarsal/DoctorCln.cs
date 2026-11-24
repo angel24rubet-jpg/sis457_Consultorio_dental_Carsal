@@ -44,13 +44,13 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 contexto.paDoctorInsertar(
-                    ci,
-                    nombres,
-                    apellidos,
-                    celular,
-                    idEspecialidad,
-                    direccion,
-                    idUsuarioRegistro
+                     ci,
+                     nombres,
+                     apellidos,
+                     celular,
+                     direccion,
+                     idEspecialidad,
+                     idUsuarioRegistro
                 );
             }
         }

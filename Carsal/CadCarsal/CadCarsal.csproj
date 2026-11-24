@@ -104,6 +104,9 @@
     <Compile Include="paDoctorBuscarPorCi_Result.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
+    <Compile Include="paEspecialidadListar_Result.cs">
+      <DependentUpon>Modelo.tt</DependentUpon>
+    </Compile>
     <Compile Include="Pago.cs">
       <DependentUpon>Modelo.tt</DependentUpon>
     </Compile>
