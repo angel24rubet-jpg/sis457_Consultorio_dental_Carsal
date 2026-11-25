@@ -19,6 +19,8 @@ namespace CpCarsal
         public FrmPago()
         {
             InitializeComponent();
+
+            dgvPagos.CellContentClick += dgvPagos_CellContentClick;
         }
 
         public FrmPago(string ci) : this()
@@ -318,6 +320,7 @@ namespace CpCarsal
         }
 
         // ================= 6. PAGOS REALIZADOS =================
+
         private void ListarPagos()
         {
             dgvPagos.DataSource = PagoCln.Listar();
@@ -337,37 +340,69 @@ namespace CpCarsal
                 dgvPagos.Columns["Monto"].DefaultCellStyle.Format = "N2";
             }
 
+            // Agregar boton de detalle si todavia no existe
+            if (!dgvPagos.Columns.Contains("btnDetalle"))
+            {
+                DataGridViewButtonColumn boton = new DataGridViewButtonColumn();
+                boton.Name = "btnDetalle";
+                boton.HeaderText = "Accion";
+                boton.Text = "VER DETALLE";
+                boton.UseColumnTextForButtonValue = true;
+                boton.FillWeight = 90;
+                dgvPagos.Columns.Add(boton);
+            }
+
             int total = dgvPagos.Rows.Count;
-            lblTotalPagos.Text = total == 1 ? "1 pago registrado" : total + " pagos registrados";
+            lblTotalPagos.Text = total == 1
+                ? "1 pago registrado"
+                : total + " pagos registrados";
         }
 
+
         // Doble clic: muestra los servicios cobrados en ese pago
-        private void dgvPagos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+
+        private void dgvPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            if (dgvPagos.Columns[e.ColumnIndex].Name != "btnDetalle")
                 return;
 
             try
             {
-                int idPago = Convert.ToInt32(dgvPagos.Rows[e.RowIndex].Cells["IdPago"].Value);
+                int idPago = Convert.ToInt32(
+                    dgvPagos.Rows[e.RowIndex].Cells["IdPago"].Value
+                );
+
                 var detalle = PagoCln.ListarDetalle(idPago);
 
                 string texto = "";
+
                 foreach (var d in detalle)
+                {
                     texto += d.Servicio + "   x" + d.Cantidad +
                              "   Bs " + d.PrecioUnitario.ToString("N2") +
-                             "   =  Bs " + d.Subtotal.ToString("N2") + Environment.NewLine;
+                             "   =  Bs " + d.Subtotal.ToString("N2") +
+                             Environment.NewLine;
+                }
 
-                texto += Environment.NewLine + "TOTAL: Bs " + detalle.Sum(d => d.Subtotal).ToString("N2");
+                texto += Environment.NewLine +
+                         "TOTAL: Bs " + detalle.Sum(d => d.Subtotal).ToString("N2");
 
-                MessageBox.Show(texto, "Detalle del pago N° " + idPago,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    texto,
+                    "Detalle del pago N° " + idPago,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
             }
             catch (Exception ex)
             {
                 MostrarError(ex);
             }
         }
+
 
         // ================= FORMATO DE TABLAS =================
         private void DarFormatoGrilla(DataGridView dgv)

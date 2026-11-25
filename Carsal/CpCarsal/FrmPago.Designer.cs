@@ -495,7 +495,6 @@
             this.dgvPagos.Name = "dgvPagos";
             this.dgvPagos.Size = new System.Drawing.Size(1192, 134);
             this.dgvPagos.TabIndex = 29;
-            this.dgvPagos.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPagos_CellDoubleClick);
             // 
             // pnlListaCabecera
             // 
