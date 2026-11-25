@@ -257,6 +257,7 @@ namespace CpCarsal
                         continue;
 
                     string esp = Convert.ToString(propEspecialidad.GetValue(doctor, null));
+
                     if (esp == especialidad)
                     {
                         int id = Convert.ToInt32(propId.GetValue(doctor, null));
@@ -275,8 +276,28 @@ namespace CpCarsal
             cboDoctor.DisplayMember = "NombreCompleto";
             cboDoctor.ValueMember = "IdDoctor";
             cboDoctor.DataSource = lista;
-            cboDoctor.SelectedIndex = -1;
+
+            if (lista.Count == 1)
+            {
+                cboDoctor.SelectedIndex = 0;
+            }
+            else if (lista.Count > 1)
+            {
+                cboDoctor.SelectedIndex = -1;
+            }
+            else
+            {
+                cboDoctor.SelectedIndex = -1;
+
+                MessageBox.Show(
+                    "No existen doctores disponibles para esta especialidad.",
+                    "Doctores disponibles",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
         }
+
 
         // CARGAR HORARIOS DISPONIBLES Y MARCAR LOS OCUPADOS
         private void CargarHorariosDisponibles()
