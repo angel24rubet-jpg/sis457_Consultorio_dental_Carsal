@@ -21,6 +21,9 @@ namespace CpCarsal
             InitializeComponent();
 
             dgvPagos.CellContentClick += dgvPagos_CellContentClick;
+
+            nudMontoRecibido.ValueChanged += nudMontoRecibido_ValueChanged;
+            cboMetodo.SelectedIndexChanged += cboMetodo_SelectedIndexChanged;
         }
 
         public FrmPago(string ci) : this()
@@ -217,6 +220,28 @@ namespace CpCarsal
             RefrescarDetalle();
         }
 
+        private void cboMetodo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool esEfectivo = cboMetodo.Text.Trim().Equals(
+                "Efectivo",
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            lblMontoRecibido.Visible = esEfectivo;
+            nudMontoRecibido.Visible = esEfectivo;
+            lblCambio.Visible = esEfectivo;
+            lblCambioCalculado.Visible = esEfectivo;
+
+            if (!esEfectivo)
+            {
+                nudMontoRecibido.Value = 0;
+                lblCambioCalculado.Text = "Bs 0,00";
+            }
+
+            CalcularCambio();
+        }
+
+
         // Muestra el detalle y recalcula el total
         private void RefrescarDetalle()
         {
@@ -236,7 +261,28 @@ namespace CpCarsal
             }
 
             lblTotal.Text = "TOTAL: Bs " + items.Sum(i => i.Subtotal).ToString("N2");
+
+            CalcularCambio();
         }
+
+
+        private void nudMontoRecibido_ValueChanged(object sender, EventArgs e)
+        {
+            CalcularCambio();
+        }
+
+        private void CalcularCambio()
+        {
+            decimal total = items.Sum(i => i.Subtotal);
+            decimal recibido = nudMontoRecibido.Value;
+            decimal cambio = recibido - total;
+
+            if (cambio < 0)
+                cambio = 0;
+
+            lblCambioCalculado.Text = "Bs " + cambio.ToString("N2");
+        }
+
 
         // ================= 5. REGISTRAR EL COBRO =================
         private bool ValidarCampos()

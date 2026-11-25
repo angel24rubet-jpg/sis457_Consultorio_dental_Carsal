@@ -60,6 +60,10 @@
             this.lblAyudaLista = new System.Windows.Forms.Label();
             this.lblTotalPagos = new System.Windows.Forms.Label();
             this.erpCampos = new System.Windows.Forms.ErrorProvider(this.components);
+            this.lblMontoRecibido = new System.Windows.Forms.Label();
+            this.lblCambio = new System.Windows.Forms.Label();
+            this.nudMontoRecibido = new System.Windows.Forms.NumericUpDown();
+            this.lblCambioCalculado = new System.Windows.Forms.Label();
             this.pnlPaciente.SuspendLayout();
             this.pnlCobro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrecio)).BeginInit();
@@ -69,6 +73,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvPagos)).BeginInit();
             this.pnlListaCabecera.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.erpCampos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMontoRecibido)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlPaciente
@@ -83,7 +88,7 @@
             this.pnlPaciente.Controls.Add(this.lblPaciente);
             this.pnlPaciente.Location = new System.Drawing.Point(24, 20);
             this.pnlPaciente.Name = "pnlPaciente";
-            this.pnlPaciente.Size = new System.Drawing.Size(1192, 70);
+            this.pnlPaciente.Size = new System.Drawing.Size(1519, 70);
             this.pnlPaciente.TabIndex = 0;
             // 
             // lblTituloPaciente
@@ -151,6 +156,10 @@
             this.pnlCobro.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCobro.BackColor = System.Drawing.Color.White;
+            this.pnlCobro.Controls.Add(this.lblCambioCalculado);
+            this.pnlCobro.Controls.Add(this.nudMontoRecibido);
+            this.pnlCobro.Controls.Add(this.lblCambio);
+            this.pnlCobro.Controls.Add(this.lblMontoRecibido);
             this.pnlCobro.Controls.Add(this.lblCobro);
             this.pnlCobro.Controls.Add(this.lblObligatorios);
             this.pnlCobro.Controls.Add(this.lblCita);
@@ -175,7 +184,7 @@
             this.pnlCobro.Controls.Add(this.pnlSeparador);
             this.pnlCobro.Location = new System.Drawing.Point(24, 106);
             this.pnlCobro.Name = "pnlCobro";
-            this.pnlCobro.Size = new System.Drawing.Size(1192, 360);
+            this.pnlCobro.Size = new System.Drawing.Size(1519, 360);
             this.pnlCobro.TabIndex = 1;
             // 
             // lblCobro
@@ -195,7 +204,7 @@
             this.lblObligatorios.AutoSize = true;
             this.lblObligatorios.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblObligatorios.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
-            this.lblObligatorios.Location = new System.Drawing.Point(1040, 18);
+            this.lblObligatorios.Location = new System.Drawing.Point(1367, 18);
             this.lblObligatorios.Name = "lblObligatorios";
             this.lblObligatorios.Size = new System.Drawing.Size(125, 15);
             this.lblObligatorios.TabIndex = 7;
@@ -372,7 +381,7 @@
             this.dgvDetalle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDetalle.Location = new System.Drawing.Point(650, 84);
             this.dgvDetalle.Name = "dgvDetalle";
-            this.dgvDetalle.Size = new System.Drawing.Size(522, 170);
+            this.dgvDetalle.Size = new System.Drawing.Size(849, 142);
             this.dgvDetalle.TabIndex = 20;
             // 
             // btnQuitar
@@ -397,7 +406,7 @@
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblTotal.Location = new System.Drawing.Point(950, 262);
+            this.lblTotal.Location = new System.Drawing.Point(1277, 262);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(141, 25);
             this.lblTotal.TabIndex = 22;
@@ -424,7 +433,7 @@
             this.lblMetodo.AutoSize = true;
             this.lblMetodo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMetodo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
-            this.lblMetodo.Location = new System.Drawing.Point(650, 315);
+            this.lblMetodo.Location = new System.Drawing.Point(777, 240);
             this.lblMetodo.Name = "lblMetodo";
             this.lblMetodo.Size = new System.Drawing.Size(106, 15);
             this.lblMetodo.TabIndex = 24;
@@ -439,7 +448,7 @@
             this.cboMetodo.Items.AddRange(new object[] {
             "Efectivo",
             "QR"});
-            this.cboMetodo.Location = new System.Drawing.Point(780, 311);
+            this.cboMetodo.Location = new System.Drawing.Point(780, 261);
             this.cboMetodo.Name = "cboMetodo";
             this.cboMetodo.Size = new System.Drawing.Size(150, 27);
             this.cboMetodo.TabIndex = 25;
@@ -453,7 +462,7 @@
             this.btnCobrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCobrar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCobrar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.btnCobrar.Location = new System.Drawing.Point(952, 304);
+            this.btnCobrar.Location = new System.Drawing.Point(1279, 304);
             this.btnCobrar.Name = "btnCobrar";
             this.btnCobrar.Size = new System.Drawing.Size(220, 40);
             this.btnCobrar.TabIndex = 26;
@@ -468,7 +477,7 @@
             this.pnlSeparador.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(213)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.pnlSeparador.Location = new System.Drawing.Point(0, 46);
             this.pnlSeparador.Name = "pnlSeparador";
-            this.pnlSeparador.Size = new System.Drawing.Size(1192, 1);
+            this.pnlSeparador.Size = new System.Drawing.Size(1519, 1);
             this.pnlSeparador.TabIndex = 99;
             // 
             // pnlLista
@@ -482,7 +491,7 @@
             this.pnlLista.Controls.Add(this.lblTotalPagos);
             this.pnlLista.Location = new System.Drawing.Point(24, 482);
             this.pnlLista.Name = "pnlLista";
-            this.pnlLista.Size = new System.Drawing.Size(1192, 218);
+            this.pnlLista.Size = new System.Drawing.Size(1519, 341);
             this.pnlLista.TabIndex = 2;
             // 
             // dgvPagos
@@ -493,7 +502,7 @@
             this.dgvPagos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPagos.Location = new System.Drawing.Point(0, 52);
             this.dgvPagos.Name = "dgvPagos";
-            this.dgvPagos.Size = new System.Drawing.Size(1192, 134);
+            this.dgvPagos.Size = new System.Drawing.Size(1519, 257);
             this.dgvPagos.TabIndex = 29;
             // 
             // pnlListaCabecera
@@ -503,7 +512,7 @@
             this.pnlListaCabecera.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlListaCabecera.Location = new System.Drawing.Point(0, 0);
             this.pnlListaCabecera.Name = "pnlListaCabecera";
-            this.pnlListaCabecera.Size = new System.Drawing.Size(1192, 52);
+            this.pnlListaCabecera.Size = new System.Drawing.Size(1519, 52);
             this.pnlListaCabecera.TabIndex = 0;
             // 
             // lblLista
@@ -533,10 +542,10 @@
             this.lblTotalPagos.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lblTotalPagos.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPagos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
-            this.lblTotalPagos.Location = new System.Drawing.Point(0, 186);
+            this.lblTotalPagos.Location = new System.Drawing.Point(0, 309);
             this.lblTotalPagos.Name = "lblTotalPagos";
             this.lblTotalPagos.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.lblTotalPagos.Size = new System.Drawing.Size(1192, 32);
+            this.lblTotalPagos.Size = new System.Drawing.Size(1519, 32);
             this.lblTotalPagos.TabIndex = 30;
             this.lblTotalPagos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -545,12 +554,67 @@
             this.erpCampos.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
             this.erpCampos.ContainerControl = this;
             // 
+            // lblMontoRecibido
+            // 
+            this.lblMontoRecibido.AutoSize = true;
+            this.lblMontoRecibido.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMontoRecibido.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
+            this.lblMontoRecibido.Location = new System.Drawing.Point(777, 306);
+            this.lblMontoRecibido.Name = "lblMontoRecibido";
+            this.lblMontoRecibido.Size = new System.Drawing.Size(95, 15);
+            this.lblMontoRecibido.TabIndex = 100;
+            this.lblMontoRecibido.Text = "Monto Recibido";
+            // 
+            // lblCambio
+            // 
+            this.lblCambio.AutoSize = true;
+            this.lblCambio.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCambio.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
+            this.lblCambio.Location = new System.Drawing.Point(1017, 306);
+            this.lblCambio.Name = "lblCambio";
+            this.lblCambio.Size = new System.Drawing.Size(48, 15);
+            this.lblCambio.TabIndex = 101;
+            this.lblCambio.Text = "Cambio";
+            // 
+            // nudMontoRecibido
+            // 
+            this.nudMontoRecibido.BackColor = System.Drawing.SystemColors.Window;
+            this.nudMontoRecibido.DecimalPlaces = 2;
+            this.nudMontoRecibido.Font = new System.Drawing.Font("Segoe UI", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nudMontoRecibido.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudMontoRecibido.Location = new System.Drawing.Point(878, 301);
+            this.nudMontoRecibido.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.nudMontoRecibido.Name = "nudMontoRecibido";
+            this.nudMontoRecibido.Size = new System.Drawing.Size(120, 26);
+            this.nudMontoRecibido.TabIndex = 102;
+            this.nudMontoRecibido.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudMontoRecibido.ThousandsSeparator = true;
+            // 
+            // lblCambioCalculado
+            // 
+            this.lblCambioCalculado.AutoSize = true;
+            this.lblCambioCalculado.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCambioCalculado.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(114)))), ((int)(((byte)(114)))));
+            this.lblCambioCalculado.Location = new System.Drawing.Point(1071, 306);
+            this.lblCambioCalculado.Name = "lblCambioCalculado";
+            this.lblCambioCalculado.Size = new System.Drawing.Size(49, 15);
+            this.lblCambioCalculado.TabIndex = 103;
+            this.lblCambioCalculado.Text = "BS 0,00";
+            // 
             // FrmPago
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
-            this.ClientSize = new System.Drawing.Size(1240, 720);
+            this.ClientSize = new System.Drawing.Size(1567, 843);
             this.Controls.Add(this.pnlLista);
             this.Controls.Add(this.pnlCobro);
             this.Controls.Add(this.pnlPaciente);
@@ -570,6 +634,7 @@
             this.pnlListaCabecera.ResumeLayout(false);
             this.pnlListaCabecera.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.erpCampos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudMontoRecibido)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -612,5 +677,9 @@
         private System.Windows.Forms.DataGridView dgvPagos;
         private System.Windows.Forms.Label lblTotalPagos;
         private System.Windows.Forms.ErrorProvider erpCampos;
+        private System.Windows.Forms.Label lblMontoRecibido;
+        private System.Windows.Forms.Label lblCambioCalculado;
+        private System.Windows.Forms.NumericUpDown nudMontoRecibido;
+        private System.Windows.Forms.Label lblCambio;
     }
 }
