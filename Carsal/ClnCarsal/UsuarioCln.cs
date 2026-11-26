@@ -29,7 +29,7 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 bool existe = contexto.Usuario.Any(
-                    u => u.NombreUsuario == nombreUsuario);
+                    u => u.nombreUsuario == nombreUsuario);
 
                 if (existe)
                     throw new Exception(
@@ -37,17 +37,17 @@ namespace ClnCarsal
 
                 var usuario = new Usuario
                 {
-                    NombreUsuario = nombreUsuario,
-                    ClaveHash = hash,
-                    Rol = rol,
-                    IdDoctor = idDoctor,
-                    Estado = true
+                    nombreUsuario = nombreUsuario,
+                    claveHash = hash,
+                    rol = rol,
+                    idDoctor = idDoctor,
+                    estado = true
                 };
 
                 contexto.Usuario.Add(usuario);
                 contexto.SaveChanges();
 
-                return usuario.IdUsuario;
+                return usuario.id;
             }
         }
 
@@ -56,9 +56,9 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 return contexto.Usuario
-                    .Where(u => u.Estado == true)
-                    .OrderBy(u => u.IdUsuario)
-                    .Select(u => (int?)u.IdUsuario)
+                    .Where(u => u.estado == true)
+                    .OrderBy(u => u.id)
+                    .Select(u => (int?)u.id)
                     .FirstOrDefault();
             }
         }
@@ -69,14 +69,14 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 var usuario = contexto.Usuario.FirstOrDefault(
-                    u => u.NombreUsuario == nombreUsuario &&
-                         u.Estado == true);
+                    u => u.nombreUsuario == nombreUsuario &&
+                         u.estado == true);
 
                 if (usuario == null)
                     return false;
 
                 return SeguridadCln.VerificarContraseña(
-                    contraseña, usuario.ClaveHash);
+                    contraseña, usuario.claveHash);
             }
         }
         public static Usuario ObtenerPorNombre(string nombreUsuario)
@@ -84,8 +84,8 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 return contexto.Usuario.FirstOrDefault(
-                    u => u.NombreUsuario == nombreUsuario &&
-                         u.Estado == true);
+                    u => u.nombreUsuario == nombreUsuario &&
+                         u.estado == true);
             }
         }
 
@@ -97,19 +97,19 @@ namespace ClnCarsal
                 return (
                     from u in contexto.Usuario
                     join d in contexto.Doctor
-                        on u.IdDoctor equals (int?)d.IdDoctor
+                        on u.idDoctor equals (int?)d.id
                         into doctores
                     from d in doctores.DefaultIfEmpty()
                     select new
                     {
-                        u.IdUsuario,
-                        u.NombreUsuario,
-                        u.Rol,
-                        u.IdDoctor,
+                        IdUsuario = u.id,
+                        NombreUsuario = u.nombreUsuario,
+                        Rol = u.rol,
+                        IdDoctor = u.idDoctor,
                         Doctor = d == null
                             ? ""
-                            : d.Nombres + " " + d.Apellidos,
-                        u.Estado
+                            : d.nombres + " " + d.apellidos,
+                        Estado = u.estado
                     }
                 ).ToList();
             }
@@ -124,14 +124,14 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 var usuario = contexto.Usuario
-                    .FirstOrDefault(u => u.IdUsuario == idUsuario);
+                    .FirstOrDefault(u => u.id == idUsuario);
 
                 if (usuario == null)
                     throw new Exception("No se encontró el usuario.");
 
                 bool existe = contexto.Usuario.Any(
-                    u => u.NombreUsuario == nombreUsuario &&
-                         u.IdUsuario != idUsuario);
+                    u => u.nombreUsuario == nombreUsuario &&
+                         u.id != idUsuario);
 
                 if (existe)
                     throw new Exception("Ese nombre de usuario ya está registrado.");
@@ -142,9 +142,9 @@ namespace ClnCarsal
                 if (rol != "Administrador" && rol != "Doctor")
                     throw new Exception("El rol no es válido.");
 
-                usuario.NombreUsuario = nombreUsuario;
-                usuario.Rol = rol;
-                usuario.IdDoctor = idDoctor;
+                usuario.nombreUsuario = nombreUsuario;
+                usuario.rol = rol;
+                usuario.idDoctor = idDoctor;
 
                 // Solo cambiar la contraseña si se escribió una nueva
                 if (!string.IsNullOrWhiteSpace(contraseña))
@@ -153,7 +153,7 @@ namespace ClnCarsal
                         throw new Exception(
                             "La contraseña debe tener al menos 8 caracteres.");
 
-                    usuario.ClaveHash = SeguridadCln.GenerarHash(contraseña);
+                    usuario.claveHash = SeguridadCln.GenerarHash(contraseña);
                 }
 
                 contexto.SaveChanges();
@@ -165,12 +165,12 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 var usuario = contexto.Usuario
-                    .FirstOrDefault(u => u.IdUsuario == idUsuario);
+                    .FirstOrDefault(u => u.id == idUsuario);
 
                 if (usuario == null)
                     throw new Exception("No se encontró el usuario.");
 
-                usuario.Estado = false;
+                usuario.estado = false;
 
                 contexto.SaveChanges();
             }

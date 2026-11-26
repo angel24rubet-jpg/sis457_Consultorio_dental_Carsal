@@ -13,12 +13,12 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 return contexto.Especialidad
-                    .Where(e => e.Estado == true)
-                    .OrderBy(e => e.Nombre)
+                    .Where(e => e.estado == true)
+                    .OrderBy(e => e.nombre)
                     .Select(e => new
                     {
-                        e.IdEspecialidad,
-                        e.Nombre
+                        IdEspecialidad = e.id,
+                        Nombre = e.nombre
                     })
                     .ToList();
             }

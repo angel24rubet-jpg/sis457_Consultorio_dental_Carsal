@@ -20,21 +20,21 @@ namespace CadCarsal
             this.DetallePago = new HashSet<DetallePago>();
         }
     
-        public int IdPago { get; set; }
-        public int IdCita { get; set; }
-        public System.DateTime FechaPago { get; set; }
-        public decimal Monto { get; set; }
-        public string MetodoPago { get; set; }
-        public string Concepto { get; set; }
-        public string Estado { get; set; }
-        public Nullable<int> IdUsuarioRegistro { get; set; }
-        public Nullable<int> IdUsuarioModificacion { get; set; }
-        public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public int id { get; set; }
+        public int idCita { get; set; }
+        public System.DateTime fechaPago { get; set; }
+        public decimal monto { get; set; }
+        public string metodoPago { get; set; }
+        public string concepto { get; set; }
+        public string estado { get; set; }
+        public Nullable<int> idUsuarioRegistro { get; set; }
+        public Nullable<int> idUsuarioModificacion { get; set; }
+        public Nullable<System.DateTime> fechaModificacion { get; set; }
     
         public virtual Cita Cita { get; set; }
-        public virtual Usuario Usuario { get; set; }
-        public virtual Usuario Usuario1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DetallePago> DetallePago { get; set; }
+        public virtual Usuario Usuario { get; set; }
+        public virtual Usuario Usuario1 { get; set; }
     }
 }

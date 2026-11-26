@@ -11,16 +11,16 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 return contexto.Doctor
-                    .Where(d => d.Estado == true)
+                    .Where(d => d.estado == true)
                     .Select(d => new
                     {
-                        d.IdDoctor,
-                        d.Ci,
-                        d.Nombres,
-                        d.Apellidos,
-                        d.Celular,
-                        Especialidad = d.Especialidad.Nombre,
-                        d.Direccion
+                        IdDoctor = d.id,
+                        Ci = d.ci,
+                        Nombres = d.nombres,
+                        Apellidos = d.apellidos,
+                        Celular = d.celular,
+                        Especialidad = d.Especialidad.nombre,
+                        Direccion = d.direccion
                     })
                     .ToList();
             }
@@ -48,8 +48,8 @@ namespace ClnCarsal
                      nombres,
                      apellidos,
                      celular,
-                     direccion,
                      idEspecialidad,
+                     direccion,
                      idUsuarioRegistro
                 );
             }

@@ -21,25 +21,25 @@ namespace CadCarsal
             this.Usuario2 = new HashSet<Usuario>();
         }
     
-        public int IdDoctor { get; set; }
-        public string Ci { get; set; }
-        public string Nombres { get; set; }
-        public string Apellidos { get; set; }
-        public string Celular { get; set; }
-        public string Direccion { get; set; }
-        public bool Estado { get; set; }
-        public Nullable<int> IdUsuarioRegistro { get; set; }
-        public System.DateTime FechaRegistro { get; set; }
-        public Nullable<int> IdUsuarioModificacion { get; set; }
-        public Nullable<System.DateTime> FechaModificacion { get; set; }
-        public int IdEspecialidad { get; set; }
+        public int id { get; set; }
+        public string ci { get; set; }
+        public string nombres { get; set; }
+        public string apellidos { get; set; }
+        public string celular { get; set; }
+        public string direccion { get; set; }
+        public bool estado { get; set; }
+        public Nullable<int> idUsuarioRegistro { get; set; }
+        public System.DateTime fechaRegistro { get; set; }
+        public Nullable<int> idUsuarioModificacion { get; set; }
+        public Nullable<System.DateTime> fechaModificacion { get; set; }
+        public int idEspecialidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cita> Cita { get; set; }
+        public virtual Especialidad Especialidad { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario Usuario1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Usuario> Usuario2 { get; set; }
-        public virtual Especialidad Especialidad { get; set; }
     }
 }

@@ -4,39 +4,39 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4bdaa6cf06af4c49978abca9b19d5e48" Name="Diagram1" ZoomLevel="80">
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Cita" Width="1.5" PointX="10.5" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Doctor" Width="1.5" PointX="7.5" PointY="2.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.HistorialClinico" Width="1.5" PointX="7.375" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Paciente" Width="1.5" PointX="3.875" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Pago" Width="1.5" PointX="14.5" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Usuario" Width="1.5" PointX="3.875" PointY="2.625" IsExpanded="true" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Cita_Doctor" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Cita_Paciente" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Cita_UsuarioModificacion" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Cita_UsuarioRegistro" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_HistorialClinico_Cita" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Pago_Cita" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Doctor_UsuarioModificacion" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Doctor_UsuarioRegistro" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Usuario_Doctor" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Historial_UsuarioModificacion" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Historial_UsuarioRegistro" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_HistorialClinico_Paciente" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Paciente_UsuarioModificacion" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Paciente_UsuarioRegistro" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Pago_UsuarioModificacion" ManuallyRouted="false" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Pago_UsuarioRegistro" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.DetallePago" Width="1.5" PointX="14.5" PointY="7.25" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Especialidad" Width="1.5" PointX="10.75" PointY="2.875" />
-        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Servicio" Width="1.5" PointX="14.5" PointY="2.625" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Pago" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_DetallePago_Servicio" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Doctor_Especialidad" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioModificacion" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Especialidad_UsuarioRegistro" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioModificacion" />
-        <AssociationConnector Association="LabConsultorioDental_CarsalModel.FK_Servicio_UsuarioRegistro" />
+      <Diagram DiagramId="417ac01489d9481ea4543eeac56e5584" Name="Diagram1" ZoomLevel="66">
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Cita" Width="1.5" PointX="5.25" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.DetallePago" Width="1.5" PointX="9.75" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Doctor" Width="1.5" PointX="5.25" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Especialidad" Width="1.5" PointX="3" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.HistorialClinico" Width="1.5" PointX="7.5" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Paciente" Width="1.5" PointX="3" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Pago" Width="1.5" PointX="7.5" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Servicio" Width="1.5" PointX="3" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="LabConsultorioDental_CarsalModel.Usuario" Width="1.5" PointX="0.75" PointY="12.875" IsExpanded="true" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Cita_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Cita_Paciente" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Cita_UsuarioModificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Cita_UsuarioRegistro" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_HistorialClinico_Cita" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Pago_Cita" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_DetallePago_Pago" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_DetallePago_Servicio" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Doctor_Especialidad" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Doctor_UsuarioModificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Doctor_UsuarioRegistro" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Usuario_Doctor" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Especialidad_UsuarioModificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Especialidad_UsuarioRegistro" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_HistorialClinico_Paciente" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_HistorialClinico_UsuarioModificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_HistorialClinico_UsuarioRegistro" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Paciente_UsuarioModificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Paciente_UsuarioRegistro" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Pago_UsuarioModificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Pago_UsuarioRegistro" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Servicio_UsuarioModificacion" ManuallyRouted="false" />
+        <AssociationConnector Association="LabConsultorioDental_CarsalModel.fk_Servicio_UsuarioRegistro" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

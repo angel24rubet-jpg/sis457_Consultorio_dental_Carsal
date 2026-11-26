@@ -77,24 +77,24 @@ namespace ClnCarsal
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
                 // 2. LA CITA DEBE ESTAR ATENDIDA Y SIN PAGAR
-                var cita = contexto.Cita.FirstOrDefault(c => c.IdCita == idCita);
-                if (cita == null || cita.Estado != "Atendida")
+                var cita = contexto.Cita.FirstOrDefault(c => c.id == idCita);
+                if (cita == null || cita.estado != "Atendida")
                     throw new Exception("Solo se pueden cobrar citas atendidas.");
 
-                bool yaPagada = contexto.Pago.Any(p => p.IdCita == idCita && p.Estado == "Pagado");
+                bool yaPagada = contexto.Pago.Any(p => p.idCita == idCita && p.estado == "Pagado");
                 if (yaPagada)
                     throw new Exception("Esta cita ya fue pagada.");
 
                 // 3. ARMAR EL MAESTRO (Pago)
                 var pago = new Pago
                 {
-                    IdCita = idCita,
-                    FechaPago = DateTime.Now,
-                    MetodoPago = metodoPago,
-                    Monto = items.Sum(i => i.Subtotal),
-                    Concepto = ArmarConcepto(items),
-                    Estado = "Pagado",
-                    IdUsuarioRegistro = idUsuarioRegistro
+                    idCita = idCita,
+                    fechaPago = DateTime.Now,
+                    metodoPago = metodoPago,
+                    monto = items.Sum(i => i.Subtotal),
+                    concepto = ArmarConcepto(items),
+                    estado = "Pagado",
+                    idUsuarioRegistro = idUsuarioRegistro
                 };
 
                 // 4. AGREGAR EL DETALLE (DetallePago)
@@ -102,10 +102,10 @@ namespace ClnCarsal
                 {
                     pago.DetallePago.Add(new DetallePago
                     {
-                        IdServicio = item.IdServicio,
-                        Cantidad = item.Cantidad,
-                        PrecioUnitario = item.PrecioUnitario,
-                        Subtotal = item.Subtotal
+                        idServicio = item.IdServicio,
+                        cantidad = item.Cantidad,
+                        precioUnitario = item.PrecioUnitario,
+                        subtotal = item.Subtotal
                     });
                 }
 
@@ -113,7 +113,7 @@ namespace ClnCarsal
                 contexto.Pago.Add(pago);
                 contexto.SaveChanges();
 
-                return pago.IdPago;
+                return pago.id;
             }
         }
 

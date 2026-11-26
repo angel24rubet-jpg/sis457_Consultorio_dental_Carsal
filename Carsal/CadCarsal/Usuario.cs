@@ -21,24 +21,24 @@ namespace CadCarsal
             this.Cita1 = new HashSet<Cita>();
             this.Doctor = new HashSet<Doctor>();
             this.Doctor1 = new HashSet<Doctor>();
+            this.Especialidad = new HashSet<Especialidad>();
+            this.Especialidad1 = new HashSet<Especialidad>();
             this.HistorialClinico = new HashSet<HistorialClinico>();
             this.HistorialClinico1 = new HashSet<HistorialClinico>();
             this.Paciente = new HashSet<Paciente>();
             this.Paciente1 = new HashSet<Paciente>();
             this.Pago = new HashSet<Pago>();
             this.Pago1 = new HashSet<Pago>();
-            this.Especialidad = new HashSet<Especialidad>();
-            this.Especialidad1 = new HashSet<Especialidad>();
             this.Servicio = new HashSet<Servicio>();
             this.Servicio1 = new HashSet<Servicio>();
         }
     
-        public int IdUsuario { get; set; }
-        public string NombreUsuario { get; set; }
-        public string ClaveHash { get; set; }
-        public string Rol { get; set; }
-        public Nullable<int> IdDoctor { get; set; }
-        public bool Estado { get; set; }
+        public int id { get; set; }
+        public string nombreUsuario { get; set; }
+        public string claveHash { get; set; }
+        public string rol { get; set; }
+        public Nullable<int> idDoctor { get; set; }
+        public bool estado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cita> Cita { get; set; }
@@ -49,6 +49,10 @@ namespace CadCarsal
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Doctor> Doctor1 { get; set; }
         public virtual Doctor Doctor2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Especialidad> Especialidad { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Especialidad> Especialidad1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<HistorialClinico> HistorialClinico { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -61,10 +65,6 @@ namespace CadCarsal
         public virtual ICollection<Pago> Pago { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Pago> Pago1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Especialidad> Especialidad { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Especialidad> Especialidad1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Servicio> Servicio { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -14,20 +14,20 @@ namespace CadCarsal
     
     public partial class HistorialClinico
     {
-        public int IdHistorial { get; set; }
-        public int IdPaciente { get; set; }
-        public Nullable<int> IdCita { get; set; }
-        public System.DateTime FechaAtencion { get; set; }
-        public string Diagnostico { get; set; }
-        public string Tratamiento { get; set; }
-        public string Observaciones { get; set; }
-        public Nullable<int> IdUsuarioRegistro { get; set; }
-        public Nullable<int> IdUsuarioModificacion { get; set; }
-        public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public int id { get; set; }
+        public int idPaciente { get; set; }
+        public Nullable<int> idCita { get; set; }
+        public System.DateTime fechaAtencion { get; set; }
+        public string diagnostico { get; set; }
+        public string tratamiento { get; set; }
+        public string observaciones { get; set; }
+        public Nullable<int> idUsuarioRegistro { get; set; }
+        public Nullable<int> idUsuarioModificacion { get; set; }
+        public Nullable<System.DateTime> fechaModificacion { get; set; }
     
         public virtual Cita Cita { get; set; }
+        public virtual Paciente Paciente { get; set; }
         public virtual Usuario Usuario { get; set; }
         public virtual Usuario Usuario1 { get; set; }
-        public virtual Paciente Paciente { get; set; }
     }
 }

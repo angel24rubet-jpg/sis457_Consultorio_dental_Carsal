@@ -15,7 +15,7 @@ namespace ClnCarsal
         {
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
-                return contexto.paPacienteListar_Consultar().ToList();
+                return contexto.paPacienteListar().ToList();
             }
         }
 
@@ -24,7 +24,7 @@ namespace ClnCarsal
         {
             using (var contexto = new LabConsultorioDental_CarsalEntities())
             {
-                return contexto.paPacienteBuscarPorCi_Consultar(ci).ToList();
+                return contexto.paPacienteBuscarPorCi(ci).ToList();
             }
         }
 

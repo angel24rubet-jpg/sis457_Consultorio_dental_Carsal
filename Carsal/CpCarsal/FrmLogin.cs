@@ -49,8 +49,8 @@ namespace CpCarsal
                     this.Hide();
 
                     using (frmMenuPrincipal frm = new frmMenuPrincipal(
-                        usuarioActual.NombreUsuario,
-                        usuarioActual.Rol))
+                        usuarioActual.nombreUsuario,
+                        usuarioActual.rol))
                     {
                         DialogResult resultado = frm.ShowDialog();
 

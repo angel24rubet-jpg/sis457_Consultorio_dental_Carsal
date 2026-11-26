@@ -21,20 +21,20 @@ namespace CadCarsal
             this.HistorialClinico = new HashSet<HistorialClinico>();
         }
     
-        public int IdPaciente { get; set; }
-        public string Ci { get; set; }
-        public string Nombres { get; set; }
-        public string PrimerApellido { get; set; }
-        public string SegundoApellido { get; set; }
-        public Nullable<System.DateTime> FechaNacimiento { get; set; }
-        public string Sexo { get; set; }
-        public string Celular { get; set; }
-        public string Direccion { get; set; }
-        public System.DateTime FechaRegistro { get; set; }
-        public Nullable<int> IdUsuarioRegistro { get; set; }
-        public Nullable<int> IdUsuarioModificacion { get; set; }
-        public Nullable<System.DateTime> FechaModificacion { get; set; }
-        public bool Estado { get; set; }
+        public int id { get; set; }
+        public string ci { get; set; }
+        public string nombres { get; set; }
+        public string primerApellido { get; set; }
+        public string segundoApellido { get; set; }
+        public Nullable<System.DateTime> fechaNacimiento { get; set; }
+        public string sexo { get; set; }
+        public string celular { get; set; }
+        public string direccion { get; set; }
+        public bool estado { get; set; }
+        public System.DateTime fechaRegistro { get; set; }
+        public Nullable<int> idUsuarioRegistro { get; set; }
+        public Nullable<int> idUsuarioModificacion { get; set; }
+        public Nullable<System.DateTime> fechaModificacion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cita> Cita { get; set; }

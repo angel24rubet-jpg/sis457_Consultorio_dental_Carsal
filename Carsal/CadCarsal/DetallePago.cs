@@ -14,12 +14,12 @@ namespace CadCarsal
     
     public partial class DetallePago
     {
-        public int IdDetallePago { get; set; }
-        public int IdPago { get; set; }
-        public int IdServicio { get; set; }
-        public int Cantidad { get; set; }
-        public decimal PrecioUnitario { get; set; }
-        public decimal Subtotal { get; set; }
+        public int id { get; set; }
+        public int idPago { get; set; }
+        public int idServicio { get; set; }
+        public int cantidad { get; set; }
+        public decimal precioUnitario { get; set; }
+        public decimal subtotal { get; set; }
     
         public virtual Pago Pago { get; set; }
         public virtual Servicio Servicio { get; set; }

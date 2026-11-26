@@ -21,15 +21,15 @@ namespace CadCarsal
             this.Pago = new HashSet<Pago>();
         }
     
-        public int IdCita { get; set; }
-        public int IdPaciente { get; set; }
-        public int IdDoctor { get; set; }
-        public System.DateTime FechaHora { get; set; }
-        public string Estado { get; set; }
-        public Nullable<int> IdUsuarioRegistro { get; set; }
-        public System.DateTime FechaRegistro { get; set; }
-        public Nullable<int> IdUsuarioModificacion { get; set; }
-        public Nullable<System.DateTime> FechaModificacion { get; set; }
+        public int id { get; set; }
+        public int idPaciente { get; set; }
+        public int idDoctor { get; set; }
+        public System.DateTime fechaHora { get; set; }
+        public string estado { get; set; }
+        public Nullable<int> idUsuarioRegistro { get; set; }
+        public System.DateTime fechaRegistro { get; set; }
+        public Nullable<int> idUsuarioModificacion { get; set; }
+        public Nullable<System.DateTime> fechaModificacion { get; set; }
     
         public virtual Doctor Doctor { get; set; }
         public virtual Paciente Paciente { get; set; }
