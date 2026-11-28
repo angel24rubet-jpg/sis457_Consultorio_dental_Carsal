@@ -1,131 +1,211 @@
 @model IEnumerable<WebCarsal.Models.Paciente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pacientes";
 }
 
-<h1>Index</h1>
+<div class="container-fluid">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Ci)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombres)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrimerApellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SegundoApellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaNacimiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Sexo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Celular)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Direccion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaRegistro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioRegistro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioModificacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaModificacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HistorialClinico)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioModificacionNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioRegistroNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Ci)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Nombres)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.PrimerApellido)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.SegundoApellido)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaNacimiento)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Sexo)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Celular)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaRegistro)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioRegistro)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioModificacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaModificacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Cita)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.HistorialClinico)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioModificacionNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioRegistroNavigation)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- ENCABEZADO -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Gestión de pacientes</h2>
+            <p class="text-muted mb-0">
+                Administración y registro de pacientes de la clínica
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary px-3 py-2">
+            <i class="bi bi-person-plus-fill me-1"></i>
+            Registrar paciente
+        </a>
+    </div>
+
+    <!-- MENSAJE DE CONFIRMACION -->
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            @TempData["Mensaje"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- BUSCADOR -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-3">
+
+            <form asp-action="Index" method="get">
+                <div class="row g-2 align-items-end">
+
+                    <div class="col-md-10">
+                        <label class="form-label fw-semibold">
+                            Buscar paciente
+                        </label>
+
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">
+                                <i class="bi bi-search"></i>
+                            </span>
+
+                            <input type="text"
+                                   name="buscar"
+                                   value="@ViewData["Buscar"]"
+                                   class="form-control"
+                                   placeholder="Buscar por CI, nombres o apellidos..." />
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            Buscar
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- TABLA DE PACIENTES -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 fw-bold">
+                <i class="bi bi-people-fill text-primary me-2"></i>
+                Lista de pacientes activos
+            </h5>
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>CI</th>
+                            <th>Nombres</th>
+                            <th>Primer apellido</th>
+                            <th>Segundo apellido</th>
+                            <th>Fecha nacimiento</th>
+                            <th>Sexo</th>
+                            <th>Celular</th>
+                            <th>Dirección</th>
+                            <th>Estado</th>
+                            <th>Fecha registro</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.Any())
+                        {
+                            @foreach (var paciente in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">
+                                        @paciente.Ci
+                                    </td>
+
+                                    <td>
+                                        @paciente.Nombres
+                                    </td>
+
+                                    <td>
+                                        @(paciente.PrimerApellido ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(paciente.SegundoApellido ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(paciente.FechaNacimiento?.ToString("dd/MM/yyyy") ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(paciente.Sexo ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(paciente.Celular ?? "—")
+                                    </td>
+
+                                    <td>
+                                        @(paciente.Direccion ?? "—")
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-success">
+                                            Activo
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @paciente.FechaRegistro.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-1">
+
+                                            <a asp-action="Details"
+                                               asp-route-id="@paciente.Id"
+                                               class="btn btn-sm btn-outline-info"
+                                               title="Ver detalles">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+
+                                            <a asp-action="Edit"
+                                               asp-route-id="@paciente.Id"
+                                               class="btn btn-sm btn-outline-primary"
+                                               title="Modificar">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-id="@paciente.Id"
+                                               class="btn btn-sm btn-outline-danger"
+                                               title="Desactivar">
+                                                <i class="bi bi-person-x-fill"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="11" class="text-center py-5">
+                                    <i class="bi bi-person-x text-muted fs-1"></i>
+
+                                    <p class="fw-semibold mt-2 mb-1">
+                                        No se encontraron pacientes
+                                    </p>
+
+                                    <p class="text-muted mb-0">
+                                        Registre un nuevo paciente o intente otra búsqueda.
+                                    </p>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+        <div class="card-footer bg-white text-muted">
+            Total de pacientes encontrados: <strong>@Model.Count()</strong>
+        </div>
+
+    </div>
+
+</div>

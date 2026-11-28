@@ -1,31 +1,334 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
 
 html {
-  position: relative;
-  min-height: 100%;
+    font-size: 14px;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f4f7fa;
+    color: #263746;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.app-container {
+    display: flex;
+    min-height: 100vh;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* MENU LATERAL */
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    background-color: #123b46;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    background-color: #35a6a0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.sidebar-brand h4 {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.sidebar-brand small {
+    color: #b8d0d4;
+}
+
+.sidebar-section {
+    padding: 25px 20px 10px;
+    font-size: 11px;
+    color: #9db9be;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.sidebar-menu {
+    padding: 0 12px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    color: #d7e5e8;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+    .menu-link:hover {
+        background-color: #24535e;
+        color: white;
+    }
+
+    .menu-link.active {
+        background-color: #35a6a0;
+        color: white;
+        font-weight: 600;
+    }
+
+.menu-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255,255,255,0.12);
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    color: #a9c1c5;
+    border-top: 1px solid rgba(255,255,255,0.12);
+}
+
+/* AREA PRINCIPAL */
+.main-area {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 75px;
+    background-color: white;
+    border-bottom: 1px solid #e5eaee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+    .topbar h6 {
+        font-weight: 700;
+        color: #23434c;
+    }
+
+    .topbar small {
+        color: #84939c;
+    }
+
+.topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #d9f0ed;
+    color: #187d78;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.content-area {
+    padding: 30px;
+    flex: 1;
+}
+
+.main-footer {
+    padding: 18px 30px;
+    color: #89969e;
+    font-size: 12px;
+    border-top: 1px solid #e5eaee;
+    background-color: white;
+}
+
+/* ADAPTACION A CELULARES */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .content-area {
+        padding: 15px;
+    }
+
+    .topbar {
+        padding: 0 15px;
+    }
+}
+
+
+/* ===== MEJORAS VISUALES CARSAL ===== */
+
+/* Menu lateral */
+.sidebar {
+    width: 285px;
+    min-width: 285px;
+    background: linear-gradient(180deg, #123b46 0%, #0d303a 100%);
+}
+
+.sidebar-brand {
+    min-height: 100px;
+    padding: 25px;
+}
+
+.brand-icon {
+    width: 52px;
+    height: 52px;
+    font-size: 28px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+.sidebar-brand h4 {
+    font-size: 23px;
+}
+
+/* Titulo del menu */
+.sidebar-section {
+    padding: 30px 22px 15px;
+    font-size: 12px;
+}
+
+/* Botones del menu */
+.sidebar-menu {
+    padding: 0 14px;
+}
+
+.menu-link {
+    min-height: 58px;
+    padding: 10px 14px;
+    margin-bottom: 9px;
+    gap: 15px;
+    border-radius: 11px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+    .menu-link:hover {
+        background-color: #245762;
+        transform: translateX(3px);
+    }
+
+/* Iconos */
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 10px;
+    background-color: #d7f2ef;
+    color: #137c79;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.menu-link:hover .menu-icon {
+    background-color: white;
+    color: #137c79;
+}
+
+.menu-link.active {
+    background: linear-gradient(90deg, #35aaa3, #26968f);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+    .menu-link.active .menu-icon {
+        background-color: white;
+        color: #16827d;
+    }
+
+/* Barra superior */
+.topbar {
+    height: 90px;
+    min-height: 90px;
+    padding: 0 38px;
+    box-shadow: 0 2px 8px rgba(25, 55, 65, 0.04);
+}
+
+    .topbar h6 {
+        font-size: 17px;
+        margin-bottom: 5px !important;
+    }
+
+    .topbar small {
+        font-size: 13px;
+    }
+
+.topbar-user {
+    gap: 13px;
+    font-size: 15px;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 17px;
+}
+
+/* Area de contenido */
+.content-area {
+    padding: 35px;
+}
+
+/* Pie */
+.main-footer {
+    padding: 20px 35px;
+    font-size: 13px;
+}
+
+/* Adaptacion a pantallas pequenas */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 220px;
+        min-width: 220px;
+    }
+
+    .menu-link {
+        font-size: 14px;
+    }
+
+    .topbar {
+        height: 80px;
+        min-height: 80px;
+        padding: 0 15px;
+    }
+
+    .content-area {
+        padding: 18px;
+    }
 }

@@ -1,149 +1,212 @@
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebCarsal.Models;
 
-public class EspecialidadesController : Controller
+namespace WebCarsal.Controllers
 {
-    private readonly CarsalContext _context;
-
-    public EspecialidadesController(CarsalContext context)
+    public class EspecialidadesController : Controller
     {
-        _context = context;
-    }
+        private readonly CarsalContext _context;
 
-    // GET: ESPECIALIDADS
-    public async Task<IActionResult> Index()    
-    {
-        return View(await _context.Especialidad.ToListAsync());
-    }
-
-    // GET: ESPECIALIDADS/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
+        public EspecialidadesController(CarsalContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        var especialidad = await _context.Especialidad
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (especialidad == null)
+        // GET: ESPECIALIDADES
+        public async Task<IActionResult> Index(string buscar)
         {
-            return NotFound();
+            var especialidades = _context.Especialidad
+                .AsNoTracking()
+                .Where(e => e.Estado);
+
+            if (!string.IsNullOrWhiteSpace(buscar))
+            {
+                buscar = buscar.Trim();
+
+                especialidades = especialidades.Where(e =>
+                    e.Nombre.Contains(buscar));
+            }
+
+            var lista = await especialidades
+                .OrderBy(e => e.Nombre)
+                .ToListAsync();
+
+            ViewData["Buscar"] = buscar;
+
+            return View(lista);
         }
 
-        return View(especialidad);
-    }
-
-    // GET: ESPECIALIDADS/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: ESPECIALIDADS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Estado,IdUsuarioRegistro,FechaRegistro,IdUsuarioModificacion,FechaModificacion,Doctor,IdUsuarioModificacionNavigation,IdUsuarioRegistroNavigation")] Especialidad especialidad)
-    {
-        if (ModelState.IsValid)
+        // GET: ESPECIALIDADES/DETAILS/5
+        public async Task<IActionResult> Details(int? id)
         {
-            _context.Add(especialidad);
+            if (id == null)
+                return NotFound();
+
+            var especialidad = await _context.Especialidad
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (especialidad == null)
+                return NotFound();
+
+            return View(especialidad);
+        }
+
+        // GET: ESPECIALIDADES/CREATE
+        public IActionResult Create()
+        {
+            return View(new EspecialidadFormViewModel());
+        }
+
+        // POST: ESPECIALIDADES/CREATE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(EspecialidadFormViewModel modelo)
+        {
+            modelo.Nombre = modelo.Nombre?.Trim() ?? string.Empty;
+            modelo.Descripcion = modelo.Descripcion?.Trim();
+
+            // Verificar nombre duplicado, incluso en desactivadas
+            bool nombreExiste = await _context.Especialidad
+                .AnyAsync(e => e.Nombre == modelo.Nombre);
+
+            if (nombreExiste)
+            {
+                ModelState.AddModelError(
+                    nameof(modelo.Nombre),
+                    "Ya existe una especialidad registrada con este nombre."
+                );
+            }
+
+            if (!ModelState.IsValid)
+                return View(modelo);
+
+            var especialidad = new Especialidad
+            {
+                Nombre = modelo.Nombre,
+                Descripcion = modelo.Descripcion,
+                Estado = true,
+                FechaRegistro = DateTime.Now
+            };
+
+            _context.Especialidad.Add(especialidad);
             await _context.SaveChangesAsync();
+
+            TempData["Mensaje"] = "Especialidad registrada correctamente.";
+
             return RedirectToAction(nameof(Index));
         }
-        return View(especialidad);
-    }
 
-    // GET: ESPECIALIDADS/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
+        // GET: ESPECIALIDADES/EDIT/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            return NotFound();
-        }
+            if (id == null)
+                return NotFound();
 
-        var especialidad = await _context.Especialidad.FindAsync(id);
-        if (especialidad == null)
-        {
-            return NotFound();
-        }
-        return View(especialidad);
-    }
+            var especialidad = await _context.Especialidad.FindAsync(id);
 
-    // POST: ESPECIALIDADS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Nombre,Descripcion,Estado,IdUsuarioRegistro,FechaRegistro,IdUsuarioModificacion,FechaModificacion,Doctor,IdUsuarioModificacionNavigation,IdUsuarioRegistroNavigation")] Especialidad especialidad)
-    {
-        if (id != especialidad.Id)
-        {
-            return NotFound();
-        }
+            if (especialidad == null || !especialidad.Estado)
+                return NotFound();
 
-        if (ModelState.IsValid)
-        {
-            try
+            var modelo = new EspecialidadFormViewModel
             {
-                _context.Update(especialidad);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
+                Nombre = especialidad.Nombre,
+                Descripcion = especialidad.Descripcion
+            };
+
+            return View(modelo);
+        }
+
+        // POST: ESPECIALIDADES/EDIT/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EspecialidadFormViewModel modelo)
+        {
+            var especialidad = await _context.Especialidad.FindAsync(id);
+
+            if (especialidad == null || !especialidad.Estado)
+                return NotFound();
+
+            modelo.Nombre = modelo.Nombre?.Trim() ?? string.Empty;
+            modelo.Descripcion = modelo.Descripcion?.Trim();
+
+            // Verificar nombre duplicado sin contar la especialidad actual
+            bool nombreExiste = await _context.Especialidad
+                .AnyAsync(e => e.Nombre == modelo.Nombre && e.Id != id);
+
+            if (nombreExiste)
             {
-                if (!EspecialidadExists(especialidad.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                ModelState.AddModelError(
+                    nameof(modelo.Nombre),
+                    "Ya existe otra especialidad con este nombre."
+                );
             }
+
+            if (!ModelState.IsValid)
+                return View(modelo);
+
+            especialidad.Nombre = modelo.Nombre;
+            especialidad.Descripcion = modelo.Descripcion;
+            especialidad.FechaModificacion = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            TempData["Mensaje"] = "Especialidad modificada correctamente.";
+
             return RedirectToAction(nameof(Index));
         }
-        return View(especialidad);
-    }
 
-    // GET: ESPECIALIDADS/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
+        // GET: ESPECIALIDADES/DELETE/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            return NotFound();
+            if (id == null)
+                return NotFound();
+
+            var especialidad = await _context.Especialidad
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id && e.Estado);
+
+            if (especialidad == null)
+                return NotFound();
+
+            return View(especialidad);
         }
 
-        var especialidad = await _context.Especialidad
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (especialidad == null)
+        // POST: ESPECIALIDADES/DELETE/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            return NotFound();
+            var especialidad = await _context.Especialidad.FindAsync(id);
+
+            if (especialidad == null || !especialidad.Estado)
+                return NotFound();
+
+            // Verificar si existen doctores activos asociados
+            bool tieneDoctoresActivos = await _context.Doctor
+                .AnyAsync(d => d.IdEspecialidad == id && d.Estado);
+
+            if (tieneDoctoresActivos)
+            {
+                TempData["Error"] =
+                    "No se puede desactivar esta especialidad porque tiene doctores activos asociados.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            especialidad.Estado = false;
+            especialidad.FechaModificacion = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            TempData["Mensaje"] = "Especialidad desactivada correctamente.";
+
+            return RedirectToAction(nameof(Index));
         }
-
-        return View(especialidad);
-    }
-
-    // POST: ESPECIALIDADS/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
-    {
-        var especialidad = await _context.Especialidad.FindAsync(id);
-        if (especialidad != null)
-        {
-            _context.Especialidad.Remove(especialidad);
-        }
-
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool EspecialidadExists(int? id)
-    {
-        return _context.Especialidad.Any(e => e.Id == id);
     }
 }

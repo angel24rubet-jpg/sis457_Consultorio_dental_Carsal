@@ -1,79 +1,84 @@
-@model WebCarsal.Models.Especialidad
+@model WebCarsal.Models.EspecialidadFormViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Modificar especialidad";
 }
 
-<h1>Edit</h1>
+<div class="container-fluid">
 
-<h4>Especialidad</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-check-input" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdUsuarioRegistro" class="control-label"></label>
-                <input asp-for="IdUsuarioRegistro" class="form-control" />
-                <span asp-validation-for="IdUsuarioRegistro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaRegistro" class="control-label"></label>
-                <input asp-for="FechaRegistro" class="form-control" />
-                <span asp-validation-for="FechaRegistro" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdUsuarioModificacion" class="control-label"></label>
-                <input asp-for="IdUsuarioModificacion" class="form-control" />
-                <span asp-validation-for="IdUsuarioModificacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaModificacion" class="control-label"></label>
-                <input asp-for="FechaModificacion" class="form-control" />
-                <span asp-validation-for="FechaModificacion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Doctor" class="control-label"></label>
-                <input asp-for="Doctor" class="form-control" />
-                <span asp-validation-for="Doctor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="IdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="IdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="IdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="IdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Modificar especialidad</h2>
+            <p class="text-muted mb-0">
+                Actualice la información de la especialidad.
+            </p>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <form asp-action="Edit" method="post">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <h5 class="fw-bold mb-3">
+                    <i class="bi bi-grid-fill text-primary"></i>
+                    Información de la especialidad
+                </h5>
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label asp-for="Nombre" class="form-label"></label>
+
+                        <input asp-for="Nombre" class="form-control" />
+
+                        <span asp-validation-for="Nombre"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="Descripcion" class="form-label"></label>
+
+                        <textarea asp-for="Descripcion"
+                                  class="form-control"
+                                  rows="4"></textarea>
+
+                        <span asp-validation-for="Descripcion"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-action="Index" class="btn btn-light border">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-save-fill"></i>
+                        Guardar cambios
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

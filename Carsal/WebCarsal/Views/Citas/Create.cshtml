@@ -1,108 +1,133 @@
-@model WebCarsal.Models.Cita
+@model WebCarsal.Models.CitaFormViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Nueva cita";
 }
 
-<h1>Create</h1>
+<div class="container-fluid">
+    <div class="mb-4">
+        <h2><i class="bi bi-calendar-plus"></i> Registrar cita</h2>
+        <p class="text-muted">Complete los datos para programar una nueva cita.</p>
+    </div>
 
-<h4>Cita</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
 
-            <div class="form-group">
-                <label asp-for="IdPaciente" class="control-label"></label>
-                <input asp-for="IdPaciente" class="form-control" />
-                <span asp-validation-for="IdPaciente" class="text-danger"></span>
-            </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="IdDoctor" class="control-label"></label>
-                <input asp-for="IdDoctor" class="form-control" />
-                <span asp-validation-for="IdDoctor" class="text-danger"></span>
-            </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="IdPaciente" class="form-label"></label>
+                        <select asp-for="IdPaciente" asp-items="ViewBag.Pacientes" class="form-select">
+                            <option value="">Seleccione un paciente</option>
+                        </select>
+                        <span asp-validation-for="IdPaciente" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="FechaHora" class="control-label"></label>
-                <input asp-for="FechaHora" class="form-control" />
-                <span asp-validation-for="FechaHora" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="IdEspecialidad" class="form-label"></label>
+                        <select asp-for="IdEspecialidad" asp-items="ViewBag.Especialidades"
+                                class="form-select" id="especialidad">
+                            <option value="">Seleccione una especialidad</option>
+                        </select>
+                        <span asp-validation-for="IdEspecialidad" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="IdDoctor" class="form-label"></label>
+                        <select asp-for="IdDoctor" asp-items="ViewBag.Doctores"
+                                class="form-select" id="doctor">
+                            <option value="">Seleccione un doctor</option>
+                        </select>
+                        <span asp-validation-for="IdDoctor" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="IdUsuarioRegistro" class="control-label"></label>
-                <input asp-for="IdUsuarioRegistro" class="form-control" />
-                <span asp-validation-for="IdUsuarioRegistro" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Fecha" class="form-label"></label>
+                        <input asp-for="Fecha" type="date" class="form-control" id="fecha"
+                               min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="Fecha" class="text-danger"></span>
+                    </div>
 
-            <div class="form-group">
-                <label asp-for="FechaRegistro" class="control-label"></label>
-                <input asp-for="FechaRegistro" class="form-control" />
-                <span asp-validation-for="FechaRegistro" class="text-danger"></span>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Hora" class="form-label"></label>
+                        <select asp-for="Hora" class="form-select" id="hora">
+                            <option value="">Seleccione primero doctor y fecha</option>
+                        </select>
+                        <span asp-validation-for="Hora" class="text-danger"></span>
+                    </div>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="IdUsuarioModificacion" class="control-label"></label>
-                <input asp-for="IdUsuarioModificacion" class="form-control" />
-                <span asp-validation-for="IdUsuarioModificacion" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="FechaModificacion" class="control-label"></label>
-                <input asp-for="FechaModificacion" class="form-control" />
-                <span asp-validation-for="FechaModificacion" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="HistorialClinico" class="control-label"></label>
-                <input asp-for="HistorialClinico" class="form-control" />
-                <span asp-validation-for="HistorialClinico" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="IdDoctorNavigation" class="control-label"></label>
-                <input asp-for="IdDoctorNavigation" class="form-control" />
-                <span asp-validation-for="IdDoctorNavigation" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="IdPacienteNavigation" class="control-label"></label>
-                <input asp-for="IdPacienteNavigation" class="form-control" />
-                <span asp-validation-for="IdPacienteNavigation" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="IdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="IdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="IdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="IdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="IdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="IdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Pago" class="control-label"></label>
-                <input asp-for="Pago" class="form-control" />
-                <span asp-validation-for="Pago" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Guardar cita
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const especialidad = document.getElementById("especialidad");
+        const doctor = document.getElementById("doctor");
+        const fecha = document.getElementById("fecha");
+        const hora = document.getElementById("hora");
+
+        async function cargarDoctores() {
+            doctor.innerHTML = '<option value="">Seleccione un doctor</option>';
+            hora.innerHTML = '<option value="">Seleccione doctor y fecha</option>';
+
+            if (!especialidad.value) return;
+
+            const respuesta = await fetch(
+                '@Url.Action("ObtenerDoctores", "Citas")?idEspecialidad=' + especialidad.value
+            );
+
+            const datos = await respuesta.json();
+
+            datos.forEach(d => {
+                doctor.add(new Option(d.nombre, d.id));
+            });
+
+            if (datos.length === 1) {
+                doctor.value = datos[0].id;
+                await cargarHorarios();
+            }
+        }
+
+        async function cargarHorarios() {
+            hora.innerHTML = '<option value="">Cargando horarios...</option>';
+
+            if (!doctor.value || !fecha.value) {
+                hora.innerHTML = '<option value="">Seleccione doctor y fecha</option>';
+                return;
+            }
+
+            const respuesta = await fetch(
+                '@Url.Action("ObtenerHorarios", "Citas")?idDoctor=' +
+                doctor.value + '&fecha=' + fecha.value
+            );
+
+            const datos = await respuesta.json();
+
+            hora.innerHTML = '<option value="">Seleccione una hora</option>';
+
+            datos.forEach(h => hora.add(new Option(h, h)));
+
+            if (datos.length === 0) {
+                hora.innerHTML = '<option value="">No hay horarios disponibles</option>';
+            }
+        }
+
+        especialidad.addEventListener("change", cargarDoctores);
+        doctor.addEventListener("change", cargarHorarios);
+        fecha.addEventListener("change", cargarHorarios);
+    </script>
+}

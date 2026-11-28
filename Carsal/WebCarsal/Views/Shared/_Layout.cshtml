@@ -1,79 +1,222 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebCarsal</title>
-    <script type="importmap"></script>
+
+    <title>@ViewData["Title"] - Carsal</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <!-- Estilos del proyecto -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebCarsal.styles.css" asp-append-version="true" />
+
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WebCarsal</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pacientes" asp-action="Index">Pacientes</a>
-                        </li>
+    <div class="app-container">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Especialidades" asp-action="Index">Especialidades</a>
-                        </li>
+        <!-- ================= MENU LATERAL ================= -->
+        <aside class="sidebar">
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctores" asp-action="Index">Doctores</a>
-                        </li>
+            <!-- LOGOTIPO -->
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <i class="bi bi-heart-pulse-fill"></i>
+                </div>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Citas" asp-action="Index">Citas</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="HistorialClinico" asp-action="Index">HistorialClinico</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Pagos" asp-action="Index">Pagos</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
-                        </li>
-
-                    </ul>
+                <div>
+                    <h4>CARSAL</h4>
+                    <small>Clínica Dental</small>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <!-- TITULO DEL MENU -->
+            <div class="sidebar-section">
+                MENÚ PRINCIPAL
+            </div>
+
+            <!-- OPCIONES DEL MENU -->
+            <nav class="sidebar-menu">
+
+                <!-- INICIO -->
+                <a asp-controller="Home" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-house-door-fill"></i>
+                    </span>
+
+                    <span>Inicio</span>
+                </a>
+
+                <!-- PACIENTES -->
+                <a asp-controller="Pacientes" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pacientes" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-people-fill"></i>
+                    </span>
+
+                    <span>Pacientes</span>
+                </a>
+
+                <!-- DOCTORES -->
+                <a asp-controller="Doctores" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Doctores" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-person-badge-fill"></i>
+                    </span>
+
+                    <span>Doctores</span>
+                </a>
+
+                <!-- ESPECIALIDADES -->
+                <a asp-controller="Especialidades" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Especialidades" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-grid-fill"></i>
+                    </span>
+
+                    <span>Especialidades</span>
+                </a>
+
+                <!-- CITAS -->
+                <a asp-controller="Citas" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Citas" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-calendar2-check-fill"></i>
+                    </span>
+
+                    <span>Citas</span>
+                </a>
+
+                <!-- HISTORIAL CLINICO -->
+                <a asp-controller="HistorialClinico" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "HistorialClinico" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-clipboard2-pulse-fill"></i>
+                    </span>
+
+                    <span>Historial clínico</span>
+                </a>
+
+                <!-- SERVICIOS -->
+                <a asp-controller="Servicios" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Servicios" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-heart-pulse-fill"></i>
+                    </span>
+
+                    <span>Servicios</span>
+                </a>
+
+                <!-- PAGOS -->
+                <a asp-controller="Pagos" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pagos" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-cash-coin"></i>
+                    </span>
+
+                    <span>Pagos</span>
+                </a>
+
+                <!-- USUARIOS -->
+                <a asp-controller="Usuarios" asp-action="Index"
+                   class="menu-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Usuarios" ? "active" : "")">
+
+                    <span class="menu-icon">
+                        <i class="bi bi-person-gear"></i>
+                    </span>
+
+                    <span>Usuarios</span>
+                </a>
+
+            </nav>
+
+            <!-- PIE DEL MENU -->
+            <div class="sidebar-footer">
+                <div>
+                    <i class="bi bi-shield-check"></i>
+                    Sistema de gestión dental
+                </div>
+
+                <small>Carsal © 2026</small>
+            </div>
+
+        </aside>
+
+
+        <!-- ================= AREA PRINCIPAL ================= -->
+        <div class="main-area">
+
+            <!-- BARRA SUPERIOR -->
+            <header class="topbar">
+
+                <div class="topbar-title">
+                    <h6>Sistema de gestión</h6>
+                    <small>Administración de la clínica dental</small>
+                </div>
+
+                <!-- INFORMACION DEL USUARIO -->
+                <div class="topbar-user">
+
+                    <div class="user-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+
+                    <div class="user-information">
+                        <span class="user-name">Usuario</span>
+                        <small>Panel administrativo</small>
+                    </div>
+
+                    <i class="bi bi-chevron-down user-arrow"></i>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENIDO DE CADA MODULO -->
+            <main class="content-area">
+                @RenderBody()
+            </main>
+
+
+            <!-- PIE DE PAGINA -->
+            <footer class="main-footer">
+                <span>
+                    <i class="bi bi-heart-pulse"></i>
+                    Carsal - Sistema de gestión de clínica dental
+                </span>
+
+                <span>Todos los derechos reservados © 2026</span>
+            </footer>
+
+        </div>
+
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - WebCarsal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+
+    <!-- SCRIPTS -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

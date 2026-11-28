@@ -1,113 +1,101 @@
 @model IEnumerable<WebCarsal.Models.Cita>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Citas";
 }
 
-<h1>Index</h1>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2><i class="bi bi-calendar-check"></i> Gestión de Citas</h2>
+            <p class="text-muted mb-0">Administración de citas odontológicas</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva cita
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdPaciente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdDoctor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaHora)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioRegistro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaRegistro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioModificacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaModificacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HistorialClinico)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdDoctorNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdPacienteNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioModificacionNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioRegistroNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Pago)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.IdPaciente)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdDoctor)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaHora)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioRegistro)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaRegistro)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioModificacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaModificacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.HistorialClinico)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdDoctorNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdPacienteNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioModificacionNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioRegistroNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Pago)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mensaje"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Paciente</th>
+                            <th>Doctor</th>
+                            <th>Especialidad</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var cita in Model)
+                            {
+                                <tr>
+                                    <td>@cita.FechaHora.ToString("dd/MM/yyyy")</td>
+                                    <td>@cita.FechaHora.ToString("HH:mm")</td>
+                                    <td>
+                                        @cita.IdPacienteNavigation.Nombres
+                                        @cita.IdPacienteNavigation.PrimerApellido
+                                        @cita.IdPacienteNavigation.SegundoApellido
+                                    </td>
+                                    <td>
+                                        Dr. @cita.IdDoctorNavigation.Nombres
+                                        @cita.IdDoctorNavigation.Apellidos
+                                    </td>
+                                    <td>@cita.IdDoctorNavigation.IdEspecialidadNavigation.Nombre</td>
+                                    <td>
+                                        @if (cita.Estado == "Pendiente")
+                                        {
+                                            <span class="badge bg-warning text-dark">Pendiente</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Atendida</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="Details" asp-route-id="@cita.Id"
+                                           class="btn btn-sm btn-outline-info" title="Detalles">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+
+                                        @if (cita.Estado == "Pendiente")
+                                        {
+                                            <a asp-action="Edit" asp-route-id="@cita.Id"
+                                               class="btn btn-sm btn-outline-primary" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    No existen citas registradas.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
