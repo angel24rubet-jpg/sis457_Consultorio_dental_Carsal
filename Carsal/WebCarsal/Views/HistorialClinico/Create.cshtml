@@ -1,102 +1,211 @@
-@model WebCarsal.Models.HistorialClinico
+@model WebCarsal.Models.HistorialClinicoViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Registrar historial clínico";
 }
 
-<h1>Create</h1>
+<div class="container-fluid">
+    <div class="mb-4">
+        <h2><i class="bi bi-journal-medical"></i> Registrar historial clínico</h2>
+        <p class="text-muted">Busque al paciente por su carnet de identidad para consultar sus citas pendientes.</p>
+    </div>
 
-<h4>HistorialClinico</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body p-4">
+            <h5 class="mb-3">1. Buscar paciente</h5>
 
-            <div class="form-group">
-                <label asp-for="IdPaciente" class="control-label"></label>
-                <input asp-for="IdPaciente" class="form-control" />
-                <span asp-validation-for="IdPaciente" class="text-danger"></span>
+            <div class="row align-items-end">
+                <div class="col-md-6">
+                    <label for="ci" class="form-label">Carnet de identidad</label>
+                    <input type="text" id="ci" class="form-control"
+                           placeholder="Ingrese el CI del paciente" autocomplete="off" />
+                </div>
+                <div class="col-md-3">
+                    <button type="button" id="btnBuscar" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Buscar paciente
+                    </button>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="IdCita" class="control-label"></label>
-                <input asp-for="IdCita" class="form-control" />
-                <span asp-validation-for="IdCita" class="text-danger"></span>
-            </div>
+            <div id="mensaje" class="mt-3"></div>
+            <div id="datosPaciente" class="mt-3" style="display:none;"></div>
+        </div>
+    </div>
 
-            <div class="form-group">
-                <label asp-for="FechaAtencion" class="control-label"></label>
-                <input asp-for="FechaAtencion" class="form-control" />
-                <span asp-validation-for="FechaAtencion" class="text-danger"></span>
-            </div>
+    <div class="card shadow-sm mb-4" id="contenedorCitas" style="display:none;">
+        <div class="card-body p-4">
+            <h5 class="mb-3">2. Seleccionar cita pendiente</h5>
 
-            <div class="form-group">
-                <label asp-for="Diagnostico" class="control-label"></label>
-                <input asp-for="Diagnostico" class="form-control" />
-                <span asp-validation-for="Diagnostico" class="text-danger"></span>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Seleccionar</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Doctor</th>
+                            <th>Especialidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaCitas"></tbody>
+                </table>
             </div>
+        </div>
+    </div>
 
-            <div class="form-group">
-                <label asp-for="Tratamiento" class="control-label"></label>
-                <input asp-for="Tratamiento" class="form-control" />
-                <span asp-validation-for="Tratamiento" class="text-danger"></span>
-            </div>
+    <div class="card shadow-sm" id="contenedorFormulario" style="display:none;">
+        <div class="card-body p-4">
+            <h5 class="mb-3">3. Registrar atención clínica</h5>
 
-            <div class="form-group">
-                <label asp-for="Observaciones" class="control-label"></label>
-                <input asp-for="Observaciones" class="form-control" />
-                <span asp-validation-for="Observaciones" class="text-danger"></span>
-            </div>
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
 
-            <div class="form-group">
-                <label asp-for="IdUsuarioRegistro" class="control-label"></label>
-                <input asp-for="IdUsuarioRegistro" class="form-control" />
-                <span asp-validation-for="IdUsuarioRegistro" class="text-danger"></span>
-            </div>
+                <input type="hidden" asp-for="IdPaciente" id="IdPaciente" />
+                <input type="hidden" asp-for="IdCita" id="IdCita" />
+                <input type="hidden" asp-for="Ci" id="CiFormulario" />
 
-            <div class="form-group">
-                <label asp-for="IdUsuarioModificacion" class="control-label"></label>
-                <input asp-for="IdUsuarioModificacion" class="form-control" />
-                <span asp-validation-for="IdUsuarioModificacion" class="text-danger"></span>
-            </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-            <div class="form-group">
-                <label asp-for="FechaModificacion" class="control-label"></label>
-                <input asp-for="FechaModificacion" class="form-control" />
-                <span asp-validation-for="FechaModificacion" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="Diagnostico" class="form-label"></label>
+                    <textarea asp-for="Diagnostico" class="form-control" rows="3"
+                              placeholder="Describa el diagnóstico del paciente"></textarea>
+                    <span asp-validation-for="Diagnostico" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="IdCitaNavigation" class="control-label"></label>
-                <input asp-for="IdCitaNavigation" class="form-control" />
-                <span asp-validation-for="IdCitaNavigation" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="Tratamiento" class="form-label"></label>
+                    <textarea asp-for="Tratamiento" class="form-control" rows="3"
+                              placeholder="Describa el tratamiento realizado"></textarea>
+                    <span asp-validation-for="Tratamiento" class="text-danger"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="IdPacienteNavigation" class="control-label"></label>
-                <input asp-for="IdPacienteNavigation" class="form-control" />
-                <span asp-validation-for="IdPacienteNavigation" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="Observaciones" class="form-label"></label>
+                    <textarea asp-for="Observaciones" class="form-control" rows="3"
+                              placeholder="Observaciones adicionales (opcional)"></textarea>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="IdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="IdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="IdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="IdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="IdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="IdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save"></i> Guardar historial clínico
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const ci = document.getElementById("ci");
+        const btnBuscar = document.getElementById("btnBuscar");
+        const mensaje = document.getElementById("mensaje");
+        const datosPaciente = document.getElementById("datosPaciente");
+        const contenedorCitas = document.getElementById("contenedorCitas");
+        const listaCitas = document.getElementById("listaCitas");
+        const contenedorFormulario = document.getElementById("contenedorFormulario");
+
+        function limpiarResultados() {
+            mensaje.innerHTML = "";
+            datosPaciente.style.display = "none";
+            datosPaciente.innerHTML = "";
+            contenedorCitas.style.display = "none";
+            listaCitas.innerHTML = "";
+            contenedorFormulario.style.display = "none";
+            document.getElementById("IdPaciente").value = "";
+            document.getElementById("IdCita").value = "";
+            document.getElementById("CiFormulario").value = "";
+        }
+
+        async function buscarPaciente() {
+            limpiarResultados();
+
+            const valor = ci.value.trim();
+
+            if (!valor) {
+                mensaje.innerHTML = '<div class="alert alert-warning">Ingrese el CI del paciente.</div>';
+                return;
+            }
+
+            btnBuscar.disabled = true;
+            btnBuscar.innerHTML = "Buscando...";
+
+            try {
+                const respuesta = await fetch(
+                    '@Url.Action("BuscarPaciente", "HistorialClinico")?ci=' + encodeURIComponent(valor)
+                );
+
+                const datos = await respuesta.json();
+
+                if (!datos.encontrado) {
+                    mensaje.innerHTML = `<div class="alert alert-warning">${datos.mensaje}</div>`;
+                    return;
+                }
+
+                datosPaciente.innerHTML = `
+                    <div class="alert alert-info mb-0">
+                        <strong>Paciente:</strong> ${datos.paciente.nombre}<br>
+                        <strong>CI:</strong> ${datos.paciente.ci}
+                    </div>`;
+
+                datosPaciente.style.display = "block";
+
+                if (datos.citas.length === 0) {
+                    mensaje.innerHTML = `<div class="alert alert-warning">${datos.mensaje}</div>`;
+                    return;
+                }
+
+                mensaje.innerHTML = `<div class="alert alert-success">${datos.mensaje}</div>`;
+
+                document.getElementById("IdPaciente").value = datos.paciente.id;
+                document.getElementById("CiFormulario").value = datos.paciente.ci;
+
+                datos.citas.forEach(cita => {
+                    const fila = document.createElement("tr");
+
+                    fila.innerHTML = `
+                        <td>
+                            <input type="radio" name="citaSeleccionada"
+                                   value="${cita.id}" class="form-check-input">
+                        </td>
+                        <td>${cita.fecha}</td>
+                        <td>${cita.hora}</td>
+                        <td>${cita.doctor}</td>
+                        <td>${cita.especialidad}</td>`;
+
+                    listaCitas.appendChild(fila);
+                });
+
+                contenedorCitas.style.display = "block";
+
+                document.querySelectorAll('input[name="citaSeleccionada"]')
+                    .forEach(radio => {
+                        radio.addEventListener("change", function () {
+                            document.getElementById("IdCita").value = this.value;
+                            contenedorFormulario.style.display = "block";
+                        });
+                    });
+            }
+            catch (error) {
+                mensaje.innerHTML = '<div class="alert alert-danger">No fue posible realizar la búsqueda.</div>';
+            }
+            finally {
+                btnBuscar.disabled = false;
+                btnBuscar.innerHTML = '<i class="bi bi-search"></i> Buscar paciente';
+            }
+        }
+
+        btnBuscar.addEventListener("click", buscarPaciente);
+
+        ci.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                buscarPaciente();
+            }
+        });
+    </script>
+}

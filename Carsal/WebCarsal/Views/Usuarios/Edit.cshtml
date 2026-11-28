@@ -1,129 +1,94 @@
-@model WebCarsal.Models.Usuario
+@model WebCarsal.Models.UsuarioFormViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar usuario";
 }
 
-<h1>Edit</h1>
+<div class="container-fluid">
+    <div class="mb-4">
+        <h2>Editar usuario</h2>
+        <p class="text-muted">Modifique los datos de la cuenta.</p>
+    </div>
 
-<h4>Usuario</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="NombreUsuario" class="control-label"></label>
-                <input asp-for="NombreUsuario" class="form-control" />
-                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClaveHash" class="control-label"></label>
-                <input asp-for="ClaveHash" class="form-control" />
-                <span asp-validation-for="ClaveHash" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rol" class="control-label"></label>
-                <input asp-for="Rol" class="form-control" />
-                <span asp-validation-for="Rol" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdDoctor" class="control-label"></label>
-                <input asp-for="IdDoctor" class="form-control" />
-                <span asp-validation-for="IdDoctor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-check-input" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CitaIdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="CitaIdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="CitaIdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CitaIdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="CitaIdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="CitaIdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DoctorIdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="DoctorIdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="DoctorIdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DoctorIdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="DoctorIdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="DoctorIdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EspecialidadIdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="EspecialidadIdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="EspecialidadIdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EspecialidadIdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="EspecialidadIdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="EspecialidadIdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HistorialClinicoIdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="HistorialClinicoIdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="HistorialClinicoIdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HistorialClinicoIdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="HistorialClinicoIdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="HistorialClinicoIdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdDoctorNavigation" class="control-label"></label>
-                <input asp-for="IdDoctorNavigation" class="form-control" />
-                <span asp-validation-for="IdDoctorNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PacienteIdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="PacienteIdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="PacienteIdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PacienteIdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="PacienteIdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="PacienteIdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PagoIdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="PagoIdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="PagoIdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PagoIdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="PagoIdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="PagoIdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ServicioIdUsuarioModificacionNavigation" class="control-label"></label>
-                <input asp-for="ServicioIdUsuarioModificacionNavigation" class="form-control" />
-                <span asp-validation-for="ServicioIdUsuarioModificacionNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ServicioIdUsuarioRegistroNavigation" class="control-label"></label>
-                <input asp-for="ServicioIdUsuarioRegistroNavigation" class="form-control" />
-                <span asp-validation-for="ServicioIdUsuarioRegistroNavigation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+                @Html.AntiForgeryToken()
+
+                <input type="hidden" asp-for="Id" />
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NombreUsuario" class="form-label"></label>
+                        <input asp-for="NombreUsuario" class="form-control" />
+                        <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Clave" class="form-label">
+                            Nueva contraseña
+                        </label>
+                        <input asp-for="Clave" type="password" class="form-control"
+                               placeholder="Dejar vacío para conservar la actual" />
+                        <span asp-validation-for="Clave" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Rol" class="form-label"></label>
+                        <select asp-for="Rol" class="form-select" id="Rol">
+                            <option value="">Seleccione un rol</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Doctor">Doctor</option>
+                        </select>
+                        <span asp-validation-for="Rol" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3" id="contenedorDoctor">
+                        <label asp-for="IdDoctor" class="form-label"></label>
+                        <select asp-for="IdDoctor" class="form-select"
+                                asp-items="ViewBag.Doctores">
+                            <option value="">Seleccione un doctor</option>
+                        </select>
+                        <span asp-validation-for="IdDoctor" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Guardar cambios
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-secondary">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const rol = document.getElementById("Rol");
+        const contenedorDoctor = document.getElementById("contenedorDoctor");
+        const doctor = document.getElementById("IdDoctor");
+
+        function mostrarDoctor() {
+            if (rol.value === "Doctor") {
+                contenedorDoctor.style.display = "block";
+            } else {
+                contenedorDoctor.style.display = "none";
+                doctor.value = "";
+            }
+        }
+
+        rol.addEventListener("change", mostrarDoctor);
+        mostrarDoctor();
+    </script>
 }

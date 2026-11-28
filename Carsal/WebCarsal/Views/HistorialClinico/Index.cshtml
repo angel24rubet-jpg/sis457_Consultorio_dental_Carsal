@@ -1,107 +1,78 @@
 @model IEnumerable<WebCarsal.Models.HistorialClinico>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Historial clínico";
 }
 
-<h1>Index</h1>
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2><i class="bi bi-journal-medical"></i> Historial clínico</h2>
+            <p class="text-muted mb-0">Registros de atención de los pacientes</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva atención
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdPaciente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdCita)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaAtencion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Diagnostico)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tratamiento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Observaciones)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioRegistro)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioModificacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaModificacion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdCitaNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdPacienteNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioModificacionNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdUsuarioRegistroNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.IdPaciente)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdCita)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaAtencion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Diagnostico)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Tratamiento)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Observaciones)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioRegistro)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioModificacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.FechaModificacion)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdCitaNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdPacienteNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioModificacionNavigation)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.IdUsuarioRegistroNavigation)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mensaje"]</div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Fecha de atención</th>
+                            <th>Paciente</th>
+                            <th>CI</th>
+                            <th>Diagnóstico</th>
+                            <th>Tratamiento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var historial in Model)
+                            {
+                                <tr>
+                                    <td>@historial.FechaAtencion.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td>
+                                        @historial.IdPacienteNavigation.Nombres
+                                        @historial.IdPacienteNavigation.PrimerApellido
+                                        @historial.IdPacienteNavigation.SegundoApellido
+                                    </td>
+                                    <td>@historial.IdPacienteNavigation.Ci</td>
+                                    <td>@historial.Diagnostico</td>
+                                    <td>@historial.Tratamiento</td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@historial.Id"
+                                           class="btn btn-sm btn-outline-info">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@historial.Id"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    No existen historiales clínicos registrados.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

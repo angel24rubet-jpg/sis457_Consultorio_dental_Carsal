@@ -1,149 +1,247 @@
-
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebCarsal.Models;
 
 public class UsuariosController : Controller
 {
     private readonly CarsalContext _context;
+    private readonly PasswordHasher<Usuario> _hasher;
 
     public UsuariosController(CarsalContext context)
     {
         _context = context;
+        _hasher = new PasswordHasher<Usuario>();
     }
 
-    // GET: USUARIOS
-    public async Task<IActionResult> Index()    
+    // LISTAR USUARIOS
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Usuario.ToListAsync());
+        var usuarios = await _context.Usuario
+            .Include(u => u.IdDoctorNavigation)
+            .OrderBy(u => u.NombreUsuario)
+            .ToListAsync();
+
+        return View(usuarios);
     }
 
-    // GET: USUARIOS/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var usuario = await _context.Usuario
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (usuario == null)
-        {
-            return NotFound();
-        }
-
-        return View(usuario);
-    }
-
-    // GET: USUARIOS/Create
+    // REGISTRAR USUARIO
     public IActionResult Create()
     {
-        return View();
+        CargarDoctores();
+        return View(new UsuarioFormViewModel());
     }
 
-    // POST: USUARIOS/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,NombreUsuario,ClaveHash,Rol,IdDoctor,Estado,CitaIdUsuarioModificacionNavigation,CitaIdUsuarioRegistroNavigation,DoctorIdUsuarioModificacionNavigation,DoctorIdUsuarioRegistroNavigation,EspecialidadIdUsuarioModificacionNavigation,EspecialidadIdUsuarioRegistroNavigation,HistorialClinicoIdUsuarioModificacionNavigation,HistorialClinicoIdUsuarioRegistroNavigation,IdDoctorNavigation,PacienteIdUsuarioModificacionNavigation,PacienteIdUsuarioRegistroNavigation,PagoIdUsuarioModificacionNavigation,PagoIdUsuarioRegistroNavigation,ServicioIdUsuarioModificacionNavigation,ServicioIdUsuarioRegistroNavigation")] Usuario usuario)
+    public async Task<IActionResult> Create(UsuarioFormViewModel modelo)
     {
-        if (ModelState.IsValid)
-        {
-            _context.Add(usuario);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        return View(usuario);
-    }
+        modelo.NombreUsuario = modelo.NombreUsuario.Trim();
 
-    // GET: USUARIOS/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
+        if (await _context.Usuario.AnyAsync(u =>
+            u.NombreUsuario.ToLower() == modelo.NombreUsuario.ToLower()))
         {
-            return NotFound();
+            ModelState.AddModelError("NombreUsuario",
+                "Este nombre de usuario ya está registrado.");
         }
 
-        var usuario = await _context.Usuario.FindAsync(id);
-        if (usuario == null)
+        if (modelo.Rol != "Administrador" && modelo.Rol != "Doctor")
         {
-            return NotFound();
-        }
-        return View(usuario);
-    }
-
-    // POST: USUARIOS/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,NombreUsuario,ClaveHash,Rol,IdDoctor,Estado,CitaIdUsuarioModificacionNavigation,CitaIdUsuarioRegistroNavigation,DoctorIdUsuarioModificacionNavigation,DoctorIdUsuarioRegistroNavigation,EspecialidadIdUsuarioModificacionNavigation,EspecialidadIdUsuarioRegistroNavigation,HistorialClinicoIdUsuarioModificacionNavigation,HistorialClinicoIdUsuarioRegistroNavigation,IdDoctorNavigation,PacienteIdUsuarioModificacionNavigation,PacienteIdUsuarioRegistroNavigation,PagoIdUsuarioModificacionNavigation,PagoIdUsuarioRegistroNavigation,ServicioIdUsuarioModificacionNavigation,ServicioIdUsuarioRegistroNavigation")] Usuario usuario)
-    {
-        if (id != usuario.Id)
-        {
-            return NotFound();
+            ModelState.AddModelError("Rol", "Seleccione un rol válido.");
         }
 
-        if (ModelState.IsValid)
+        if (string.IsNullOrWhiteSpace(modelo.Clave))
         {
-            try
-            {
-                _context.Update(usuario);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UsuarioExists(usuario.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            return RedirectToAction(nameof(Index));
-        }
-        return View(usuario);
-    }
-
-    // GET: USUARIOS/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
+            ModelState.AddModelError("Clave", "Ingrese una contraseña.");
         }
 
-        var usuario = await _context.Usuario
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (usuario == null)
+        if (modelo.Rol == "Administrador")
         {
-            return NotFound();
+            modelo.IdDoctor = null;
+        }
+        else if (modelo.Rol == "Doctor")
+        {
+            await ValidarDoctor(modelo.IdDoctor, null);
         }
 
-        return View(usuario);
-    }
-
-    // POST: USUARIOS/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
-    {
-        var usuario = await _context.Usuario.FindAsync(id);
-        if (usuario != null)
+        if (!ModelState.IsValid)
         {
-            _context.Usuario.Remove(usuario);
+            CargarDoctores(modelo.IdDoctor);
+            return View(modelo);
         }
 
+        var usuario = new Usuario
+        {
+            NombreUsuario = modelo.NombreUsuario,
+            Rol = modelo.Rol,
+            IdDoctor = modelo.IdDoctor,
+            Estado = true
+        };
+
+        usuario.ClaveHash = _hasher.HashPassword(
+            usuario, modelo.Clave!);
+
+        _context.Usuario.Add(usuario);
         await _context.SaveChangesAsync();
+
+        TempData["Mensaje"] = "Usuario registrado correctamente.";
+
         return RedirectToAction(nameof(Index));
     }
 
-    private bool UsuarioExists(int? id)
+    // EDITAR USUARIO
+    public async Task<IActionResult> Edit(int? id)
     {
-        return _context.Usuario.Any(e => e.Id == id);
+        if (id == null)
+            return NotFound();
+
+        var usuario = await _context.Usuario.FindAsync(id);
+
+        if (usuario == null)
+            return NotFound();
+
+        var modelo = new UsuarioFormViewModel
+        {
+            Id = usuario.Id,
+            NombreUsuario = usuario.NombreUsuario,
+            Rol = usuario.Rol,
+            IdDoctor = usuario.IdDoctor
+        };
+
+        CargarDoctores(usuario.IdDoctor);
+
+        return View(modelo);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, UsuarioFormViewModel modelo)
+    {
+        if (id != modelo.Id)
+            return NotFound();
+
+        var usuario = await _context.Usuario.FindAsync(id);
+
+        if (usuario == null)
+            return NotFound();
+
+        modelo.NombreUsuario = modelo.NombreUsuario.Trim();
+
+        if (await _context.Usuario.AnyAsync(u =>
+            u.Id != id &&
+            u.NombreUsuario.ToLower() == modelo.NombreUsuario.ToLower()))
+        {
+            ModelState.AddModelError("NombreUsuario",
+                "Este nombre de usuario ya está registrado.");
+        }
+
+        if (modelo.Rol != "Administrador" && modelo.Rol != "Doctor")
+        {
+            ModelState.AddModelError("Rol", "Seleccione un rol válido.");
+        }
+
+        if (modelo.Rol == "Administrador")
+        {
+            modelo.IdDoctor = null;
+        }
+        else if (modelo.Rol == "Doctor")
+        {
+            await ValidarDoctor(modelo.IdDoctor, id);
+        }
+
+        if (!ModelState.IsValid)
+        {
+            CargarDoctores(modelo.IdDoctor);
+            return View(modelo);
+        }
+
+        usuario.NombreUsuario = modelo.NombreUsuario;
+        usuario.Rol = modelo.Rol;
+        usuario.IdDoctor = modelo.IdDoctor;
+
+        // Solo cambia la contraseña si se ingresó una nueva
+        if (!string.IsNullOrWhiteSpace(modelo.Clave))
+        {
+            usuario.ClaveHash = _hasher.HashPassword(
+                usuario, modelo.Clave);
+        }
+
+        await _context.SaveChangesAsync();
+
+        TempData["Mensaje"] = "Usuario actualizado correctamente.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ACTIVAR / DESACTIVAR USUARIO
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CambiarEstado(int id)
+    {
+        var usuario = await _context.Usuario.FindAsync(id);
+
+        if (usuario == null)
+            return NotFound();
+
+        usuario.Estado = !usuario.Estado;
+
+        await _context.SaveChangesAsync();
+
+        TempData["Mensaje"] = usuario.Estado
+            ? "Usuario activado correctamente."
+            : "Usuario desactivado correctamente.";
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // VALIDAR DOCTOR ASOCIADO
+    private async Task ValidarDoctor(int? idDoctor, int? idUsuarioActual)
+    {
+        if (idDoctor == null)
+        {
+            ModelState.AddModelError("IdDoctor",
+                "Debe seleccionar un doctor.");
+            return;
+        }
+
+        var doctor = await _context.Doctor
+            .FirstOrDefaultAsync(d => d.Id == idDoctor && d.Estado);
+
+        if (doctor == null)
+        {
+            ModelState.AddModelError("IdDoctor",
+                "El doctor seleccionado no existe o está inactivo.");
+            return;
+        }
+
+        bool yaAsignado = await _context.Usuario.AnyAsync(u =>
+            u.IdDoctor == idDoctor &&
+            u.Id != idUsuarioActual);
+
+        if (yaAsignado)
+        {
+            ModelState.AddModelError("IdDoctor",
+                "Este doctor ya tiene una cuenta de usuario.");
+        }
+    }
+
+    // CARGAR DOCTORES ACTIVOS
+    private void CargarDoctores(int? seleccionado = null)
+    {
+        ViewBag.Doctores = new SelectList(
+            _context.Doctor
+                .Where(d => d.Estado)
+                .OrderBy(d => d.Nombres)
+                .Select(d => new
+                {
+                    d.Id,
+                    Nombre = d.Nombres + " " + d.Apellidos
+                })
+                .ToList(),
+            "Id",
+            "Nombre",
+            seleccionado
+        );
     }
 }

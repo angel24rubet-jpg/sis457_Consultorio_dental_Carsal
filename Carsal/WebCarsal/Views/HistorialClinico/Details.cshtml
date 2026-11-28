@@ -1,108 +1,90 @@
 @model WebCarsal.Models.HistorialClinico
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del historial clínico";
 }
 
-<h1>Details</h1>
+<div class="container-fluid">
+    <div class="mb-4">
+        <h2><i class="bi bi-journal-text"></i> Detalles del historial clínico</h2>
+        <p class="text-muted">Información completa de la atención del paciente.</p>
+    </div>
 
-<div>
-    <h4>HistorialClinico</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdPaciente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdPaciente)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdCita)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdCita)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaAtencion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaAtencion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Diagnostico)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Diagnostico)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tratamiento)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tratamiento)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Observaciones)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Observaciones)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioRegistro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioRegistro)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioModificacion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaModificacion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdCitaNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdCitaNavigation)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdPacienteNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdPacienteNavigation)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioModificacionNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioModificacionNavigation)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioRegistroNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioRegistroNavigation)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+            <h5 class="mb-3">Información del paciente</h5>
+
+            <dl class="row">
+                <dt class="col-md-3">Carnet de identidad</dt>
+                <dd class="col-md-9">@Model.IdPacienteNavigation.Ci</dd>
+
+                <dt class="col-md-3">Paciente</dt>
+                <dd class="col-md-9">
+                    @Model.IdPacienteNavigation.Nombres
+                    @Model.IdPacienteNavigation.PrimerApellido
+                    @Model.IdPacienteNavigation.SegundoApellido
+                </dd>
+            </dl>
+
+            <hr />
+
+            <h5 class="mb-3">Información de la cita</h5>
+
+            <dl class="row">
+                <dt class="col-md-3">Número de cita</dt>
+                <dd class="col-md-9">@(Model.IdCita?.ToString() ?? "Sin cita asociada")</dd>
+
+                @if (Model.IdCitaNavigation != null)
+                {
+                    <dt class="col-md-3">Fecha de cita</dt>
+                    <dd class="col-md-9">
+                        @Model.IdCitaNavigation.FechaHora.ToString("dd/MM/yyyy HH:mm")
+                    </dd>
+
+                    <dt class="col-md-3">Doctor</dt>
+                    <dd class="col-md-9">
+                        Dr. @Model.IdCitaNavigation.IdDoctorNavigation.Nombres
+                        @Model.IdCitaNavigation.IdDoctorNavigation.Apellidos
+                    </dd>
+                }
+            </dl>
+
+            <hr />
+
+            <h5 class="mb-3">Información de la atención</h5>
+
+            <dl class="row">
+                <dt class="col-md-3">Fecha de atención</dt>
+                <dd class="col-md-9">
+                    @Model.FechaAtencion.ToString("dd/MM/yyyy HH:mm")
+                </dd>
+
+                <dt class="col-md-3">Diagnóstico</dt>
+                <dd class="col-md-9">@Model.Diagnostico</dd>
+
+                <dt class="col-md-3">Tratamiento</dt>
+                <dd class="col-md-9">@Model.Tratamiento</dd>
+
+                <dt class="col-md-3">Observaciones</dt>
+                <dd class="col-md-9">
+                    @(string.IsNullOrWhiteSpace(Model.Observaciones)
+                                        ? "Sin observaciones"
+                                        : Model.Observaciones)
+                </dd>
+            </dl>
+
+            <hr />
+
+            <div class="d-flex gap-2">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Editar historial
+                </a>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Volver
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
