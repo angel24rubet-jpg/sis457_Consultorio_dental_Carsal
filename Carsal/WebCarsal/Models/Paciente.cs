@@ -11,7 +11,7 @@ public partial class Paciente
 
     public string Nombres { get; set; } = null!;
 
-    public string PrimerApellido { get; set; } = null!;
+    public string? PrimerApellido { get; set; }
 
     public string? SegundoApellido { get; set; }
 

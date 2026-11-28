@@ -1,0 +1,149 @@
+@model IEnumerable<WebCarsal.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreUsuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClaveHash)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rol)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdDoctor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CitaIdUsuarioModificacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CitaIdUsuarioRegistroNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorIdUsuarioModificacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorIdUsuarioRegistroNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EspecialidadIdUsuarioModificacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EspecialidadIdUsuarioRegistroNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HistorialClinicoIdUsuarioModificacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HistorialClinicoIdUsuarioRegistroNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdDoctorNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PacienteIdUsuarioModificacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PacienteIdUsuarioRegistroNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PagoIdUsuarioModificacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PagoIdUsuarioRegistroNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServicioIdUsuarioModificacionNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ServicioIdUsuarioRegistroNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.NombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ClaveHash)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Rol)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IdDoctor)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CitaIdUsuarioModificacionNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.CitaIdUsuarioRegistroNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DoctorIdUsuarioModificacionNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DoctorIdUsuarioRegistroNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EspecialidadIdUsuarioModificacionNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.EspecialidadIdUsuarioRegistroNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.HistorialClinicoIdUsuarioModificacionNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.HistorialClinicoIdUsuarioRegistroNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.IdDoctorNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PacienteIdUsuarioModificacionNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PacienteIdUsuarioRegistroNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PagoIdUsuarioModificacionNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.PagoIdUsuarioRegistroNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ServicioIdUsuarioModificacionNavigation)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.ServicioIdUsuarioRegistroNavigation)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

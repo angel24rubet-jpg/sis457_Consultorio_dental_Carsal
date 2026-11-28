@@ -1,0 +1,144 @@
+@model WebCarsal.Models.Usuario
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Usuario</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="NombreUsuario" class="control-label"></label>
+                <input asp-for="NombreUsuario" class="form-control" />
+                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ClaveHash" class="control-label"></label>
+                <input asp-for="ClaveHash" class="form-control" />
+                <span asp-validation-for="ClaveHash" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Rol" class="control-label"></label>
+                <input asp-for="Rol" class="form-control" />
+                <span asp-validation-for="Rol" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdDoctor" class="control-label"></label>
+                <input asp-for="IdDoctor" class="form-control" />
+                <span asp-validation-for="IdDoctor" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <input asp-for="Estado" class="form-check-input" />
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CitaIdUsuarioModificacionNavigation" class="control-label"></label>
+                <input asp-for="CitaIdUsuarioModificacionNavigation" class="form-control" />
+                <span asp-validation-for="CitaIdUsuarioModificacionNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CitaIdUsuarioRegistroNavigation" class="control-label"></label>
+                <input asp-for="CitaIdUsuarioRegistroNavigation" class="form-control" />
+                <span asp-validation-for="CitaIdUsuarioRegistroNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DoctorIdUsuarioModificacionNavigation" class="control-label"></label>
+                <input asp-for="DoctorIdUsuarioModificacionNavigation" class="form-control" />
+                <span asp-validation-for="DoctorIdUsuarioModificacionNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DoctorIdUsuarioRegistroNavigation" class="control-label"></label>
+                <input asp-for="DoctorIdUsuarioRegistroNavigation" class="form-control" />
+                <span asp-validation-for="DoctorIdUsuarioRegistroNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EspecialidadIdUsuarioModificacionNavigation" class="control-label"></label>
+                <input asp-for="EspecialidadIdUsuarioModificacionNavigation" class="form-control" />
+                <span asp-validation-for="EspecialidadIdUsuarioModificacionNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EspecialidadIdUsuarioRegistroNavigation" class="control-label"></label>
+                <input asp-for="EspecialidadIdUsuarioRegistroNavigation" class="form-control" />
+                <span asp-validation-for="EspecialidadIdUsuarioRegistroNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HistorialClinicoIdUsuarioModificacionNavigation" class="control-label"></label>
+                <input asp-for="HistorialClinicoIdUsuarioModificacionNavigation" class="form-control" />
+                <span asp-validation-for="HistorialClinicoIdUsuarioModificacionNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HistorialClinicoIdUsuarioRegistroNavigation" class="control-label"></label>
+                <input asp-for="HistorialClinicoIdUsuarioRegistroNavigation" class="form-control" />
+                <span asp-validation-for="HistorialClinicoIdUsuarioRegistroNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdDoctorNavigation" class="control-label"></label>
+                <input asp-for="IdDoctorNavigation" class="form-control" />
+                <span asp-validation-for="IdDoctorNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PacienteIdUsuarioModificacionNavigation" class="control-label"></label>
+                <input asp-for="PacienteIdUsuarioModificacionNavigation" class="form-control" />
+                <span asp-validation-for="PacienteIdUsuarioModificacionNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PacienteIdUsuarioRegistroNavigation" class="control-label"></label>
+                <input asp-for="PacienteIdUsuarioRegistroNavigation" class="form-control" />
+                <span asp-validation-for="PacienteIdUsuarioRegistroNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PagoIdUsuarioModificacionNavigation" class="control-label"></label>
+                <input asp-for="PagoIdUsuarioModificacionNavigation" class="form-control" />
+                <span asp-validation-for="PagoIdUsuarioModificacionNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PagoIdUsuarioRegistroNavigation" class="control-label"></label>
+                <input asp-for="PagoIdUsuarioRegistroNavigation" class="form-control" />
+                <span asp-validation-for="PagoIdUsuarioRegistroNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ServicioIdUsuarioModificacionNavigation" class="control-label"></label>
+                <input asp-for="ServicioIdUsuarioModificacionNavigation" class="form-control" />
+                <span asp-validation-for="ServicioIdUsuarioModificacionNavigation" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ServicioIdUsuarioRegistroNavigation" class="control-label"></label>
+                <input asp-for="ServicioIdUsuarioRegistroNavigation" class="form-control" />
+                <span asp-validation-for="ServicioIdUsuarioRegistroNavigation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
