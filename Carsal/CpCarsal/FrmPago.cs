@@ -305,7 +305,12 @@ namespace CpCarsal
                 erpCampos.SetError(cboMetodo, "Seleccione el método de pago");
                 esValido = false;
             }
-
+            // Si paga en efectivo, lo recibido debe alcanzar para el total
+            if (cboMetodo.Text == "Efectivo" && nudMontoRecibido.Value < items.Sum(i => i.Subtotal))
+            {
+                erpCampos.SetError(nudMontoRecibido, "El monto recibido no alcanza para el total");
+                esValido = false;
+            }
             return esValido;
         }
 
