@@ -18,6 +18,12 @@ namespace WebCarsal.Controllers
             _context = context;
         }
 
+        // Verificar si la solicitud viene de AJAX
+        private bool EsSolicitudAjax()
+        {
+            return Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+        }
+
         // Cargar especialidades activas
         private async Task CargarEspecialidades(int? seleccionada = null)
         {
@@ -78,14 +84,15 @@ namespace WebCarsal.Controllers
             if (doctor == null)
                 return NotFound();
 
-            return View(doctor);
+            return PartialView("Details", doctor);
         }
 
         // GET: DOCTORES/CREATE
         public async Task<IActionResult> Create()
         {
             await CargarEspecialidades();
-            return View(new DoctorFormViewModel());
+
+            return PartialView("Create", new DoctorFormViewModel());
         }
 
         // POST: DOCTORES/CREATE
@@ -125,7 +132,8 @@ namespace WebCarsal.Controllers
             if (!ModelState.IsValid)
             {
                 await CargarEspecialidades(modelo.IdEspecialidad);
-                return View(modelo);
+
+                return PartialView("Create", modelo);
             }
 
             var doctor = new Doctor
@@ -142,6 +150,15 @@ namespace WebCarsal.Controllers
 
             _context.Doctor.Add(doctor);
             await _context.SaveChangesAsync();
+
+            if (EsSolicitudAjax())
+            {
+                return Json(new
+                {
+                    success = true,
+                    message = "Doctor registrado correctamente."
+                });
+            }
 
             TempData["Mensaje"] = "Doctor registrado correctamente.";
 
@@ -169,9 +186,11 @@ namespace WebCarsal.Controllers
                 IdEspecialidad = doctor.IdEspecialidad
             };
 
+            ViewBag.IdDoctor = doctor.Id;
+
             await CargarEspecialidades(doctor.IdEspecialidad);
 
-            return View(modelo);
+            return PartialView("Edit", modelo);
         }
 
         // POST: DOCTORES/EDIT/5
@@ -215,8 +234,11 @@ namespace WebCarsal.Controllers
 
             if (!ModelState.IsValid)
             {
+                ViewBag.IdDoctor = id;
+
                 await CargarEspecialidades(modelo.IdEspecialidad);
-                return View(modelo);
+
+                return PartialView("Edit", modelo);
             }
 
             doctor.Ci = modelo.Ci;
@@ -228,6 +250,15 @@ namespace WebCarsal.Controllers
             doctor.FechaModificacion = DateTime.Now;
 
             await _context.SaveChangesAsync();
+
+            if (EsSolicitudAjax())
+            {
+                return Json(new
+                {
+                    success = true,
+                    message = "Doctor modificado correctamente."
+                });
+            }
 
             TempData["Mensaje"] = "Doctor modificado correctamente.";
 
@@ -248,7 +279,7 @@ namespace WebCarsal.Controllers
             if (doctor == null)
                 return NotFound();
 
-            return View(doctor);
+            return PartialView("Delete", doctor);
         }
 
         // POST: DOCTORES/DELETE/5
@@ -268,8 +299,21 @@ namespace WebCarsal.Controllers
 
             if (tieneCitasActivas)
             {
-                TempData["Error"] =
+                string mensaje =
                     "No se puede desactivar al doctor porque tiene citas pendientes o confirmadas.";
+
+                if (EsSolicitudAjax())
+                {
+                    Response.StatusCode = 400;
+
+                    return Json(new
+                    {
+                        success = false,
+                        message = mensaje
+                    });
+                }
+
+                TempData["Error"] = mensaje;
 
                 return RedirectToAction(nameof(Index));
             }
@@ -278,6 +322,15 @@ namespace WebCarsal.Controllers
             doctor.FechaModificacion = DateTime.Now;
 
             await _context.SaveChangesAsync();
+
+            if (EsSolicitudAjax())
+            {
+                return Json(new
+                {
+                    success = true,
+                    message = "Doctor desactivado correctamente."
+                });
+            }
 
             TempData["Mensaje"] = "Doctor desactivado correctamente.";
 

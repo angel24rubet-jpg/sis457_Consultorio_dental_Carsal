@@ -4,161 +4,457 @@
     ViewData["Title"] = "Doctores";
 }
 
-<div class="container-fluid">
+<style>
+    .doctores-page {
+        color: #263F42;
+    }
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+        .doctores-page h2,
+        .doctores-page h5 {
+            color: #164B50;
+        }
+
+    .doctor-card {
+        background: #FFFFFF;
+        border: 1px solid #E1EAE9;
+        border-radius: 14px;
+        box-shadow: 0 4px 15px rgba(18, 60, 70, .06);
+    }
+
+    .doctor-table {
+        color: #263F42;
+        vertical-align: middle;
+        margin-bottom: 0;
+    }
+
+        .doctor-table thead th {
+            background: #E5F0EF;
+            color: #164B50;
+            font-weight: 700;
+            font-size: .85rem;
+            white-space: nowrap;
+            padding: 15px 12px;
+            border-bottom: 1px solid #D3E3E1;
+        }
+
+        .doctor-table tbody td {
+            color: #263F42;
+            font-size: .9rem;
+            padding: 14px 12px;
+            border-bottom: 1px solid #EDF1F1;
+        }
+
+        .doctor-table tbody tr:hover {
+            background: #F5FAF9;
+        }
+
+    .doctor-input {
+        border: 1px solid #D6E3E2;
+        border-radius: 9px;
+        color: #263F42;
+        min-height: 42px;
+    }
+
+        .doctor-input:focus {
+            border-color: #20B8B0;
+            box-shadow: 0 0 0 .2rem rgba(32, 184, 176, .13);
+        }
+
+    .btn-doctor {
+        background: #176B68;
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 9px 16px;
+    }
+
+        .btn-doctor:hover {
+            background: #123C46;
+            color: white;
+        }
+
+    .btn-doctor-light {
+        background: #D9F3F0;
+        color: #176B68;
+        border: none;
+        border-radius: 8px;
+    }
+
+        .btn-doctor-light:hover {
+            background: #BDE9E4;
+            color: #123C46;
+        }
+
+    .doctor-modal .modal-content {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 15px 45px rgba(18, 60, 70, .18);
+    }
+
+    .doctor-modal .modal-header {
+        background: #FFFFFF;
+    }
+
+    .doctor-modal .modal-body {
+        color: #263F42;
+    }
+
+    .doctor-status-active {
+        background: #D9F3F0;
+        color: #176B68;
+    }
+
+    .doctor-status-inactive {
+        background: #FCE8E8;
+        color: #A83232;
+    }
+
+    #toastDoctor {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 2000;
+        min-width: 280px;
+        max-width: 380px;
+        display: none;
+        padding: 15px 18px;
+        border-radius: 10px;
+        color: white;
+        box-shadow: 0 5px 20px rgba(0,0,0,.15);
+    }
+
+        #toastDoctor.exito {
+            background: #176B68;
+        }
+
+        #toastDoctor.error {
+            background: #A83232;
+        }
+
+    .doctor-actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+    }
+</style>
+
+<div class="container-fluid doctores-page">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-            <h2 class="fw-bold mb-1">Gestión de doctores</h2>
-            <p class="text-muted mb-0">
-                Administración del personal médico de la clínica
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-person-badge me-2"></i>Doctores
+            </h2>
+            <p class="text-secondary mb-0">
+                Administración de profesionales y especialidades
             </p>
         </div>
 
-        <a asp-action="Create" class="btn btn-primary px-3 py-2">
-            <i class="bi bi-person-plus-fill me-1"></i>
+        <button type="button" class="btn btn-doctor"
+                onclick="abrirModal('@Url.Action("Create", "Doctores")')">
+            <i class="bi bi-plus-circle me-1"></i>
             Registrar doctor
-        </a>
+        </button>
     </div>
 
-    @if (TempData["Mensaje"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            @TempData["Mensaje"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-warning alert-dismissible fade show">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            @TempData["Error"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    }
-
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body p-3">
-            <form asp-action="Index" method="get">
-                <div class="row g-2 align-items-end">
-                    <div class="col-md-10">
-                        <label class="form-label fw-semibold">Buscar doctor</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-white">
-                                <i class="bi bi-search"></i>
-                            </span>
-                            <input type="text"
-                                   name="buscar"
-                                   value="@ViewData["Buscar"]"
-                                   class="form-control"
-                                   placeholder="Buscar por CI, nombres o apellidos..." />
-                        </div>
-                    </div>
-
-                    <div class="col-md-2 d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            Buscar
-                        </button>
-                    </div>
+    <div class="doctor-card p-3 p-md-4 mb-4">
+        <form asp-action="Index" asp-controller="Doctores" method="get">
+            <div class="row align-items-end g-3">
+                <div class="col-md-8">
+                    <label class="form-label fw-semibold text-dark">
+                        Buscar doctor
+                    </label>
+                    <input type="text"
+                           name="buscar"
+                           value="@ViewBag.Buscar"
+                           class="form-control doctor-input"
+                           placeholder="Buscar por CI, nombres o apellidos..." />
                 </div>
-            </form>
-        </div>
+
+                <div class="col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-doctor flex-grow-1">
+                        <i class="bi bi-search me-1"></i>Buscar
+                    </button>
+
+                    <a asp-action="Index"
+                       asp-controller="Doctores"
+                       class="btn btn-light border">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white py-3">
-            <h5 class="mb-0 fw-bold">
-                <i class="bi bi-person-badge-fill text-primary me-2"></i>
-                Lista de doctores activos
-            </h5>
+    <div class="doctor-card overflow-hidden">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 p-3 p-md-4">
+            <div>
+                <h5 class="fw-bold mb-1">Lista de doctores</h5>
+                <small class="text-secondary">
+                    Profesionales registrados en el sistema
+                </small>
+            </div>
+
+            <span class="badge rounded-pill px-3 py-2"
+                  style="background:#D9F3F0;color:#176B68;">
+                Total: @Model.Count()
+            </span>
         </div>
 
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th>CI</th>
-                            <th>Nombres</th>
-                            <th>Apellidos</th>
-                            <th>Especialidad</th>
-                            <th>Celular</th>
-                            <th>Dirección</th>
-                            <th>Estado</th>
-                            <th>Fecha registro</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
+        <div class="table-responsive">
+            <table class="table doctor-table">
+                <thead>
+                    <tr>
+                        <th>CI</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Especialidad</th>
+                        <th>Celular</th>
+                        <th>Dirección</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
 
-                    <tbody>
-                        @if (Model.Any())
-                        {
-                            @foreach (var doctor in Model)
-                            {
-                                <tr>
-                                    <td class="fw-semibold">@doctor.Ci</td>
-                                    <td>@doctor.Nombres</td>
-                                    <td>@doctor.Apellidos</td>
-                                    <td>@doctor.IdEspecialidadNavigation.Nombre</td>
-                                    <td>@(doctor.Celular ?? "—")</td>
-                                    <td>@(doctor.Direccion ?? "—")</td>
-                                    <td>
-                                        <span class="badge bg-success">Activo</span>
-                                    </td>
-                                    <td>@doctor.FechaRegistro.ToString("dd/MM/yyyy")</td>
-
-                                    <td class="text-center">
-                                        <div class="d-flex justify-content-center gap-1">
-
-                                            <a asp-action="Details"
-                                               asp-route-id="@doctor.Id"
-                                               class="btn btn-sm btn-outline-info"
-                                               title="Ver detalles">
-                                                <i class="bi bi-eye-fill"></i>
-                                            </a>
-
-                                            <a asp-action="Edit"
-                                               asp-route-id="@doctor.Id"
-                                               class="btn btn-sm btn-outline-primary"
-                                               title="Modificar">
-                                                <i class="bi bi-pencil-fill"></i>
-                                            </a>
-
-                                            <a asp-action="Delete"
-                                               asp-route-id="@doctor.Id"
-                                               class="btn btn-sm btn-outline-danger"
-                                               title="Desactivar">
-                                                <i class="bi bi-person-x-fill"></i>
-                                            </a>
-
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var doctor in Model)
                         {
                             <tr>
-                                <td colspan="9" class="text-center py-5">
-                                    <i class="bi bi-person-x text-muted fs-1"></i>
-                                    <p class="fw-semibold mt-2 mb-1">
-                                        No se encontraron doctores
-                                    </p>
-                                    <p class="text-muted mb-0">
-                                        Registre un doctor o intente otra búsqueda.
-                                    </p>
+                                <td class="fw-semibold">@doctor.Ci</td>
+                                <td>@doctor.Nombres</td>
+                                <td>@doctor.Apellidos</td>
+                                <td>
+                                    @(doctor.IdEspecialidadNavigation?.Nombre ?? "—")
+                                </td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(doctor.Celular) ? "—" : doctor.Celular)
+                                </td>
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(doctor.Direccion) ? "—" : doctor.Direccion)
+                                </td>
+                                <td>
+                                    <span class="badge rounded-pill px-3 py-2 doctor-status-active">
+                                        Activo
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="doctor-actions">
+                                        <button type="button"
+                                                class="btn btn-sm btn-doctor-light"
+                                                title="Ver detalles"
+                                                onclick="abrirModal('@Url.Action("Details", "Doctores", new { id = doctor.Id })')">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-sm btn-doctor-light"
+                                                title="Editar"
+                                                onclick="abrirModal('@Url.Action("Edit", "Doctores", new { id = doctor.Id })')">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+
+                                        <form asp-action="CambiarEstado"
+                                              asp-controller="Doctores"
+                                              method="post"
+                                              class="form-cambiar-estado">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@doctor.Id" />
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Desactivar">
+                                                <i class="bi bi-person-x"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="card-footer bg-white text-muted">
-            Total de doctores encontrados: <strong>@Model.Count()</strong>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <i class="bi bi-person-x fs-2 d-block mb-2 text-secondary"></i>
+                                <span class="fw-semibold text-dark">
+                                    No se encontraron doctores registrados.
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-
 </div>
+
+<!-- Modal de doctores -->
+<div class="modal fade doctor-modal" id="modalDoctor"
+     tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" id="contenidoModalDoctor">
+        </div>
+    </div>
+</div>
+
+<!-- Notificación flotante -->
+<div id="toastDoctor"></div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const modalDoctorElemento = document.getElementById('modalDoctor');
+        const contenidoModalDoctor = document.getElementById('contenidoModalDoctor');
+        const modalDoctor = new bootstrap.Modal(modalDoctorElemento);
+        const toastDoctor = document.getElementById('toastDoctor');
+
+        let temporizadorToast;
+
+        function mostrarToast(mensaje, tipo = 'exito') {
+            clearTimeout(temporizadorToast);
+
+            toastDoctor.textContent = mensaje;
+            toastDoctor.className = tipo;
+            toastDoctor.style.display = 'block';
+
+            temporizadorToast = setTimeout(() => {
+                toastDoctor.style.display = 'none';
+            }, 3500);
+        }
+
+        async function abrirModal(url) {
+            try {
+                contenidoModalDoctor.innerHTML = `
+                    <div class="modal-body text-center p-5">
+                        <div class="spinner-border" style="color:#176B68;"></div>
+                        <p class="mt-3 text-secondary">Cargando información...</p>
+                    </div>`;
+
+                modalDoctor.show();
+
+                const respuesta = await fetch(url);
+
+                if (!respuesta.ok) {
+                    throw new Error('No se pudo cargar la información.');
+                }
+
+                contenidoModalDoctor.innerHTML = await respuesta.text();
+                configurarFormularioDoctor();
+
+            } catch (error) {
+                contenidoModalDoctor.innerHTML = `
+                    <div class="modal-body p-4 text-center">
+                        <p class="text-danger mb-3">${error.message}</p>
+                        <button class="btn btn-light" data-bs-dismiss="modal">
+                            Cerrar
+                        </button>
+                    </div>`;
+            }
+        }
+
+        window.abrirModal = abrirModal;
+
+        function configurarFormularioDoctor() {
+            const formulario = contenidoModalDoctor.querySelector('#formDoctor');
+
+            if (!formulario) return;
+
+            if (window.jQuery && $.validator && $.validator.unobtrusive) {
+                $.validator.unobtrusive.parse(formulario);
+            }
+
+            formulario.addEventListener('submit', async function (evento) {
+                evento.preventDefault();
+
+                if (window.jQuery && $(formulario).valid && !$(formulario).valid()) {
+                    return;
+                }
+
+                const boton = formulario.querySelector('button[type="submit"]');
+
+                if (boton) {
+                    boton.disabled = true;
+                    boton.innerHTML = `
+                        <span class="spinner-border spinner-border-sm me-1"></span>
+                        Guardando...`;
+                }
+
+                try {
+                    const respuesta = await fetch(formulario.action, {
+                        method: 'POST',
+                        body: new FormData(formulario),
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    const tipoContenido = respuesta.headers.get('content-type') || '';
+
+                    if (tipoContenido.includes('application/json')) {
+                        const resultado = await respuesta.json();
+
+                        if (respuesta.ok && resultado.success) {
+                            modalDoctor.hide();
+                            mostrarToast(resultado.message || 'Operación realizada correctamente.');
+                            setTimeout(() => location.reload(), 900);
+                            return;
+                        }
+
+                        throw new Error(resultado.message || 'No se pudo guardar la información.');
+                    }
+
+                    contenidoModalDoctor.innerHTML = await respuesta.text();
+                    configurarFormularioDoctor();
+
+                } catch (error) {
+                    mostrarToast(error.message, 'error');
+
+                    const nuevoBoton = contenidoModalDoctor.querySelector('#formDoctor button[type="submit"]');
+                    if (nuevoBoton) {
+                        nuevoBoton.disabled = false;
+                    }
+                }
+            });
+        }
+
+        document.querySelectorAll('.form-cambiar-estado').forEach(formulario => {
+            formulario.addEventListener('submit', async function (evento) {
+                evento.preventDefault();
+
+                if (!confirm('¿Estás seguro de que deseas desactivar este doctor?')) {
+                    return;
+                }
+
+                try {
+                    const respuesta = await fetch(formulario.action, {
+                        method: 'POST',
+                        body: new FormData(formulario),
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (!respuesta.ok) {
+                        throw new Error('No se pudo cambiar el estado del doctor.');
+                    }
+
+                    const resultado = await respuesta.json();
+
+                    if (resultado.success) {
+                        mostrarToast(resultado.message || 'Doctor desactivado correctamente.');
+                        setTimeout(() => location.reload(), 900);
+                    } else {
+                        mostrarToast(resultado.message || 'No se pudo desactivar el doctor.', 'error');
+                    }
+
+                } catch (error) {
+                    mostrarToast(error.message, 'error');
+                }
+            });
+        });
+    </script>
+}

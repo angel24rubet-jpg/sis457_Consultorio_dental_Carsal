@@ -1,116 +1,228 @@
 @model WebCarsal.Models.DoctorFormViewModel
 
-@{
-    ViewData["Title"] = "Modificar doctor";
-}
-
-<div class="container-fluid">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-1">Modificar doctor</h2>
-            <p class="text-muted mb-0">
-                Actualice los datos personales y profesionales del doctor.
-            </p>
-        </div>
-
-        <a asp-action="Index" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Volver
-        </a>
-    </div>
-
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-
-            <form asp-action="Edit" method="post">
-
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                <h5 class="fw-bold mb-3">
-                    <i class="bi bi-person-vcard text-primary"></i>
-                    Información personal
-                </h5>
-
-                <div class="row g-3">
-
-                    <div class="col-md-4">
-                        <label asp-for="Ci" class="form-label"></label>
-                        <input asp-for="Ci" class="form-control" />
-                        <span asp-validation-for="Ci" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Nombres" class="form-label"></label>
-                        <input asp-for="Nombres" class="form-control" />
-                        <span asp-validation-for="Nombres" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Apellidos" class="form-label"></label>
-                        <input asp-for="Apellidos" class="form-control" />
-                        <span asp-validation-for="Apellidos" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Celular" class="form-label"></label>
-                        <input asp-for="Celular" class="form-control" />
-                        <span asp-validation-for="Celular" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Direccion" class="form-label"></label>
-                        <input asp-for="Direccion" class="form-control" />
-                        <span asp-validation-for="Direccion" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <hr class="my-4" />
-
-                <h5 class="fw-bold mb-3">
-                    <i class="bi bi-award text-primary"></i>
-                    Información profesional
-                </h5>
-
-                <div class="row g-3">
-                    <div class="col-md-6">
-
-                        <label asp-for="IdEspecialidad" class="form-label"></label>
-
-                        <select asp-for="IdEspecialidad"
-                                asp-items="ViewBag.IdEspecialidad"
-                                class="form-select">
-                            <option value="">Seleccione una especialidad...</option>
-                        </select>
-
-                        <span asp-validation-for="IdEspecialidad" class="text-danger"></span>
-
-                    </div>
-                </div>
-
-                <hr class="my-4" />
-
-                <div class="d-flex justify-content-end gap-2">
-
-                    <a asp-action="Index" class="btn btn-light border">
-                        Cancelar
-                    </a>
-
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-save-fill"></i>
-                        Guardar cambios
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    .doctor-form {
+        color: #263F42;
     }
-}
+
+        .doctor-form .modal-header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E5EEEE;
+        }
+
+        .doctor-form .modal-title {
+            color: #164B50;
+            font-weight: 700;
+        }
+
+        .doctor-form .form-label {
+            color: #263F42;
+            font-weight: 600;
+            font-size: .9rem;
+            margin-bottom: 7px;
+        }
+
+        .doctor-form .form-control,
+        .doctor-form .form-select {
+            border: 1px solid #D6E3E2;
+            border-radius: 9px;
+            min-height: 43px;
+            color: #263F42;
+            background-color: #FFFFFF;
+            font-size: .9rem;
+        }
+
+        .doctor-form textarea.form-control {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .doctor-form .form-control:focus,
+        .doctor-form .form-select:focus {
+            border-color: #20B8B0;
+            box-shadow: 0 0 0 .2rem rgba(32, 184, 176, .13);
+        }
+
+        .doctor-form .form-control::placeholder {
+            color: #91A3A4;
+        }
+
+        .doctor-form .text-danger {
+            font-size: .8rem;
+        }
+
+        .doctor-form .modal-footer {
+            background: #FFFFFF;
+            border-top: 1px solid #E5EEEE;
+        }
+
+        .doctor-form .btn-guardar {
+            background: #176B68;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 9px;
+            padding: 9px 20px;
+            font-weight: 600;
+        }
+
+            .doctor-form .btn-guardar:hover {
+                background: #123C46;
+                color: #FFFFFF;
+            }
+
+        .doctor-form .btn-cancelar {
+            background: #F0F4F4;
+            color: #263F42;
+            border: 1px solid #DCE6E5;
+            border-radius: 9px;
+            padding: 9px 20px;
+            font-weight: 600;
+        }
+
+            .doctor-form .btn-cancelar:hover {
+                background: #D9F3F0;
+                color: #164B50;
+            }
+</style>
+
+<div class="doctor-form">
+
+    <form asp-action="Edit"
+          asp-controller="Doctores"
+          asp-route-id="@ViewBag.IdDoctor"
+          method="post"
+          id="formDoctor">
+
+        @Html.AntiForgeryToken()
+
+        <div class="modal-header px-4 py-3">
+            <div class="d-flex align-items-center gap-2">
+                <div class="rounded-3 d-flex align-items-center justify-content-center"
+                     style="width:42px;height:42px;background:#D9F3F0;color:#176B68;">
+                    <i class="bi bi-pencil-square fs-5"></i>
+                </div>
+
+                <div>
+                    <h5 class="modal-title mb-0">Editar doctor</h5>
+                    <small class="text-secondary">
+                        Modifica los datos del profesional
+                    </small>
+                </div>
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"></button>
+        </div>
+
+        <div class="modal-body p-4">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert"></div>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <label asp-for="Ci" class="form-label">
+                        Carnet de identidad
+                    </label>
+
+                    <input asp-for="Ci"
+                           class="form-control"
+                           placeholder="Ingrese el CI" />
+
+                    <span asp-validation-for="Ci"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Nombres" class="form-label">
+                        Nombres
+                    </label>
+
+                    <input asp-for="Nombres"
+                           class="form-control"
+                           placeholder="Ingrese los nombres" />
+
+                    <span asp-validation-for="Nombres"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-12">
+                    <label asp-for="Apellidos" class="form-label">
+                        Apellidos
+                    </label>
+
+                    <input asp-for="Apellidos"
+                           class="form-control"
+                           placeholder="Ingrese los apellidos completos" />
+
+                    <span asp-validation-for="Apellidos"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Celular" class="form-label">
+                        Celular
+                    </label>
+
+                    <input asp-for="Celular"
+                           class="form-control"
+                           placeholder="Número de celular" />
+
+                    <span asp-validation-for="Celular"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="IdEspecialidad" class="form-label">
+                        Especialidad
+                    </label>
+
+                    <select asp-for="IdEspecialidad"
+                            asp-items="ViewBag.IdEspecialidad"
+                            class="form-select">
+                        <option value="">Seleccione una especialidad</option>
+                    </select>
+
+                    <span asp-validation-for="IdEspecialidad"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Direccion" class="form-label">
+                        Dirección
+                    </label>
+
+                    <textarea asp-for="Direccion"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Ingrese la dirección del doctor"></textarea>
+
+                    <span asp-validation-for="Direccion"
+                          class="text-danger"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer px-4 py-3">
+
+            <button type="button"
+                    class="btn btn-cancelar"
+                    data-bs-dismiss="modal">
+                <i class="bi bi-x-circle me-1"></i>
+                Cancelar
+            </button>
+
+            <button type="submit" class="btn btn-guardar">
+                <i class="bi bi-check-circle me-1"></i>
+                Guardar cambios
+            </button>
+
+        </div>
+
+    </form>
+</div>

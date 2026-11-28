@@ -1,129 +1,199 @@
 @model WebCarsal.Models.Doctor
 
-@{
-    ViewData["Title"] = "Details";
-}
+<style>
+    .doctor-details {
+        color: #263F42;
+    }
 
-<h1>Details</h1>
+        .doctor-details .modal-header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #E5EEEE;
+        }
 
-<div>
-    <h4>Doctor</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ci)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ci)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombres)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombres)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellidos)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apellidos)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Celular)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Celular)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Direccion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Direccion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioRegistro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioRegistro)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaRegistro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaRegistro)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioModificacion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaModificacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaModificacion)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdEspecialidad)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdEspecialidad)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cita)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cita)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdEspecialidadNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdEspecialidadNavigation)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioModificacionNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioModificacionNavigation)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdUsuarioRegistroNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuarioRegistroNavigation)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Usuario)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Usuario)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+        .doctor-details .modal-title {
+            color: #164B50;
+            font-weight: 700;
+        }
+
+        .doctor-details .doctor-avatar {
+            width: 76px;
+            height: 76px;
+            background: #D9F3F0;
+            color: #176B68;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .doctor-details .doctor-name {
+            color: #164B50;
+            font-weight: 700;
+        }
+
+        .doctor-details .detail-card {
+            background: #F3F6F7;
+            border: 1px solid #E5EEEE;
+            border-radius: 10px;
+            padding: 14px 16px;
+            height: 100%;
+        }
+
+        .doctor-details .detail-label {
+            display: block;
+            color: #718586;
+            font-size: .8rem;
+            margin-bottom: 5px;
+        }
+
+        .doctor-details .detail-value {
+            color: #263F42;
+            font-weight: 600;
+            font-size: .92rem;
+            overflow-wrap: anywhere;
+        }
+
+        .doctor-details .modal-footer {
+            background: #FFFFFF;
+            border-top: 1px solid #E5EEEE;
+        }
+
+        .doctor-details .btn-cerrar {
+            background: #F0F4F4;
+            color: #263F42;
+            border: 1px solid #DCE6E5;
+            border-radius: 9px;
+            padding: 9px 22px;
+            font-weight: 600;
+        }
+
+            .doctor-details .btn-cerrar:hover {
+                background: #D9F3F0;
+                color: #164B50;
+            }
+
+        .doctor-details .estado-activo {
+            background: #D9F3F0;
+            color: #176B68;
+        }
+
+        .doctor-details .estado-inactivo {
+            background: #FCE8E8;
+            color: #A83232;
+        }
+</style>
+
+<div class="doctor-details">
+
+    <div class="modal-header px-4 py-3">
+        <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 d-flex align-items-center justify-content-center"
+                 style="width:42px;height:42px;background:#D9F3F0;color:#176B68;">
+                <i class="bi bi-person-badge fs-5"></i>
+            </div>
+
+            <div>
+                <h5 class="modal-title mb-0">Información del doctor</h5>
+                <small class="text-secondary">
+                    Datos registrados del profesional
+                </small>
+            </div>
+        </div>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Cerrar"></button>
+    </div>
+
+    <div class="modal-body p-4">
+
+        <div class="text-center mb-4">
+
+            <div class="doctor-avatar">
+                <i class="bi bi-person-badge" style="font-size:2rem;"></i>
+            </div>
+
+            <h5 class="doctor-name mb-2">
+                @Model.Nombres @Model.Apellidos
+            </h5>
+
+            <span class="badge rounded-pill px-3 py-2 @(Model.Estado ? "estado-activo" : "estado-inactivo")">
+                @(Model.Estado ? "Activo" : "Inactivo")
+            </span>
+
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <div class="detail-card">
+                    <span class="detail-label">Carnet de identidad</span>
+                    <span class="detail-value">@Model.Ci</span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-card">
+                    <span class="detail-label">Nombres</span>
+                    <span class="detail-value">@Model.Nombres</span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-card">
+                    <span class="detail-label">Apellidos</span>
+                    <span class="detail-value">@Model.Apellidos</span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-card">
+                    <span class="detail-label">Especialidad</span>
+                    <span class="detail-value">
+                        @(Model.IdEspecialidadNavigation?.Nombre ?? "No especificada")
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-card">
+                    <span class="detail-label">Celular</span>
+                    <span class="detail-value">
+                        @(string.IsNullOrWhiteSpace(Model.Celular) ? "No registrado" : Model.Celular)
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="detail-card">
+                    <span class="detail-label">Dirección</span>
+                    <span class="detail-value">
+                        @(string.IsNullOrWhiteSpace(Model.Direccion) ? "No registrada" : Model.Direccion)
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="detail-card">
+                    <span class="detail-label">Fecha de registro</span>
+                    <span class="detail-value">
+                        @Model.FechaRegistro.ToString("dd/MM/yyyy HH:mm")
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer px-4 py-3">
+        <button type="button"
+                class="btn btn-cerrar"
+                data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i>
+            Cerrar
+        </button>
+    </div>
+
 </div>
