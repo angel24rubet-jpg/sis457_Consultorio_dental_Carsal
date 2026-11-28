@@ -1,7 +1,3 @@
-
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebCarsal.Models;
@@ -17,105 +13,85 @@ namespace WebCarsal.Controllers
             _context = context;
         }
 
-        // GET: PACIENTES
-        public async Task<IActionResult> Index(string buscar)
+        // LISTAR LOS ULTIMOS 10 PACIENTES REGISTRADOS
+        public async Task<IActionResult> Index(string? buscar)
         {
-            var pacientes = _context.Paciente
-                .AsNoTracking()
+            var consulta = _context.Paciente
                 .Where(p => p.Estado);
 
             if (!string.IsNullOrWhiteSpace(buscar))
             {
                 buscar = buscar.Trim();
 
-                pacientes = pacientes.Where(p =>
+                consulta = consulta.Where(p =>
                     p.Ci.Contains(buscar) ||
                     p.Nombres.Contains(buscar) ||
                     (p.PrimerApellido != null && p.PrimerApellido.Contains(buscar)) ||
-                    (p.SegundoApellido != null && p.SegundoApellido.Contains(buscar))
-                );
+                    (p.SegundoApellido != null && p.SegundoApellido.Contains(buscar)));
             }
 
-            var lista = await pacientes
-                .OrderBy(p => p.PrimerApellido)
-                .ThenBy(p => p.SegundoApellido)
-                .ThenBy(p => p.Nombres)
+            ViewBag.Buscar = buscar;
+
+            var pacientes = await consulta
+                .OrderByDescending(p => p.FechaRegistro)
+                .ThenByDescending(p => p.Id)
+                .Take(10)
                 .ToListAsync();
 
-            ViewData["Buscar"] = buscar;
-
-            return View(lista);
+            return View(pacientes);
         }
 
-        // GET: PACIENTES/DETAILS/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-                return NotFound();
-
-            var paciente = await _context.Paciente
-                .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (paciente == null)
-                return NotFound();
-
-            return View(paciente);
-        }
-
-        // GET: PACIENTES/CREATE
+        // MOSTRAR FORMULARIO DE REGISTRO
+        [HttpGet]
         public IActionResult Create()
         {
-            return View(new PacienteFormViewModel());
+            return PartialView(
+                "~/Views/Pacientes/Create.cshtml",
+                new PacienteFormViewModel()
+            );
         }
 
-        // POST: PACIENTES/CREATE
+        // REGISTRAR PACIENTE
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PacienteFormViewModel modelo)
         {
-            // Limpiar espacios
-            modelo.Ci = modelo.Ci?.Trim() ?? string.Empty;
-            modelo.Nombres = modelo.Nombres?.Trim() ?? string.Empty;
+            modelo.Ci = modelo.Ci?.Trim() ?? "";
+            modelo.Nombres = modelo.Nombres?.Trim() ?? "";
             modelo.PrimerApellido = modelo.PrimerApellido?.Trim();
             modelo.SegundoApellido = modelo.SegundoApellido?.Trim();
-            modelo.Sexo = modelo.Sexo?.Trim();
             modelo.Celular = modelo.Celular?.Trim();
             modelo.Direccion = modelo.Direccion?.Trim();
 
-            // Validar que exista al menos un apellido
-            if (string.IsNullOrWhiteSpace(modelo.PrimerApellido) &&
-                string.IsNullOrWhiteSpace(modelo.SegundoApellido))
+            if (!string.IsNullOrWhiteSpace(modelo.Ci))
             {
-                ModelState.AddModelError(
-                    nameof(modelo.PrimerApellido),
-                    "Debe ingresar al menos un apellido."
-                );
-            }
+                bool existe = await _context.Paciente
+                    .AnyAsync(p => p.Ci == modelo.Ci);
 
-            // Verificar CI entre todos los pacientes
-            bool ciExiste = await _context.Paciente
-                .AnyAsync(p => p.Ci == modelo.Ci);
-
-            if (ciExiste)
-            {
-                ModelState.AddModelError(
-                    nameof(modelo.Ci),
-                    "Ya existe un paciente registrado con este CI."
-                );
+                if (existe)
+                {
+                    ModelState.AddModelError(
+                        nameof(modelo.Ci),
+                        "Ya existe un paciente registrado con este CI."
+                    );
+                }
             }
 
             if (!ModelState.IsValid)
-                return View(modelo);
+            {
+                return PartialView(
+                    "~/Views/Pacientes/Create.cshtml",
+                    modelo
+                );
+            }
 
-            // Crear paciente
             var paciente = new Paciente
             {
                 Ci = modelo.Ci,
                 Nombres = modelo.Nombres,
                 PrimerApellido = modelo.PrimerApellido,
                 SegundoApellido = modelo.SegundoApellido,
-                FechaNacimiento = modelo.FechaNacimiento,
+                FechaNacimiento = modelo.ObtenerFechaNacimiento(),
                 Sexo = modelo.Sexo,
                 Celular = modelo.Celular,
                 Direccion = modelo.Direccion,
@@ -126,127 +102,121 @@ namespace WebCarsal.Controllers
             _context.Paciente.Add(paciente);
             await _context.SaveChangesAsync();
 
-            TempData["Mensaje"] = "Paciente registrado correctamente.";
-
-            return RedirectToAction(nameof(Index));
+            return Json(new
+            {
+                success = true,
+                mensaje = "Paciente registrado correctamente."
+            });
         }
 
-        // GET: PACIENTES/EDIT/5
+        // MOSTRAR FORMULARIO DE EDICIÓN
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
                 return NotFound();
 
-            var paciente = await _context.Paciente.FindAsync(id);
-
-            if (paciente == null || !paciente.Estado)
-                return NotFound();
-
-            var modelo = new PacienteFormViewModel
-            {
-                Ci = paciente.Ci,
-                Nombres = paciente.Nombres,
-                PrimerApellido = paciente.PrimerApellido,
-                SegundoApellido = paciente.SegundoApellido,
-                FechaNacimiento = paciente.FechaNacimiento,
-                Sexo = paciente.Sexo,
-                Celular = paciente.Celular,
-                Direccion = paciente.Direccion
-            };
-
-            return View(modelo);
-        }
-
-        // POST: PACIENTES/EDIT/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, PacienteFormViewModel modelo)
-        {
-            var paciente = await _context.Paciente.FindAsync(id);
-
-            if (paciente == null || !paciente.Estado)
-                return NotFound();
-
-            // Limpiar espacios
-            modelo.Ci = modelo.Ci?.Trim() ?? string.Empty;
-            modelo.Nombres = modelo.Nombres?.Trim() ?? string.Empty;
-            modelo.PrimerApellido = modelo.PrimerApellido?.Trim();
-            modelo.SegundoApellido = modelo.SegundoApellido?.Trim();
-            modelo.Sexo = modelo.Sexo?.Trim();
-            modelo.Celular = modelo.Celular?.Trim();
-            modelo.Direccion = modelo.Direccion?.Trim();
-
-            // Validar apellidos
-            if (string.IsNullOrWhiteSpace(modelo.PrimerApellido) &&
-                string.IsNullOrWhiteSpace(modelo.SegundoApellido))
-            {
-                ModelState.AddModelError(
-                    nameof(modelo.PrimerApellido),
-                    "Debe ingresar al menos un apellido."
-                );
-            }
-
-            // Verificar CI sin contar al propio paciente
-            bool ciExiste = await _context.Paciente
-                .AnyAsync(p => p.Ci == modelo.Ci && p.Id != id);
-
-            if (ciExiste)
-            {
-                ModelState.AddModelError(
-                    nameof(modelo.Ci),
-                    "Ya existe otro paciente registrado con este CI."
-                );
-            }
-
-            if (!ModelState.IsValid)
-                return View(modelo);
-
-            // Actualizar datos personales
-            paciente.Ci = modelo.Ci;
-            paciente.Nombres = modelo.Nombres;
-            paciente.PrimerApellido = modelo.PrimerApellido;
-            paciente.SegundoApellido = modelo.SegundoApellido;
-            paciente.FechaNacimiento = modelo.FechaNacimiento;
-            paciente.Sexo = modelo.Sexo;
-            paciente.Celular = modelo.Celular;
-            paciente.Direccion = modelo.Direccion;
-
-            paciente.FechaModificacion = DateTime.Now;
-
-            await _context.SaveChangesAsync();
-
-            TempData["Mensaje"] = "Paciente modificado correctamente.";
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: PACIENTES/DELETE/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-                return NotFound();
-
             var paciente = await _context.Paciente
-                .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id && p.Estado);
 
             if (paciente == null)
                 return NotFound();
 
-            return View(paciente);
+            var modelo = new PacienteFormViewModel
+            {
+                Id = paciente.Id,
+                Ci = paciente.Ci,
+                Nombres = paciente.Nombres,
+                PrimerApellido = paciente.PrimerApellido,
+                SegundoApellido = paciente.SegundoApellido,
+                FechaNacimientoTexto = paciente.FechaNacimiento?
+                    .ToString("dd/MM/yyyy"),
+                Sexo = paciente.Sexo,
+                Celular = paciente.Celular,
+                Direccion = paciente.Direccion
+            };
+
+            return PartialView(
+                "~/Views/Pacientes/Edit.cshtml",
+                modelo
+            );
         }
 
-        // POST: PACIENTES/DELETE/5
-        [HttpPost, ActionName("Delete")]
+        // ACTUALIZAR PACIENTE
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Edit(
+            int id,
+            PacienteFormViewModel modelo)
         {
-            var paciente = await _context.Paciente.FindAsync(id);
-
-            if (paciente == null || !paciente.Estado)
+            if (id != modelo.Id)
                 return NotFound();
 
-            // Desactivar sin eliminar de la base de datos
+            var paciente = await _context.Paciente
+                .FirstOrDefaultAsync(p => p.Id == id && p.Estado);
+
+            if (paciente == null)
+                return NotFound();
+
+            modelo.Ci = modelo.Ci?.Trim() ?? "";
+            modelo.Nombres = modelo.Nombres?.Trim() ?? "";
+            modelo.PrimerApellido = modelo.PrimerApellido?.Trim();
+            modelo.SegundoApellido = modelo.SegundoApellido?.Trim();
+            modelo.Celular = modelo.Celular?.Trim();
+            modelo.Direccion = modelo.Direccion?.Trim();
+
+            if (!string.IsNullOrWhiteSpace(modelo.Ci))
+            {
+                bool existe = await _context.Paciente
+                    .AnyAsync(p => p.Ci == modelo.Ci && p.Id != id);
+
+                if (existe)
+                {
+                    ModelState.AddModelError(
+                        nameof(modelo.Ci),
+                        "Este CI ya está registrado por otro paciente."
+                    );
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return PartialView(
+                    "~/Views/Pacientes/Edit.cshtml",
+                    modelo
+                );
+            }
+
+            paciente.Ci = modelo.Ci;
+            paciente.Nombres = modelo.Nombres;
+            paciente.PrimerApellido = modelo.PrimerApellido;
+            paciente.SegundoApellido = modelo.SegundoApellido;
+            paciente.FechaNacimiento = modelo.ObtenerFechaNacimiento();
+            paciente.Sexo = modelo.Sexo;
+            paciente.Celular = modelo.Celular;
+            paciente.Direccion = modelo.Direccion;
+            paciente.FechaModificacion = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return Json(new
+            {
+                success = true,
+                mensaje = "Paciente actualizado correctamente."
+            });
+        }
+
+        // DESACTIVAR PACIENTE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarEstado(int id)
+        {
+            var paciente = await _context.Paciente
+                .FirstOrDefaultAsync(p => p.Id == id && p.Estado);
+
+            if (paciente == null)
+                return NotFound();
+
             paciente.Estado = false;
             paciente.FechaModificacion = DateTime.Now;
 

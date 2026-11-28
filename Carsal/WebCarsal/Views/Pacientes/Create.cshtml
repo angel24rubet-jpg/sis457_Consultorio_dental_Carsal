@@ -1,124 +1,105 @@
 @model WebCarsal.Models.PacienteFormViewModel
 
-@{
-    ViewData["Title"] = "Registrar paciente";
-}
-
-<div class="container-fluid">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-1">Registrar paciente</h2>
-            <p class="text-muted mb-0">Ingrese los datos personales del nuevo paciente.</p>
-        </div>
-
-        <a asp-action="Index" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i> Volver
-        </a>
+<div class="modal-header border-0 px-4 pt-4">
+    <div>
+        <h5 class="modal-title fw-semibold" style="color:#164B50;">
+            <i class="bi bi-person-plus me-2"></i>Registrar paciente
+        </h5>
+        <small class="text-muted">Complete la información del paciente.</small>
     </div>
-
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-
-            <form asp-action="Create" method="post">
-
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                <h5 class="fw-bold mb-3">
-                    <i class="bi bi-person-vcard text-primary"></i>
-                    Información personal
-                </h5>
-
-                <div class="row g-3">
-
-                    <div class="col-md-4">
-                        <label asp-for="Ci" class="form-label"></label>
-                        <input asp-for="Ci" class="form-control" placeholder="Ingrese el CI" />
-                        <span asp-validation-for="Ci" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-8">
-                        <label asp-for="Nombres" class="form-label"></label>
-                        <input asp-for="Nombres" class="form-control" placeholder="Ingrese los nombres" />
-                        <span asp-validation-for="Nombres" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="PrimerApellido" class="form-label"></label>
-                        <input asp-for="PrimerApellido" class="form-control" placeholder="Primer apellido" />
-                        <span asp-validation-for="PrimerApellido" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="SegundoApellido" class="form-label"></label>
-                        <input asp-for="SegundoApellido" class="form-control" placeholder="Segundo apellido" />
-                        <span asp-validation-for="SegundoApellido" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="FechaNacimiento" class="form-label"></label>
-                        <input asp-for="FechaNacimiento" type="date" class="form-control" />
-                        <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label asp-for="Sexo" class="form-label"></label>
-                        <select asp-for="Sexo" class="form-select">
-                            <option value="">Seleccione...</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Masculino">Masculino</option>
-                        </select>
-                        <span asp-validation-for="Sexo" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <hr class="my-4" />
-
-                <h5 class="fw-bold mb-3">
-                    <i class="bi bi-telephone text-primary"></i>
-                    Información de contacto
-                </h5>
-
-                <div class="row g-3">
-
-                    <div class="col-md-4">
-                        <label asp-for="Celular" class="form-label"></label>
-                        <input asp-for="Celular" class="form-control" placeholder="Número de celular" />
-                        <span asp-validation-for="Celular" class="text-danger"></span>
-                    </div>
-
-                    <div class="col-md-8">
-                        <label asp-for="Direccion" class="form-label"></label>
-                        <input asp-for="Direccion" class="form-control" placeholder="Dirección del paciente" />
-                        <span asp-validation-for="Direccion" class="text-danger"></span>
-                    </div>
-
-                </div>
-
-                <hr class="my-4" />
-
-                <div class="d-flex justify-content-end gap-2">
-
-                    <a asp-action="Index" class="btn btn-light border">
-                        Cancelar
-                    </a>
-
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-person-plus-fill"></i>
-                        Registrar paciente
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+<form asp-controller="Pacientes" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="modal-body px-4">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+        <h6 class="fw-semibold mb-3" style="color:#176B68;">
+            <i class="bi bi-person-vcard me-2"></i>Datos personales
+        </h6>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="Ci" class="form-label"></label>
+                <input asp-for="Ci" class="form-control" placeholder="Ingrese el CI" />
+                <span asp-validation-for="Ci" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Nombres" class="form-label"></label>
+                <input asp-for="Nombres" class="form-control" placeholder="Ingrese los nombres" />
+                <span asp-validation-for="Nombres" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="PrimerApellido" class="form-label"></label>
+                <input asp-for="PrimerApellido" class="form-control" placeholder="Primer apellido" />
+                <span asp-validation-for="PrimerApellido" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="SegundoApellido" class="form-label"></label>
+                <input asp-for="SegundoApellido" class="form-control" placeholder="Segundo apellido" />
+                <span asp-validation-for="SegundoApellido" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="FechaNacimientoTexto" class="form-label">Fecha de nacimiento</label>
+                <div class="input-group">
+                    <input asp-for="FechaNacimientoTexto"
+                           id="FechaNacimientoTexto"
+                           type="text"
+                           class="form-control fecha-paciente"
+                           placeholder="dd/MM/yyyy"
+                           autocomplete="off" />
+                    <span class="input-group-text bg-white">
+                        <i class="bi bi-calendar3" style="color:#176B68;"></i>
+                    </span>
+                </div>
+                <small class="text-muted">Formato: día/mes/año. Edad mínima: 5 años.</small>
+                <span asp-validation-for="FechaNacimientoTexto" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Sexo" class="form-label"></label>
+                <select asp-for="Sexo" class="form-select">
+                    <option value="">Seleccione</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Masculino">Masculino</option>
+                </select>
+                <span asp-validation-for="Sexo" class="text-danger small"></span>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <h6 class="fw-semibold mb-3" style="color:#176B68;">
+            <i class="bi bi-telephone me-2"></i>Datos de contacto
+        </h6>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="Celular" class="form-label">Celular de referencia</label>
+                <input asp-for="Celular" class="form-control" placeholder="Número de contacto" />
+                <span asp-validation-for="Celular" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Direccion" class="form-label"></label>
+                <input asp-for="Direccion" class="form-control" placeholder="Dirección del paciente" />
+                <span asp-validation-for="Direccion" class="text-danger small"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer border-0 px-4 pb-4">
+        <button type="button" class="btn btn-light border px-4" data-bs-dismiss="modal">
+            Cancelar
+        </button>
+        <button type="submit" class="btn text-white px-4" style="background:#176B68;">
+            <i class="bi bi-check-lg me-2"></i>Guardar paciente
+        </button>
+    </div>
+</form>
